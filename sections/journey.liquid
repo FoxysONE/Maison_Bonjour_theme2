@@ -1,15 +1,30 @@
 {%- liquid
-  # Le Voyage — galerie horizontale épinglée des 12 éditions régionales.
-  # Plus de bannières / accordéon : on arrive sur la section, elle se fige,
-  # et le scroll vertical fait défiler les landings une à une à l'horizontal.
-  assign region_slugs = 'provence,bretagne,alsace,bourgogne,pays-basque,normandie,perigord,auvergne,champagne,cote-d-azur,val-de-loire,corse' | split: ','
+  # Le Voyage — galerie horizontale épinglée des escales régionales.
+  # On arrive sur la section, elle se fige, et le scroll fait défiler les
+  # landings une à une à l'horizontal.
+  #
+  # ORDRE DES RÉGIONS : volontairement ÉDITORIAL / LIBRE, jamais chronologique.
+  # Ce n'est PAS l'ordre des prochaines box (pas de roadmap, pas de calendrier,
+  # pas de dates). Modifiable sans risque via le réglage « Ordre des régions »
+  # du customizer (slugs séparés par des virgules) — réordonner ne casse rien.
+  assign order_default = 'perigord,bretagne,cote-d-azur,bourgogne,provence,alsace,normandie,pays-basque,corse,val-de-loire,auvergne,champagne'
+  assign region_order  = section.settings.region_order | default: order_default
+  assign region_slugs  = region_order | split: ','
+  assign order_caption = section.settings.order_caption | default: 'Quelques escales françaises — un voyage sans ordre imposé.'
 -%}
 
-<section class="journey-h section--dark" data-journey-h data-fm-skip aria-label="Le Voyage — douze régions, douze éditions">
+<section class="journey-h section--dark" data-journey-h data-fm-skip
+         aria-label="Le Voyage — quelques escales françaises à explorer librement, sans ordre imposé"
+         style="--journey-count: {{ region_slugs.size }};">
   <div class="journey-h__sticky">
+
+    {%- if order_caption != blank -%}
+      <p class="journey-h__caption">{{ order_caption }}</p>
+    {%- endif -%}
 
     <ol class="journey-h__track" data-journey-track role="list">
       {%- for slug in region_slugs -%}
+        {%- assign slug = slug | strip -%}
         {%- assign num_padded = forloop.index | prepend: '0' | slice: -2, 2 -%}
 
         {%- case slug -%}
@@ -133,7 +148,7 @@
     <div class="journey-h__progress" aria-hidden="true">
       <span class="journey-h__index" data-journey-index>01</span>
       <span class="journey-h__bar"><span class="journey-h__fill" data-journey-fill></span></span>
-      <span class="journey-h__total">12</span>
+      <span class="journey-h__total">{{ region_slugs.size }}</span>
       {%- comment -%} Indice de glissement (mobile uniquement) : trait + micro-flèche, se masque au premier swipe. {%- endcomment -%}
       <span class="journey-h__hint" data-journey-hint aria-hidden="true">
         <span class="journey-h__hint-line"></span>
@@ -151,18 +166,25 @@
      scroll ; le viewport sticky se fige ; la piste se translate.
      ============================================================ */
 
-  /* Section d'un viewport plein : on fige la vue puis on défile les panneaux
-     un à un. L'arrivée est lissée par le JS (glissement animé, pas de saut). */
+  /* La section haute fournit la DISTANCE de scroll ; le viewport interne se
+     fige (position: sticky) et la piste se translate horizontalement en
+     fonction de la position de scroll (piloté par JS, lissé par Lenis).
+     → Pas de capture de molette : le défilement reste libre et fluide.
+       Un snap « à l'arrêt » (JS) recale ensuite sur une région à la fois, pour
+       ne jamais rester immobilisé entre deux. Arrivée et sortie restent
+       naturelles (le snap n'agit qu'à l'intérieur de la galerie épinglée).
+     IMPORTANT : pas d'overflow:hidden sur .journey-h (cela casserait le sticky). */
   .journey-h {
     position: relative;
-    height: 100vh;
-    height: 100dvh;
-    overflow: hidden;
+    height: calc(100vh + (var(--journey-count, 12) - 1) * 56vh);
     background: var(--marine-deep);
   }
 
   .journey-h__sticky {
-    height: 100%;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100dvh;
     overflow: hidden;
   }
 
@@ -175,10 +197,13 @@
     list-style: none;
     width: max-content;
     will-change: transform;
-    /* Une transition par panneau → chaque landing défile d'un bloc (jamais
-       d'arrêt entre deux). */
-    transition: transform 0.7s cubic-bezier(0.7, 0, 0.16, 1);
+    /* Translation pilotée par le scroll (JS) : pas de transition CSS, le
+       lissage vient de Lenis → glissement continu et fluide. */
   }
+
+  /* Contenu des slides toujours visible : l'entrée se fait par la translation
+     horizontale (l'IntersectionObserver de .reveal ne suit pas le transform). */
+  .journey-h .reveal { opacity: 1; transform: none; }
 
   .journey-slide {
     flex: 0 0 100vw;
@@ -350,6 +375,26 @@
   }
   .journey-h__index { color: var(--cream); }
 
+  /* Mention discrète en haut : cadre le carousel comme un voyage LIBRE
+     (pas un ordre/roadmap des prochaines box). Décorative, n'affecte pas le scroll. */
+  .journey-h__caption {
+    position: absolute;
+    top: clamp(18px, 3.5vh, 40px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    margin: 0;
+    max-width: min(90%, 640px);
+    text-align: center;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: rgba(250, 246, 236, 0.72);
+    pointer-events: none;
+  }
+
   /* Indice de glissement — masqué sur desktop (le scroll suffit), affiché mobile. */
   .journey-h__hint { display: none; }
 
@@ -359,6 +404,15 @@
   @media (max-width: 767px) {
     .journey-h { height: auto; }
     .journey-h__sticky { position: static; height: auto; overflow: visible; }
+    /* Mention en flux normal au-dessus du carousel (plus d'absolu sur mobile). */
+    .journey-h__caption {
+      position: static;
+      transform: none;
+      max-width: 100%;
+      padding: 22px 20px 14px;
+      font-size: 10px;
+      letter-spacing: 0.22em;
+    }
     .journey-h__track {
       width: auto;
       overflow-x: auto;
@@ -425,161 +479,182 @@
   (function () {
     var section = document.querySelector('[data-journey-h]');
     if (!section) return;
-    var track = section.querySelector('[data-journey-track]');
-    var slides = section.querySelectorAll('[data-journey-slide]');
+    var track   = section.querySelector('[data-journey-track]');
+    var slides  = section.querySelectorAll('[data-journey-slide]');
     var indexEl = section.querySelector('[data-journey-index]');
-    var fillEl = section.querySelector('[data-journey-fill]');
-    var hintEl = section.querySelector('[data-journey-hint]');
+    var fillEl  = section.querySelector('[data-journey-fill]');
+    var hintEl  = section.querySelector('[data-journey-hint]');
     if (!track || !slides.length) return;
 
     var count = slides.length;
     var mq = window.matchMedia('(min-width: 768px)');
     var rm = window.matchMedia('(prefers-reduced-motion: reduce)');
-    var touch = window.matchMedia('(hover: none)');
-    // Épinglage panneau-par-panneau : desktop pointeur fin uniquement.
-    // Mobile / tactile / reduced-motion → scroll-snap natif ou empilement.
-    function pinned() { return mq.matches && !rm.matches && !touch.matches; }
+    // Mode épinglé (desktop / tablette, mouvement autorisé) : le viewport est figé
+    // par `position: sticky` (CSS) et la piste se translate selon la POSITION de
+    // scroll. Aucune capture de molette, aucun gel de Lenis → arrivée et sortie
+    // naturelles, défilement fluide, pas de coup sec ni de blocage.
+    // Sinon (mobile ≤767 / reduced-motion) : scroll horizontal natif ou empilement.
+    function pinned() { return mq.matches && !rm.matches; }
     function pad(n) { return n < 10 ? '0' + n : '' + n; }
+    function clamp(v, a, b) { return v < a ? a : (v > b ? b : v); }
 
-    function lenis() { return window.__mbLenis; }
-    function absTop() { return section.getBoundingClientRect().top + window.pageYOffset; }
-    function freeze() { var l = lenis(); if (l && l.stop) l.stop(); }
-    function unfreeze() { var l = lenis(); if (l && l.start) l.start(); }
+    var lastIdx = -1;
+    var ticking = false;
 
-    var index = 0;        // panneau courant
-    var locked = false;   // la galerie tient le viewport (défilement 1-à-1)
-    var animating = false;
-    var released = false; // vient de relâcher à une extrémité
+    function setActive(idx) {
+      for (var i = 0; i < slides.length; i++) {
+        slides[i].classList.toggle('is-active', i === idx);
+      }
+    }
 
     function render() {
-      track.style.transform = 'translate3d(-' + (index * 100) + 'vw, 0, 0)';
-      if (indexEl) indexEl.textContent = pad(index + 1);
-      if (fillEl) fillEl.style.width = (index / (count - 1) * 100) + '%';
-      for (var i = 0; i < slides.length; i++) {
-        slides[i].classList.toggle('is-active', i === index);
-      }
-    }
-
-    function step(dir) {
-      var n = index + dir;
-      if (n < 0 || n > count - 1) return;
-      index = n;
-      animating = true;
-      render(); // la transition CSS 0.7s anime le passage d'un panneau à l'autre
-      window.setTimeout(function () { animating = false; }, 720);
-    }
-
-    // La section occupe-t-elle le centre du viewport ?
-    function covers() {
-      var r = section.getBoundingClientRect();
-      var h = window.innerHeight;
-      return r.top <= h * 0.5 && r.bottom >= h * 0.5;
-    }
-
-    // ENTRÉE DOUCE : au lieu d'un saut instantané (l'ancien « coup sec »), on
-    // GLISSE la section en place avec une scroll animée, puis on gèle pour
-    // faire défiler les panneaux un à un. `lock:true` empêche la molette de
-    // perturber le glissement d'arrivée.
-    function engage(dir) {
-      locked = true;
-      animating = true;
-      index = dir > 0 ? 0 : count - 1;
-      render();
-      var l = lenis();
-      if (l && l.scrollTo) {
-        l.scrollTo(absTop(), {
-          duration: 0.6,
-          lock: true,
-          easing: function (t) { return 1 - Math.pow(1 - t, 3); },
-          onComplete: function () { freeze(); animating = false; }
-        });
-      } else {
-        window.scrollTo({ top: absTop(), behavior: 'smooth' });
-        window.setTimeout(function () { freeze(); animating = false; }, 600);
-      }
-    }
-
-    function handleDir(dir, e) {
-      if (!pinned() || !covers()) return;
-      if (window.__mbAnchorNav) return; // navigation par ancre en cours : laisser passer
-      if (released) return; // déjà relâché à une extrémité : laisser scroller
-
-      // Première interaction : on s'engage en glissant doucement en place.
-      if (!locked) {
-        if (e) e.preventDefault();
-        engage(dir);
-        return;
-      }
-
-      // Pendant le glissement d'arrivée ou une transition : on ignore.
-      if (animating) { if (e) e.preventDefault(); return; }
-
-      // Aux extrémités : relâcher pour laisser la page défiler normalement.
-      if ((dir > 0 && index === count - 1) || (dir < 0 && index === 0)) {
-        locked = false;
-        released = true;
-        unfreeze();
-        return; // pas de preventDefault → scroll naturel vers la suite
-      }
-
-      if (e) e.preventDefault();
-      step(dir); // un cran = un panneau, jamais d'arrêt entre deux
-    }
-
-    window.addEventListener('wheel', function (e) {
       if (!pinned()) return;
-      if (window.__mbAnchorNav) return; // ne pas capter la molette pendant une navigation par ancre
-      if (Math.abs(e.deltaY) < 2) return;
-      handleDir(e.deltaY > 0 ? 1 : -1, e);
-    }, { passive: false });
-
-    // Clavier (accessibilité) quand la galerie tient le viewport.
-    window.addEventListener('keydown', function (e) {
-      if (!pinned() || !covers() || !locked || animating) return;
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown') {
-        if (index < count - 1) { e.preventDefault(); step(1); }
-      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
-        if (index > 0) { e.preventDefault(); step(-1); }
+      var rect = section.getBoundingClientRect();
+      var scrollable = section.offsetHeight - window.innerHeight;
+      var p = scrollable > 0 ? clamp(-rect.top / scrollable, 0, 1) : 0;
+      track.style.transform = 'translate3d(' + (-p * (count - 1) * 100) + 'vw, 0, 0)';
+      if (fillEl) fillEl.style.width = (p * 100) + '%';
+      var idx = Math.round(p * (count - 1));
+      if (idx !== lastIdx) {
+        lastIdx = idx;
+        if (indexEl) indexEl.textContent = pad(idx + 1);
+        setActive(idx);
       }
+    }
+
+    // ---- Snap « à l'arrêt » (desktop épinglé uniquement) -------------------
+    // Le scroll fait glisser la piste en continu ; sans règle, on peut
+    // s'immobiliser entre deux régions. On recale sur la région la plus proche,
+    // une à une, MAIS seulement quand le mouvement est réellement terminé —
+    // sinon on lutterait contre l'inertie de Lenis (sensation de bug).
+    // Garde-fous contre ce combat :
+    //   • on ne snape que si la vitesse de scroll est ~nulle (mesurée frame/frame) ;
+    //   • tout nouveau geste utilisateur (molette / trackpad / clavier) ANNULE
+    //     immédiatement un recalage en cours → la molette n'est jamais capturée ;
+    //   • un garde-fou (timeout) remet toujours l'état à zéro.
+    // On ne snape qu'à l'INTÉRIEUR de la galerie épinglée (arrivée/sortie
+    // naturelles) et jamais pendant une nav par ancre (window.__mbAnchorNav).
+    var SNAP_IDLE = 160;  // ms sans geste utilisateur avant d'autoriser le calage
+    var SNAP_VMAX = 1.5;  // px/frame : au-dessus, ça bouge encore → on attend
+    var SNAP_MIN  = 6;    // px : en deçà, on est déjà calé
+    var SNAP_STEP = 0.14; // fraction de région à dépasser pour valider la suivante
+    var restIdx   = 0;    // région sur laquelle on était posé (pour le sens du calage)
+    var lastInput  = 0;
+    var lastY      = window.pageYOffset;
+    var velY       = 0;
+    var snapping   = false;
+    var snapSafety = null;
+    var settleTimer = null;
+
+    function nowMs() { return Date.now(); }
+
+    function endSnap() {
+      snapping = false;
+      if (snapSafety) { window.clearTimeout(snapSafety); snapSafety = null; }
+    }
+
+    // Recale restIdx sur la région réellement à l'écran (refresh / resize).
+    function syncRest() {
+      var rect = section.getBoundingClientRect();
+      var scrollable = section.offsetHeight - window.innerHeight;
+      if (scrollable <= 0) { restIdx = 0; return; }
+      restIdx = clamp(Math.round(clamp(-rect.top / scrollable, 0, 1) * (count - 1)), 0, count - 1);
+    }
+
+    // Un geste de l'utilisateur reprend toujours la main sur un snap en cours.
+    function onUserInput() {
+      lastInput = nowMs();
+      if (snapping) endSnap();
+    }
+    ['wheel', 'touchstart', 'touchmove', 'keydown'].forEach(function (ev) {
+      window.addEventListener(ev, onUserInput, { passive: true });
     });
 
-    // Réarmer quand la section quitte le centre + filet de sécurité pour les
-    // scrolls rapides : entre deux events `wheel`, la roue peut « sauter »
-    // par-dessus la zone d'engagement et la section défile sans s'épingler.
-    // Ici on rattrape depuis la position : dès que la section couvre le
-    // viewport après un saut de scroll, on l'épingle quand même.
-    var lastScrollY = window.pageYOffset;
-    var scrollTick = false;
-    window.addEventListener('scroll', function () {
-      if (scrollTick) return;
-      scrollTick = true;
+    function maybeSnap() {
+      if (!pinned() || snapping || count < 2) return;
+      if (window.__mbAnchorNav) return;                 // nav par ancre en cours
+      if (nowMs() - lastInput < SNAP_IDLE) return;      // l'utilisateur agit encore
+      if (Math.abs(velY) > SNAP_VMAX) return;           // ça glisse encore (Lenis)
+      var rect = section.getBoundingClientRect();
+      var scrollable = section.offsetHeight - window.innerHeight;
+      if (scrollable <= 0) return;
+      // Hors galerie épinglée (en approche ou déjà dépassée) : on ne touche à rien.
+      if (rect.top > 0 || -rect.top > scrollable) return;
+      var p = clamp(-rect.top / scrollable, 0, 1);
+      var stepPos = p * (count - 1);     // position continue (ex. 3.2 = région 3 + 0.2)
+      var idx;
+      // À moins d'une région d'écart : on VALIDE dans le sens du geste dès qu'on
+      // a dépassé un petit seuil → un coup de molette fait avancer d'une région
+      // (au lieu de revenir en arrière, ce qui donnait l'impression de blocage).
+      // Au-delà d'une région d'écart (gros scroll) : on cale sur la plus proche.
+      if (Math.abs(stepPos - restIdx) <= 1) {
+        if (stepPos > restIdx + SNAP_STEP) idx = restIdx + 1;
+        else if (stepPos < restIdx - SNAP_STEP) idx = restIdx - 1;
+        else idx = restIdx;
+      } else {
+        idx = Math.round(stepPos);
+      }
+      idx = clamp(idx, 0, count - 1);
+      var target = (rect.top + window.pageYOffset) + (idx / (count - 1)) * scrollable;
+      if (Math.abs(target - window.pageYOffset) < SNAP_MIN) { restIdx = idx; return; } // déjà calé
+      restIdx = idx;
+      snapping = true;
+      snapSafety = window.setTimeout(function () { endSnap(); render(); }, 1100);
+      var release = function () { endSnap(); render(); };
+      var lenis = window.__mbLenis;
+      if (lenis && typeof lenis.scrollTo === 'function') {
+        // Recalage plus long + easing doux (ease-in-out) → glissement velouté
+        // jusqu'à la région, sans départ ni arrêt secs.
+        lenis.scrollTo(target, {
+          duration: 0.72,
+          easing: function (t) {
+            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+          },
+          onComplete: release
+        });
+      } else {
+        window.scrollTo({ top: target, behavior: 'smooth' });
+      }
+    }
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
       window.requestAnimationFrame(function () {
-        scrollTick = false;
+        ticking = false;
         var y = window.pageYOffset;
-        var dy = y - lastScrollY;
-        lastScrollY = y;
-
-        // Navigation par ancre en cours (clic nav / CTA qui traverse la galerie) :
-        // ne pas s'engager, et libérer tout verrou éventuel + relancer Lenis pour
-        // ne jamais "happer" le défilement programmatique ni le casser.
-        if (window.__mbAnchorNav) {
-          if (locked || released || animating) {
-            locked = false; released = false; animating = false; unfreeze();
-          }
-          return;
-        }
-
-        if (released && !covers()) { released = false; locked = false; }
-
-        if (!pinned() || locked || released || animating) return;
-        if (Math.abs(dy) < 4) return;
-        if (!covers()) return;
-
-        engage(dy > 0 ? 1 : -1);
+        velY = y - lastY;
+        lastY = y;
+        render();
+        maybeSnap();
       });
-    }, { passive: true });
+      // Filet : quand les événements de scroll cessent complètement, on
+      // considère le mouvement terminé (velY = 0) et on retente une fois.
+      if (settleTimer) window.clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(function () {
+        velY = 0;
+        maybeSnap();
+      }, SNAP_IDLE + 40);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
 
-    // Indicateur mobile depuis le scroll horizontal natif + masquage du hint.
+    function onResize() {
+      endSnap();
+      if (settleTimer) { window.clearTimeout(settleTimer); settleTimer = null; }
+      lastY = window.pageYOffset;
+      velY = 0;
+      if (!pinned()) { track.style.transform = ''; }
+      lastIdx = -1;
+      syncRest();
+      render();
+    }
+    window.addEventListener('resize', onResize, { passive: true });
+    if (mq.addEventListener) {
+      mq.addEventListener('change', onResize);
+      rm.addEventListener('change', onResize);
+    }
+
+    // Indicateur mobile : progression depuis le scroll horizontal natif + masquage du hint.
     track.addEventListener('scroll', function () {
       if (pinned()) return;
       window.requestAnimationFrame(function () {
@@ -592,28 +667,20 @@
       });
     }, { passive: true });
 
-    // Changement de mode / resize : on remet à plat.
-    function resetMode() {
-      locked = false; released = false; animating = false;
-      unfreeze();
-      if (pinned()) { index = 0; render(); }
-      else { track.style.transform = ''; }
-    }
-    if (mq.addEventListener) {
-      mq.addEventListener('change', resetMode);
-      rm.addEventListener('change', resetMode);
-      if (touch.addEventListener) touch.addEventListener('change', resetMode);
-    }
-    window.addEventListener('resize', resetMode, { passive: true });
-
-    if (pinned()) render();
+    // État initial + recalage après chargement complet (hauteurs définitives).
+    if (pinned()) { syncRest(); render(); } else { setActive(0); }
+    window.addEventListener('load', function () { lastIdx = -1; syncRest(); render(); });
   })();
 {% endjavascript %}
 
 {% schema %}
 {
   "name": "04 — Le Voyage",
-  "settings": [],
+  "settings": [
+    { "type": "paragraph", "content": "Galerie des escales régionales. L'ordre est ÉDITORIAL / LIBRE — ce n'est pas l'ordre des prochaines box (pas de roadmap ni de dates). Réordonner ici ne casse pas le carousel." },
+    { "type": "textarea", "id": "region_order", "label": "Ordre des régions (slugs séparés par des virgules)", "default": "perigord,bretagne,cote-d-azur,bourgogne,provence,alsace,normandie,pays-basque,corse,val-de-loire,auvergne,champagne", "info": "Ordre éditorial / libre, pas une chronologie. Slugs disponibles : provence, bretagne, alsace, bourgogne, pays-basque, normandie, perigord, auvergne, champagne, cote-d-azur, val-de-loire, corse." },
+    { "type": "text", "id": "order_caption", "label": "Mention au-dessus du carousel", "default": "Quelques escales françaises — un voyage sans ordre imposé.", "info": "Cadre la galerie comme un voyage libre. Laisser vide pour masquer." }
+  ],
   "presets": [{ "name": "04 — Le Voyage" }]
 }
 {% endschema %}

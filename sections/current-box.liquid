@@ -1,26 +1,18 @@
 {%- liquid
   assign featured = section.settings.featured_product
 
-  assign label      = section.settings.label      | default: 'Première édition · Juillet 2026'
-  assign region     = section.settings.region     | default: 'Bretagne'
-  assign subtitle   = section.settings.subtitle   | default: 'Une première escale entre mer, granit, gestes anciens et traditions de table.'
-  assign clarify    = section.settings.clarify    | default: 'La Box se reçoit. Le Magazine se lit.'
-  assign cta_label  = section.settings.cta_label   | default: 'Choisir ma formule'
-  assign cta_note   = section.settings.cta_note    | default: 'L’abonnement concerne la box mensuelle Maison Bonjour.'
-  assign cta_url    = section.settings.cta_url
-  if cta_url == blank
-    assign cta_url = '/#abonnement'
-  endif
+  assign label    = section.settings.label    | default: 'Première édition · Juillet 2026'
+  assign region   = section.settings.region   | default: 'Bretagne'
+  assign subtitle = section.settings.subtitle | default: 'Une première escale entre mer, granit et gestes de table.'
   assign passport_label = section.settings.passport_link_label | default: 'Découvrir le Passeport'
   assign passport_url   = section.settings.passport_link_url
   if passport_url == blank
     assign passport_url = '/#passeport'
   endif
-  assign intro      = section.settings.intro
-  assign img        = section.settings.image
-  assign seal       = section.settings.seal       | default: 'Chaque boîte est préparée avec soin, puis scellée à la main par un sceau Maison Bonjour.'
-  assign passport   = section.settings.passport   | default: 'Et avec chaque box, votre passeport — un livret pour collectionner les régions.'
-  assign tease      = section.settings.tease      | default: '« La box du mois prochain ? Sortez votre passeport. C’est une surprise. »'
+  assign intro   = section.settings.intro
+  assign img     = section.settings.image
+  assign img_alt = section.settings.image_alt | default: 'La box Maison Bonjour, fermée et nouée d’un ruban marine, prête à être ouverte.'
+  assign seal    = section.settings.seal    | default: 'Chaque boîte est préparée avec soin, puis scellée à la main par un sceau Maison Bonjour.'
 
   if featured
     if featured.metafields.box.label.value    != blank
@@ -35,341 +27,185 @@
     if featured.metafields.box.image.value    != blank
       assign img = featured.metafields.box.image.value
     endif
-    if featured.metafields.box.passport.value != blank
-      assign passport = featured.metafields.box.passport.value
-    endif
-    if featured.metafields.box.tease.value    != blank
-      assign tease = featured.metafields.box.tease.value
-    endif
   endif
 -%}
 
 <section id="la-box" class="box section--warm" aria-label="La Box du mois">
-  <div class="container">
-    <div class="box__grid">
-      {%- comment -%}
-        Pas de classe `.reveal` ici : elle masquait le conteneur (opacity:0)
-        en attente d'un is-visible qui pouvait ne jamais arriver à cause de la
-        cascade avec `.img-reveal` à l'intérieur. L'image possède déjà son
-        propre cinematic reveal via `.img-reveal`.
-      {%- endcomment -%}
-      <div class="box__media reveal">
-        {%- if img != blank -%}
-          {{ img | image_url: width: 1600 | image_tag:
-              loading: 'lazy',
-              sizes: '(min-width: 1024px) 55vw, 100vw',
-              widths: '600, 900, 1200, 1600, 2000',
-              class: 'box__img',
-              alt: img.alt
-          }}
-        {%- else -%}
-          <img class="box__img"
-               src="{{ 'ImageboxProvence.png' | asset_url }}"
-               alt="La box Maison Bonjour — édition Provence"
-               width="1600"
-               height="1600"
-               loading="lazy">
-        {%- endif -%}
-      </div>
+  <div class="container box__hero">
 
-      <div class="box__text reveal reveal--delay-1">
-        <p class="box__eyebrow label">{{ label }}</p>
-        <h2 class="box__title" data-split-words>{{ region }}</h2>
-        <p class="box__subtitle">{{ subtitle }}</p>
-        {%- if clarify != blank -%}
-          <p class="box__clarify">{{ clarify }}</p>
-        {%- endif -%}
-        <hr class="sep">
-
-        <div class="box__intro editorial">
-          {%- if intro != blank -%}
-            {{ intro }}
-          {%- else -%}
-            <p>Pour sa première édition, Maison Bonjour prend la direction de la Bretagne, dans le cadre de la Semaine de la France à Cluj-Napoca, avec l’Institut français et le CFAC.</p>
-            <p>Le contenu exact restera secret jusqu’à l’ouverture. Chaque élément est choisi pour raconter une région, pas simplement pour remplir une boîte.</p>
-          {%- endif -%}
-        </div>
-
-        <ul class="box__list" role="list">
-          {%- if featured.metafields.box.products.value != blank -%}
-            {%- for item in featured.metafields.box.products.value -%}
-              <li class="box__item reveal-spring">{{ item }}</li>
-            {%- endfor -%}
-          {%- elsif section.blocks.size > 0 -%}
-            {%- for block in section.blocks -%}
-              {%- if block.type == 'product' -%}
-                <li class="box__item reveal-spring" {{ block.shopify_attributes }}>
-                  {{ block.settings.name }}
-                  {%- if block.settings.origin != blank %} — {{ block.settings.origin }}{% endif -%}
-                </li>
-              {%- endif -%}
-            {%- endfor -%}
-          {%- else -%}
-            <li class="box__item reveal-spring">Une création à conserver</li>
-            <li class="box__item reveal-spring">Une saveur de région</li>
-            <li class="box__item reveal-spring">Un geste de table</li>
-            <li class="box__item reveal-spring">Une matière à toucher</li>
-            <li class="box__item reveal-spring">Une surprise à découvrir à l’ouverture</li>
-          {%- endif -%}
-        </ul>
-
-        {%- if seal != blank -%}
-          <p class="box__seal">{{ seal }}</p>
-        {%- endif -%}
-
-        <p class="box__tease">{{ tease }}</p>
-
-        {%- comment -%} Pont narratif vers la section Passeport : la box est une escale qui laisse une trace. {%- endcomment -%}
-        {%- if passport_label != blank -%}
-          <a class="box__passport-link" href="{{ passport_url }}">
-            {{ passport_label }} <span class="box__passport-arrow" aria-hidden="true">→</span>
-          </a>
-        {%- endif -%}
-
-        {%- if cta_url != blank and cta_label != blank -%}
-          <div class="box__cta-wrap">
-            <a class="box__cta" href="{{ cta_url }}">
-              <span>{{ cta_label }}</span>
-              <span class="box__cta-arrow" aria-hidden="true">→</span>
-            </a>
-            {%- if cta_note != blank -%}
-              <p class="box__cta-note">{{ cta_note }}</p>
-            {%- endif -%}
-          </div>
-        {%- endif -%}
-      </div>
+    {%- comment -%} Colonne texte — haut : label, grand titre, phrase forte. {%- endcomment -%}
+    <div class="box__intro reveal">
+      <p class="box__eyebrow label">{{ label }}</p>
+      <h2 class="box__title" data-split-words>{{ region }}</h2>
+      <p class="box__subtitle">{{ subtitle }}</p>
     </div>
+
+    {%- comment -%} Visuel produit dominant — la box fermée que l'on a envie d'ouvrir. {%- endcomment -%}
+    <figure class="box__media reveal reveal--delay-1">
+      {%- if img != blank -%}
+        {{ img | image_url: width: 1600 | image_tag:
+            loading: 'lazy',
+            sizes: '(min-width: 1024px) 58vw, 92vw',
+            widths: '600, 900, 1200, 1600',
+            class: 'box__img',
+            alt: img_alt
+        }}
+      {%- else -%}
+        {%- comment -%} Visuel par défaut : la box Maison Bonjour fermée, nouée d'un ruban marine.
+            Remplaçable par la photo de l'édition du mois via Personnaliser → La Box → Image. {%- endcomment -%}
+        <img class="box__img"
+             src="{{ 'ImageboxProvence.png' | asset_url }}"
+             alt="{{ img_alt | escape }}"
+             width="600" height="480" loading="lazy" decoding="async">
+      {%- endif -%}
+    </figure>
+
+    {%- comment -%} Colonne texte — bas : récit court, indices en ligne, lien Passeport, sceau. {%- endcomment -%}
+    <div class="box__body reveal reveal--delay-2">
+      <div class="box__text editorial">
+        {%- if intro != blank -%}
+          {{ intro }}
+        {%- else -%}
+          <p>Maison Bonjour prend la direction de la Bretagne pour sa première édition, dans le cadre de la Semaine de la France à Cluj-Napoca, avec l’Institut français et le CFAC.</p>
+          <p>Le contenu reste secret jusqu’à l’ouverture. On ne dévoile pas une liste&nbsp;: on prépare une rencontre avec une région.</p>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} Indices = mini-ligne éditoriale discrète, pas une liste. {%- endcomment -%}
+      <p class="box__hints">
+        {%- if featured.metafields.box.products.value != blank -%}
+          {%- for item in featured.metafields.box.products.value -%}
+            {%- unless forloop.first %}<span class="box__hints-sep" aria-hidden="true"> · </span>{% endunless -%}{{ item }}
+          {%- endfor -%}
+        {%- elsif section.blocks.size > 0 -%}
+          {%- assign n = 0 -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'product' -%}
+              {%- if n > 0 %}<span class="box__hints-sep" aria-hidden="true"> · </span>{% endif -%}{{ block.settings.name }}
+              {%- assign n = n | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          Création à conserver<span class="box__hints-sep" aria-hidden="true"> · </span>Saveur de région<span class="box__hints-sep" aria-hidden="true"> · </span>Geste de table<span class="box__hints-sep" aria-hidden="true"> · </span>Matière à toucher<span class="box__hints-sep" aria-hidden="true"> · </span>Surprise à l’ouverture
+        {%- endif -%}
+      </p>
+
+      {%- if passport_label != blank -%}
+        <a class="box__passport-link" href="{{ passport_url }}">
+          {{ passport_label }} <span class="box__passport-arrow" aria-hidden="true">→</span>
+        </a>
+      {%- endif -%}
+
+      {%- if seal != blank -%}
+        <p class="box__seal">{{ seal }}</p>
+      {%- endif -%}
+    </div>
+
   </div>
 </section>
 
 {% stylesheet %}
   .box {
-    padding-block: 100px;
+    padding-block: clamp(72px, 9vw, 132px);
     /* Ancre "La Box" (#la-box) : offset pour ne pas coller au header fixe. */
     scroll-margin-top: clamp(72px, 9vw, 120px);
   }
 
-  .box__grid {
+  /* ===========================================================
+     HERO — texte fort à gauche, grand visuel à droite.
+     Mobile (base) : label/titre/phrase → image → texte.
+     =========================================================== */
+  .box__hero {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 48px;
+    grid-template-areas:
+      "intro"
+      "media"
+      "body";
+    gap: clamp(28px, 4vw, 44px);
     align-items: center;
   }
+  .box__intro { grid-area: intro; }
+  .box__media { grid-area: media; }
+  .box__body  { grid-area: body; }
 
+  /* --- Colonne texte : haut --- */
+  .box__eyebrow { margin-bottom: 16px; color: var(--gold); }
+  .box__title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(3.6rem, 6.5vw + 1rem, 7rem);
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    color: var(--marine);
+  }
+  .box__subtitle {
+    margin: 20px 0 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(1.25rem, 0.8vw + 1rem, 1.7rem);
+    line-height: 1.35;
+    color: var(--text-muted);
+    max-width: 26ch;
+  }
+
+  /* --- Visuel produit dominant --- */
   .box__media {
     position: relative;
-    /* Ombre douce et diffuse qui suit la forme plumée de l'image
-       (drop-shadow respecte l'alpha du mask, contrairement à box-shadow). */
-    filter: drop-shadow(0 26px 50px rgba(43, 32, 24, 0.13));
+    margin: 0;
+    /* Ombre douce qui suit la forme plumée (drop-shadow respecte l'alpha du
+       masque, contrairement à box-shadow qui serait coupé par le masque). */
+    filter: drop-shadow(0 28px 54px rgba(43, 32, 24, 0.15));
   }
-
+  /* Contours adoucis : l'image se fond délicatement dans le crème sur les 4 côtés. */
   .box__img {
+    display: block;
     width: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    border-radius: 10px;
-    /* Bords plumés : l'image se dissout dans le fond cream au lieu d'un
-       bord rectangulaire net. Intersection de deux dégradés = feather sur
-       les 4 côtés. */
+    height: auto;
     -webkit-mask-image:
-      linear-gradient(to right,  transparent 0, #000 6%, #000 94%, transparent 100%),
-      linear-gradient(to bottom, transparent 0, #000 6%, #000 94%, transparent 100%);
+      linear-gradient(to right,  transparent 0, #000 7%, #000 93%, transparent 100%),
+      linear-gradient(to bottom, transparent 0, #000 7%, #000 93%, transparent 100%);
     -webkit-mask-composite: source-in;
     mask-image:
-      linear-gradient(to right,  transparent 0, #000 6%, #000 94%, transparent 100%),
-      linear-gradient(to bottom, transparent 0, #000 6%, #000 94%, transparent 100%);
+      linear-gradient(to right,  transparent 0, #000 7%, #000 93%, transparent 100%),
+      linear-gradient(to bottom, transparent 0, #000 7%, #000 93%, transparent 100%);
     mask-composite: intersect;
   }
-  .box__img--placeholder { background: var(--cream); aspect-ratio: 4/5; }
 
-  .box__title {
-    margin-top: 16px;
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 400;
-    font-size: clamp(3rem, 4.4vw + 1rem, 5rem); /* 48 → 80 */
-    line-height: 1.05;
-    color: var(--marine);
-  }
-
-  .box__subtitle {
-    margin-top: 12px;
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 22px;
-    line-height: 1.4;
-    color: var(--text-muted);
-    max-width: 440px;
-  }
-
-  .box__eyebrow {
-    margin-bottom: 12px;
-    color: var(--gold);
-  }
-
-  .box__intro {
-    margin-top: 4px;
-    margin-bottom: 8px;
-    max-width: 480px;
+  /* --- Colonne texte : bas --- */
+  .box__text p {
+    margin: 0 0 1em;
     font-family: var(--font-sans);
-    font-size: 16px;
-    line-height: 1.7;
+    font-weight: 300;
+    font-size: clamp(1rem, 0.3vw + 0.95rem, 1.1rem);
+    line-height: 1.72;
     color: var(--text);
+    max-width: 46ch;
   }
-  .box__intro p { margin: 0 0 14px; }
-  .box__intro p:last-child { margin-bottom: 0; }
+  .box__text p:last-child { margin-bottom: 0; }
 
-  .box__seal {
-    margin-top: 22px;
-    max-width: 480px;
+  /* Indices — une ligne discrète, points dorés, jamais une liste. */
+  .box__hints {
+    margin: clamp(20px, 2.4vw, 28px) 0 0;
     font-family: var(--font-sans);
-    font-size: 13px;
-    line-height: 1.6;
-    color: var(--text-muted);
-  }
-
-  .box__list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .box__item {
-    position: relative;
-    font-family: var(--font-sans);
-    font-size: 16px;
+    font-size: 11.5px;
     font-weight: 400;
-    line-height: 2;
-    color: var(--text);
-    padding: 12px 0;
-    border-bottom: 1px solid var(--border);
-    transition: padding-left 0.35s var(--ease-out), color 0.35s ease;
-  }
-  .box__item::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 0;
-    height: 1px;
-    background: var(--gold);
-    transition: width 0.35s var(--ease-out);
-  }
-  .box__item:hover {
-    padding-left: 22px;
-    color: var(--marine);
-  }
-  .box__item:hover::before { width: 12px; }
-  .box__item:last-child { border-bottom: 0; }
-
-  .box__passport {
-    margin-top: 24px;
-    font-size: 10px;
+    line-height: 1.75;
+    letter-spacing: 0.04em;
     color: var(--text-muted);
-    max-width: 460px;
+    opacity: 0.9;
+    max-width: 48ch;
   }
+  .box__hints-sep { color: var(--gold); }
 
-  .box__passport-card {
-    position: absolute;
-    left: -28px;
-    bottom: -34px;
-    width: min(240px, 48%);
-    padding: 18px;
-    color: var(--gold);
-    transform: rotate(-4deg);
-  }
-
-  .box__passport-card svg {
-    width: 100%;
-    margin: 8px 0;
-    overflow: visible;
-  }
-
-  .box__passport-card span {
-    display: block;
-    font-family: var(--font-sans);
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    line-height: 1.4;
-    text-transform: uppercase;
-  }
-
-  .box__passport-label {
-    color: var(--marine);
-  }
-
-  .box__hotspot--one { top: 28%; left: 22%; }
-  .box__hotspot--two { right: 18%; bottom: 26%; animation-delay: 0.8s; }
-
-  /* Distinction box / magazine — discrète, juste sous le sous-titre.
-     Clarifie d'emblée que cette page parle de la box mensuelle, pas du Magazine. */
-  .box__clarify {
-    margin-top: 16px;
-    max-width: 440px;
-    font-family: var(--font-sans);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    line-height: 1.6;
-    color: var(--gold);
-  }
-
-  .box__tease {
-    margin-top: 24px;
-    padding-top: 24px;
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 18px;
-    line-height: 1.4;
-    color: var(--marine);
-    max-width: 480px;
-  }
-
-  /* CTA contextuel vers les formules — un seul lien sobre, même grammaire
-     visuelle que le CTA du hero (lien souligné or + flèche), pas un gros bouton
-     commercial : la page reste éditoriale. */
-  .box__cta-wrap { margin-top: 28px; }
-
-  .box__cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding-bottom: 4px;
-    font-family: var(--font-sans);
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: var(--gold);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(184, 150, 90, 0.4);
-    transition: color 0.3s ease, border-color 0.3s ease, gap 0.3s ease;
-  }
-  .box__cta:hover {
-    color: var(--gold-soft);
-    border-color: var(--gold-soft);
-    gap: 14px;
-  }
-  .box__cta-arrow { transition: transform 0.3s ease; }
-  .box__cta:hover .box__cta-arrow { transform: translateX(2px); }
-
-  .box__cta-note {
-    margin-top: 14px;
-    max-width: 420px;
-    font-family: var(--font-sans);
-    font-size: 12px;
-    line-height: 1.6;
-    color: var(--text-muted);
-  }
-
-  /* Lien vers le Passeport — discret, marine, pour ne pas concurrencer le CTA
-     formule (doré). Pont narratif : « la box est une escale qui laisse une trace ». */
+  /* Lien Passeport — discret, marine. */
   .box__passport-link {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    margin-top: 22px;
+    margin-top: clamp(24px, 3vw, 34px);
     font-family: var(--font-sans);
     font-size: 11px;
     font-weight: 500;
@@ -384,77 +220,61 @@
   .box__passport-arrow { transition: transform 0.3s ease; }
   .box__passport-link:hover .box__passport-arrow { transform: translateX(3px); }
 
-  @media (min-width: 1024px) {
-    .box__grid {
-      grid-template-columns: 55fr 45fr;
-      column-gap: 80px;
-    }
-    .box__img { aspect-ratio: 4 / 3; }
+  /* Note du sceau — fine print discrète, filet or champagne. */
+  .box__seal {
+    margin-top: clamp(24px, 3vw, 32px);
+    padding-left: 14px;
+    max-width: 380px;
+    border-left: 1px solid rgba(184, 150, 90, 0.45);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--text-muted);
+    opacity: 0.92;
   }
 
-  @media (max-width: 767px) {
-    .box { padding-block: 60px; }
+  /* ===========================================================
+     Desktop — deux colonnes nettes : texte ~40%, image ~60%.
+     =========================================================== */
+  @media (min-width: 1024px) {
+    .box__hero {
+      grid-template-columns: 40fr 60fr;
+      grid-template-areas:
+        "intro media"
+        "body  media";
+      column-gap: clamp(48px, 5vw, 96px);
+      row-gap: clamp(18px, 2.5vw, 30px);
+      align-items: center;
+    }
+    .box__media {
+      grid-row: 1 / 3;
+      align-self: center;
+    }
+  }
 
-    /* Garde-fou : .reveal et .reveal-spring sur le texte/items dépendent
-       d'un IntersectionObserver qui peut échouer (image lazy + threshold).
-       On force la visibilité sur mobile pour ne jamais bloquer l'affichage. */
-    .box__text,
-    .box__text.reveal,
-    .box__item,
-    .box__item.reveal-spring {
+  /* ===========================================================
+     Mobile — composition propre et courte.
+     =========================================================== */
+  @media (max-width: 767px) {
+    .box { padding-block: 52px; }
+
+    /* Garde-fou : ne jamais laisser un bloc .reveal masqué si l'IO échoue. */
+    .box__intro, .box__intro.reveal,
+    .box__media, .box__media.reveal,
+    .box__body,  .box__body.reveal {
       opacity: 1 !important;
       transform: none !important;
     }
 
-    /* Layout serré et explicite pour éviter tout débordement horizontal. */
-    .box__grid {
-      gap: 32px;
-      min-width: 0;
-    }
-    .box__media,
-    .box__text {
-      min-width: 0;
-      max-width: 100%;
-    }
-
-    .box__img {
-      width: 100%;
-      aspect-ratio: 4 / 5;
-      object-fit: cover;
-    }
-
-    /* Typo allégée pour respirer dans 320–390px de viewport. */
     .box__title {
-      font-size: clamp(2.2rem, 11vw, 3rem);
-      line-height: 1.05;
-      margin-top: 0;
+      font-size: clamp(3.2rem, 17vw, 4.4rem);
       word-wrap: break-word;
       overflow-wrap: break-word;
     }
-    .box__subtitle {
-      font-size: 17px;
-      max-width: 100%;
-    }
-    .box__list { padding: 0; margin: 0; list-style: none; }
-    .box__item {
-      font-size: 14.5px;
-      line-height: 1.6;
-      padding: 14px 0;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-      hyphens: auto;
-    }
-    .box__tease {
-      font-size: 16px;
-      max-width: 100%;
-    }
-
-    .box__passport-card {
-      left: 16px;
-      bottom: 16px;
-      width: 180px;
-    }
-    .box__hotspot { display: none; }
+    .box__subtitle { max-width: 100%; }
+    .box__text p { font-size: 16px; max-width: 100%; }
+    .box__hints, .box__seal { max-width: 100%; }
   }
 {% endstylesheet %}
 
@@ -469,21 +289,15 @@
       "info": "Si renseigné, ses metafields (box.*) priment sur les champs ci-dessous."
     },
     { "type": "text",     "id": "label",    "label": "Label", "default": "Première édition · Juillet 2026" },
-    { "type": "text",     "id": "region",   "label": "Région / Titre", "default": "Bretagne" },
-    { "type": "textarea", "id": "subtitle", "label": "Sous-titre", "default": "Une première escale entre mer, granit, gestes anciens et traditions de table." },
-    { "type": "text",     "id": "clarify",  "label": "Phrase box / magazine", "default": "La Box se reçoit. Le Magazine se lit.", "info": "Clarifie que cette page concerne la box mensuelle, pas le Magazine. Laisser vide pour masquer." },
-    { "type": "richtext", "id": "intro",    "label": "Texte d’introduction", "info": "Laisser vide pour utiliser le texte Bretagne par défaut." },
-    { "type": "image_picker", "id": "image", "label": "Image de la box" },
-    { "type": "textarea", "id": "seal",     "label": "Phrase du sceau", "default": "Chaque boîte est préparée avec soin, puis scellée à la main par un sceau Maison Bonjour." },
-    { "type": "textarea", "id": "passport", "label": "Texte passeport" },
-    { "type": "textarea", "id": "tease",    "label": "Teaser dernière ligne" },
-    { "type": "header",   "content": "Appel à l’action (formules)" },
-    { "type": "text",     "id": "cta_label", "label": "Libellé du bouton", "default": "Choisir ma formule", "info": "Laisser vide pour masquer le CTA." },
-    { "type": "url",      "id": "cta_url",   "label": "Lien du bouton", "info": "Par défaut : ancre /#abonnement (section des formules)." },
-    { "type": "textarea", "id": "cta_note",  "label": "Note sous le bouton", "default": "L’abonnement concerne la box mensuelle Maison Bonjour.", "info": "Précise ce à quoi on s’abonne. Laisser vide pour masquer." },
-    { "type": "header",   "content": "Lien vers le Passeport" },
-    { "type": "text",     "id": "passport_link_label", "label": "Libellé du lien", "default": "Découvrir le Passeport", "info": "Laisser vide pour masquer le lien." },
-    { "type": "url",      "id": "passport_link_url",   "label": "Lien", "info": "Par défaut : ancre /#passeport (section Passeport)." }
+    { "type": "text",     "id": "region",   "label": "Titre (région)", "default": "Bretagne" },
+    { "type": "textarea", "id": "subtitle", "label": "Phrase forte (sous le titre)", "default": "Une première escale entre mer, granit et gestes de table." },
+    { "type": "richtext", "id": "intro",    "label": "Paragraphe", "info": "Court. Laisser vide pour le texte Bretagne par défaut." },
+    { "type": "image_picker", "id": "image", "label": "Image de la box", "info": "Box fermée / nouée d’un ruban — ne pas révéler le contenu." },
+    { "type": "text",     "id": "image_alt", "label": "Texte alternatif de l’image" },
+    { "type": "textarea", "id": "seal",     "label": "Note du sceau", "default": "Chaque boîte est préparée avec soin, puis scellée à la main par un sceau Maison Bonjour." },
+    { "type": "header",   "content": "Lien secondaire" },
+    { "type": "text",     "id": "passport_link_label", "label": "Lien Passeport", "default": "Découvrir le Passeport", "info": "Laisser vide pour masquer." },
+    { "type": "url",      "id": "passport_link_url",   "label": "Lien du Passeport", "info": "Par défaut : ancre /#passeport." }
   ],
   "blocks": [
     {
@@ -491,8 +305,8 @@
       "name": "Indice de la box",
       "limit": 12,
       "settings": [
-        { "type": "text", "id": "name",   "label": "Indice (ligne affichée)" },
-        { "type": "text", "id": "origin", "label": "Précision (optionnel)" }
+        { "type": "text", "id": "name",   "label": "Indice (affiché en ligne)" },
+        { "type": "text", "id": "origin", "label": "Précision (optionnel, non affiché en ligne)" }
       ]
     }
   ],
@@ -500,11 +314,11 @@
     {
       "name": "03 — La Box",
       "blocks": [
-        { "type": "product", "settings": { "name": "Une création à conserver" } },
-        { "type": "product", "settings": { "name": "Une saveur de région" } },
-        { "type": "product", "settings": { "name": "Un geste de table" } },
-        { "type": "product", "settings": { "name": "Une matière à toucher" } },
-        { "type": "product", "settings": { "name": "Une surprise à découvrir à l’ouverture" } }
+        { "type": "product", "settings": { "name": "Création à conserver" } },
+        { "type": "product", "settings": { "name": "Saveur de région" } },
+        { "type": "product", "settings": { "name": "Geste de table" } },
+        { "type": "product", "settings": { "name": "Matière à toucher" } },
+        { "type": "product", "settings": { "name": "Surprise à l’ouverture" } }
       ]
     }
   ]
