@@ -5,7 +5,7 @@
   assign founders_image = section.settings.image
   assign title     = section.settings.title     | default: 'Nous avons quitté Paris pour Cluj.'
   assign year      = section.settings.year      | default: '2025'
-  assign signature = section.settings.signature | default: 'Pierre & Tiffany'
+  assign signature = section.settings.signature | default: 'Tiffany & Pierre'
 -%}
 
 <section id="notre-histoire" class="story" aria-label="L'Histoire">
@@ -97,7 +97,7 @@
 
   .story__title {
     margin: clamp(40px, 6vw, 80px) 0 0;
-    font-family: "Kalnia", "Instrument Serif", serif;
+    font-family: var(--font-serif);
     font-optical-sizing: auto;
     font-style: normal;
     font-weight: 400;
@@ -244,7 +244,7 @@
     { "type": "text",         "id": "title",     "label": "Titre",     "default": "Nous avons quitté Paris pour Cluj." },
     { "type": "text",         "id": "year",      "label": "Année",     "default": "2025" },
     { "type": "richtext",     "id": "body",      "label": "Récit (optionnel)", "info": "Laisser vide pour afficher le récit fondateur par défaut." },
-    { "type": "text",         "id": "signature", "label": "Signature", "default": "Pierre & Tiffany" }
+    { "type": "text",         "id": "signature", "label": "Signature", "default": "Tiffany & Pierre" }
   ],
   "presets": [{ "name": "L'Histoire" }]
 }

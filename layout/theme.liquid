@@ -7,15 +7,14 @@
   <meta name="theme-color" content="#FEF9F3">
   <meta name="format-detection" content="telephone=no">
 
-  {%- if settings.favicon != blank -%}
-    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
-  {%- else -%}
-    <link rel="icon" type="image/svg+xml" href="{{ 'favicon.svg' | asset_url }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ 'favicon.png' | asset_url }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ 'favicon-16.png' | asset_url }}">
-  {%- endif -%}
-  <link rel="apple-touch-icon" sizes="180x180" href="{{ 'apple-touch.png' | asset_url }}">
-  <link rel="mask-icon" href="{{ 'logo-mark.svg' | asset_url }}" color="#1B2A41">
+  {%- comment -%} Favicon = tampon Maison Bonjour (tampon.png), FORCÉ et prioritaire
+      pour qu'il s'affiche toujours dans l'onglet, quelle que soit la favicon des
+      réglages du thème. asset_img_url génère des versions REDIMENSIONNÉES par Shopify
+      (16/32/180 px), donc légères — pas le PNG 1,2 Mo d'origine. {%- endcomment -%}
+  <link rel="icon" type="image/png" sizes="32x32" href="https:{{ 'tampon.png' | asset_img_url: '32x32' }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="https:{{ 'tampon.png' | asset_img_url: '16x16' }}">
+  <link rel="icon" type="image/png" sizes="48x48" href="https:{{ 'tampon.png' | asset_img_url: '48x48' }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="https:{{ 'tampon.png' | asset_img_url: '180x180' }}">
 
   <link rel="canonical" href="{{ canonical_url }}">
 
@@ -57,7 +56,11 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Crimson+Pro:ital,wght@0,400;1,400&family=Angkor&family=Kalnia:wght@100..700&family=New+Rocker&family=Notable&family=Parisienne&display=swap" rel="stylesheet">
+  {%- comment -%} Système de marque réduit à 3 familles : TAN Pearl (self-hostée),
+      Instrument Serif et Inter. Polices fantaisie retirées (Kalnia, Angkor,
+      New Rocker, Notable, Parisienne, Playfair, Crimson) — plus utilisées,
+      gain de perf et cohérence premium. {%- endcomment -%}
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
   {{ 'base.css' | asset_url | stylesheet_tag }}
 
@@ -73,6 +76,31 @@
   </script>
 
   {{ content_for_header }}
+
+  {%- comment -%}
+    Meta Pixel (Facebook/Instagram) — chargé sur toutes les pages, PageView uniquement.
+    ⚠️ Si l'app « Facebook & Instagram » de Shopify est installée et a déjà son propre
+    pixel, ce code créerait un DOUBLON : dans ce cas, désactiver le pixel de l'app OU
+    retirer ce bloc (voir résumé). Consentement cookies : aucun système de consentement
+    n'est présent dans le thème — à encadrer via la bannière de confidentialité Shopify
+    (Réglages → Confidentialité du client) pour la conformité RGPD avant lancement.
+  {%- endcomment -%}
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '37482918321307455');
+    fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=37482918321307455&ev=PageView&noscript=1"
+    alt=""/></noscript>
+  {%- comment -%} Fin Meta Pixel {%- endcomment -%}
 </head>
 
 <body class="template-{{ template | replace: '.', '-' | handle }}{% if customer %} customer-logged-in{% endif %}">

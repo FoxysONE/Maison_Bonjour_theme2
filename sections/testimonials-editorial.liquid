@@ -20,7 +20,7 @@
 
   {%- liquid
     if use_defaults
-      assign card_count = 4
+      assign card_count = 5
     else
       assign card_count = section.blocks.size
     endif
@@ -49,7 +49,7 @@
             <span class="voix__stamp-rule" aria-hidden="true"></span>
             <span class="voix__stamp-ctx">Pré-lancement</span>
           </span>
-          <blockquote class="voix__quote">J’aime l’idée de ne pas tout savoir avant d’ouvrir. Si la sélection est belle, la surprise devient une partie du plaisir.</blockquote>
+          <blockquote class="voix__quote">J’aime l’idée de ne pas tout savoir avant d’ouvrir. Si le contenu est beau, la surprise devient une partie du plaisir.</blockquote>
           <footer class="voix__attrib">
             <span class="voix__name">Ioana P.</span>
             <span class="voix__city">Cluj-Napoca</span>
@@ -77,6 +77,18 @@
           <footer class="voix__attrib">
             <span class="voix__name">Andreea L.</span>
             <span class="voix__city">Bucarest</span>
+          </footer>
+        </li>
+        <li class="voix__card" data-voix-card>
+          <span class="voix__stamp">
+            <span class="voix__stamp-num">Voix 05</span>
+            <span class="voix__stamp-rule" aria-hidden="true"></span>
+            <span class="voix__stamp-ctx">Avant-première Bretagne</span>
+          </span>
+          <blockquote class="voix__quote">La Bretagne, pour moi c’était flou — la mer, les crêpes. Là j’ai l’impression qu’on va me montrer quelque chose que je ne savais pas. C’est exactement ça qui me donne envie d’ouvrir cette box.</blockquote>
+          <footer class="voix__attrib">
+            <span class="voix__name">Cristina B.</span>
+            <span class="voix__city">Cluj-Napoca</span>
           </footer>
         </li>
       {%- else -%}
@@ -289,9 +301,11 @@
 
 {% stylesheet %}
   .voix {
-    /* Polices propres à la section — DA conservée (palette, layout, sobriété inchangés). */
-    --voix-font-title: 'Playfair Display', var(--font-serif);
-    --voix-font-quote: 'Crimson Pro', var(--font-serif);
+    /* Aligné sur le système de marque : Instrument Serif pour le titre ET les
+       citations (on retire Playfair/Crimson — trop « template Shopify », et on
+       limite à 3 familles). Palette, layout et sobriété inchangés. */
+    --voix-font-title: var(--font-serif);
+    --voix-font-quote: var(--font-serif);
     background: var(--marine-deep);
     color: var(--text-cream);
     padding-block: clamp(80px, 10vw, 140px);

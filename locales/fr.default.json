@@ -17,6 +17,117 @@
     "pagination": {
       "previous": "Précédent",
       "next": "Suivant"
+    },
+    "actions": {
+      "discover": "Découvrir",
+      "close": "Fermer",
+      "back": "Retour",
+      "choose": "Choisir",
+      "receive": "Recevoir",
+      "open": "Ouvrir",
+      "manage": "Gérer",
+      "subscribe": "S’abonner à la box",
+      "write_us": "Nous écrire"
+    }
+  },
+  "language": {
+    "label": "Langue",
+    "fr": "FR",
+    "ro": "RO"
+  },
+  "contact": {
+    "form": {
+      "firstname": "Prénom",
+      "lastname": "Nom",
+      "email": "Email",
+      "phone": "Téléphone",
+      "subject": "Sujet",
+      "message": "Message",
+      "newsletter_optin": "Je souhaite recevoir La Lettre Maison Bonjour."
+    },
+    "details": {
+      "address": "Adresse",
+      "email": "Email",
+      "phone": "Téléphone",
+      "response": "Délai de réponse",
+      "todo": "À compléter"
+    }
+  },
+  "header": {
+    "home": "Accueil",
+    "open_menu": "Ouvrir le menu",
+    "close_menu": "Fermer le menu",
+    "account": "Compte",
+    "cart": "Panier ({{ count }})",
+    "nav": {
+      "box": "La Box",
+      "artisans": "Nos artisans",
+      "story": "Notre histoire",
+      "magazine": "Magazine",
+      "subscribe": "S’abonner à la box",
+      "faq": "FAQ",
+      "contact": "Contact"
+    }
+  },
+  "footer": {
+    "b2b_text": "Vous souhaitez offrir Maison Bonjour ? Ou commander pour votre entreprise ?",
+    "tagline": "L’art de vivre français, livré chaque mois à Cluj-Napoca.",
+    "cta_label": "Pas encore prête ?",
+    "cta_title": "Rejoindre Maison Bonjour.",
+    "help": "Aide",
+    "legal": "Légal",
+    "links": {
+      "faq": "FAQ",
+      "contact": "Contact",
+      "magazine": "Magazine",
+      "cgv": "CGV",
+      "privacy": "Confidentialité"
+    },
+    "copy": "© {{ year }} Maison Bonjour · Made in France · Livré en Roumanie"
+  },
+  "map": {
+    "eyebrow": "Le Passeport Maison Bonjour",
+    "title": "Les escales Maison Bonjour",
+    "subtitle": "Survolez une région pour découvrir ce qu’elle raconte. Cliquez pour ouvrir son escale.",
+    "close": "Fermer la carte",
+    "hint_hover": "Survolez une région pour en savoir plus",
+    "hint_click": "Cliquez pour découvrir l’escale",
+    "hint_markers": "Repères dorés : les escales du voyage",
+    "footnote": "L’expérience française · Maison Bonjour",
+    "region_label": "Région",
+    "soon": "À venir",
+    "rest_title": "Chaque mois commence quelque part.",
+    "rest_body": "Une région, un geste, une lumière. Maison Bonjour raconte la France par ses maisons, ses ateliers et ses saveurs.",
+    "regions": {
+      "provence":     { "name": "Provence",     "status": "Édition confirmée", "month": "Août 2026",      "phrase": "Une lumière chaude, des ateliers anciens, la lavande qui reste sur les mains.", "keywords": "Lavande · Céramique · Calissons d’Aix" },
+      "bretagne":     { "name": "Bretagne",     "status": "Planifiée",         "month": "Juillet 2026",   "phrase": "Le granit, le lin, le sel dans l’air. Une France plus minérale, plus silencieuse.", "keywords": "Sel · Lin naturel · Granit clair" },
+      "cote-d-azur":  { "name": "Côte d’Azur",  "status": "À venir", "month": "Une prochaine escale Maison Bonjour.", "phrase": "La lumière franche du sud, les agrumes, les gestes simples d’un été français.", "keywords": "Agrumes · Soleil · Rituel d’été" },
+      "bourgogne":    { "name": "Bourgogne",    "status": "Planifiée",         "month": "Septembre 2026", "phrase": "Une région profonde, gourmande, patiente. Ici, le temps travaille avec les mains.", "keywords": "Moutarde · Vigne · Tradition" },
+      "perigord":     { "name": "Périgord",     "status": "À venir", "month": "Une prochaine escale Maison Bonjour.", "phrase": "Des pierres dorées, des tables généreuses, une France de maison et de marché.", "keywords": "Noix · Truffe · Marché" },
+      "alsace":       { "name": "Alsace",       "status": "À venir", "month": "Une prochaine escale Maison Bonjour.", "phrase": "Entre deux langues, une seule identité.", "keywords": "Riesling · Colombages · Vosges" },
+      "normandie":    { "name": "Normandie",    "status": "À venir", "month": "Une prochaine escale Maison Bonjour.", "phrase": "Sous le ciel bas, la terre donne tout ce qu’elle a.", "keywords": "Pommeraies · Falaises de craie · Bocage" },
+      "pays-basque":  { "name": "Pays Basque",  "status": "À venir", "month": "Une prochaine escale Maison Bonjour.", "phrase": "Une langue avant les frontières. Une cuisine avant les écoles.", "keywords": "Piment d’Espelette · Euskara · Côte basque" },
+      "corse":        { "name": "Corse",        "status": "À venir", "month": "Une prochaine escale Maison Bonjour.", "phrase": "L’île arrive dans les narines avant d’apparaître à l’horizon.", "keywords": "Maquis · Châtaignier · Granit" },
+      "val-de-loire": { "name": "Val de Loire", "status": "À venir", "month": "Une prochaine escale Maison Bonjour.", "phrase": "Entre châteaux et vignes, la France a posé son idéal de beauté.", "keywords": "Tuffeau · Châteaux royaux · Vouvray" },
+      "auvergne":     { "name": "Auvergne",     "status": "À venir", "month": "Une prochaine escale Maison Bonjour.", "phrase": "Les volcans sont éteints. L’intensité, non.", "keywords": "Volcans · Lentilles du Puy · Fromages d’altitude" },
+      "champagne":    { "name": "Champagne",    "status": "À venir", "month": "Une prochaine escale Maison Bonjour.", "phrase": "La craie garde tout. La bulle révèle tout.", "keywords": "Craie · Vignes de Marne · Cathédrale de Reims" }
+    }
+  },
+  "journey": {
+    "regions": {
+      "bretagne":         { "name": "Bretagne",         "tagline": "Le vent polit les pierres. La mer garde les secrets.", "keywords": "Sel de Guérande · Algues · Granit", "description": "Une Bretagne d’horizon et d’embruns, où l’Atlantique n’est pas un décor — c’est le fond de l’air." },
+      "provence":         { "name": "Provence",         "tagline": "La lumière ne filtre pas. Elle tranche.", "keywords": "Lavande · Huile d’olive · Argile", "description": "Une Provence de garrigues et de mas blancs, où le soleil n’est pas une promesse touristique — c’est le bâtisseur du goût." },
+      "cote-d-azur":      { "name": "Côte d’Azur",      "tagline": "Le Sud commence là où la mer devient lumière.", "keywords": "Parfums de Grasse · Céramique · Oliviers", "description": "Une Côte d’Azur de lumière dure et de pins parasols, entre criques transparentes, villages perchés et marchés de garrigue." },
+      "perigord":         { "name": "Périgord",         "tagline": "Dans les vallées, le temps a une autre consistance.", "keywords": "Truffe noire · Noix du Périgord · Châtaigneraies", "description": "Un Périgord de sous-bois et de rivières silencieuses, où la gastronomie n’est pas une tradition — c’est une langue maternelle." },
+      "bourgogne":        { "name": "Bourgogne",        "tagline": "Le sol se lit dans le verre. Le reste est de la géographie.", "keywords": "Côte d’Or · Moutarde de Dijon · Pierre romane", "description": "Une Bourgogne taillée dans la durée, où le terroir n’est pas un argument de vente — c’est une science transmise parcelle par parcelle." },
+      "alsace":           { "name": "Alsace",           "tagline": "Entre deux langues, une seule identité.", "keywords": "Riesling · Colombages · Vosges", "description": "Une Alsace qui a traversé les frontières sans perdre son caractère — ni seulement française, ni seulement germanique, mais résolument elle-même." },
+      "normandie":        { "name": "Normandie",        "tagline": "Sous le ciel bas, la terre donne tout ce qu’elle a.", "keywords": "Pommeraies · Falaises de craie · Bocage", "description": "Une Normandie de pluie et de pommiers, où l’humidité n’est pas une contrariété — c’est ce qui fait la crème, le cidre et les herbes grasses." },
+      "pays-basque":      { "name": "Pays Basque",      "tagline": "Une langue avant les frontières. Une cuisine avant les écoles.", "keywords": "Piment d’Espelette · Euskara · Côte basque", "description": "Un Pays Basque qui résiste à toute définition — ni espagnol, ni seulement français, avec une table et une langue qui n’appartiennent qu’à lui." },
+      "corse":            { "name": "Corse",            "tagline": "L’île arrive dans les narines avant d’apparaître à l’horizon.", "keywords": "Maquis · Châtaignier · Granit", "description": "Une Corse de lumière sèche et de forêts intérieures, où le parfum du maquis n’est pas un souvenir — c’est l’adresse." },
+      "pays-de-la-loire": { "name": "Pays de la Loire", "tagline": "Là où le fleuve hésite avant de rejoindre l’océan.", "keywords": "Sel de Noirmoutier · Muscadet · Bocage", "description": "Une région de marais salants et de vignes discrètes, où l’Atlantique commence à se faire sentir avant même d’être visible." },
+      "val-de-loire":     { "name": "Val de Loire",     "tagline": "Entre châteaux et vignes, la France a posé son idéal de beauté.", "keywords": "Tuffeau · Châteaux royaux · Vouvray", "description": "Un val où la pierre blanche a servi à la fois aux rois et aux vignerons — le jardin de la France, taillé dans la douceur et dans la lumière." },
+      "auvergne":         { "name": "Auvergne",         "tagline": "Les volcans sont éteints. L’intensité, non.", "keywords": "Volcans · Lentilles du Puy · Fromages d’altitude", "description": "Une Auvergne de basalte et de hauts plateaux, où le froid et la roche ont tout fabriqué — les caractères, les fromages, les goûts." },
+      "champagne":        { "name": "Champagne",        "tagline": "La craie garde tout. La bulle révèle tout.", "keywords": "Craie · Vignes de Marne · Cathédrale de Reims", "description": "Une Champagne souterraine autant que célébrée, où les caves creusées dans la craie abritent ce que la terre a mis des siècles à produire." }
     }
   },
   "cart": {

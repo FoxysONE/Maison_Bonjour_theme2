@@ -1,11 +1,11 @@
 {%- liquid
-  assign b2b_url        = section.settings.b2b_url
-  assign subscribe_url  = section.settings.subscribe_url
+  assign b2b_url        = section.settings.b2b_url | default: '/pages/contact#contact-form'
+  assign subscribe_url  = section.settings.subscribe_url | default: '/#abonnement'
   assign faq_url        = section.settings.faq_url | default: '/pages/faq'
   assign contact_url    = section.settings.contact_url | default: '/pages/contact'
   assign cgv_url        = section.settings.cgv_url | default: '/pages/cgv'
   assign privacy_url    = section.settings.privacy_url | default: '/pages/confidentialite'
-  assign magazine_url   = section.settings.magazine_url
+  assign magazine_url   = section.settings.magazine_url | default: '/pages/magazine'
 
   assign instagram_url  = section.settings.instagram_url
   assign tiktok_url     = section.settings.tiktok_url
@@ -25,8 +25,8 @@
          decoding="async"
          aria-hidden="true">
     <p>
-      Vous souhaitez offrir Maison Bonjour&nbsp;? Ou commander pour votre entreprise&nbsp;?
-      <a href="{{ b2b_url }}">Nous &eacute;crire <span aria-hidden="true">&rarr;</span></a>
+      {{ 'footer.b2b_text' | t }}
+      <a href="{{ b2b_url }}">{{ 'general.actions.write_us' | t }} <span aria-hidden="true">&rarr;</span></a>
     </p>
   </div>
 </aside>
@@ -46,7 +46,7 @@
                decoding="async">
         </a>
         <p class="mb-footer__tagline">
-          L&rsquo;art de vivre fran&ccedil;ais, livr&eacute; chaque mois &agrave; Cluj-Napoca.
+          {{ 'footer.tagline' | t }}
         </p>
         <div class="mb-footer__route" aria-label="De la France à la Roumanie">
           <span class="mb-footer__route-end">FR</span>
@@ -56,25 +56,25 @@
       </section>
 
       <section class="mb-footer__col mb-footer__col--cta">
-        <span class="mb-footer__label">Pas encore pr&ecirc;te&nbsp;?</span>
-        <p class="mb-footer__cta-title">Rejoindre Maison Bonjour.</p>
-        <a class="btn btn--secondary mb-footer__btn" href="{{ subscribe_url }}">S&rsquo;abonner &agrave; la box</a>
+        <span class="mb-footer__label">{{ 'footer.cta_label' | t }}</span>
+        <p class="mb-footer__cta-title">{{ 'footer.cta_title' | t }}</p>
+        <a class="btn btn--secondary mb-footer__btn" href="{{ subscribe_url }}">{{ 'header.nav.subscribe' | t }}</a>
       </section>
 
       <nav class="mb-footer__col mb-footer__col--links" aria-label="Liens pratiques">
         <div class="mb-footer__group">
-          <span class="mb-footer__label">Aide</span>
+          <span class="mb-footer__label">{{ 'footer.help' | t }}</span>
           <ul class="mb-footer__links">
-            <li><a href="{{ faq_url }}">FAQ</a></li>
-            <li><a href="{{ contact_url }}">Contact</a></li>
-            <li><a href="{{ magazine_url }}">Magazine</a></li>
+            <li><a href="{{ faq_url }}">{{ 'footer.links.faq' | t }}</a></li>
+            <li><a href="{{ contact_url }}">{{ 'footer.links.contact' | t }}</a></li>
+            <li><a href="{{ magazine_url }}">{{ 'footer.links.magazine' | t }}</a></li>
           </ul>
         </div>
         <div class="mb-footer__group">
-          <span class="mb-footer__label">L&eacute;gal</span>
+          <span class="mb-footer__label">{{ 'footer.legal' | t }}</span>
           <ul class="mb-footer__links">
-            <li><a href="{{ cgv_url }}">CGV</a></li>
-            <li><a href="{{ privacy_url }}">Confidentialit&eacute;</a></li>
+            <li><a href="{{ cgv_url }}">{{ 'footer.links.cgv' | t }}</a></li>
+            <li><a href="{{ privacy_url }}">{{ 'footer.links.privacy' | t }}</a></li>
           </ul>
         </div>
       </nav>
@@ -116,9 +116,15 @@
       </ul>
 
       <p class="mb-footer__copy">
-        &copy; {{ year }} Maison Bonjour &middot; Made in France &middot; Livr&eacute; en Roumanie
+        {{ 'footer.copy' | t: year: year }}
       </p>
     </div>
+
+    {%- comment -%} Mention légale obligatoire (identification société). CUI et N° de
+        Registre du Commerce à compléter après immatriculation — ne pas inventer. {%- endcomment -%}
+    <p class="mb-footer__legal">
+      MAISON BONJOUR S.R.L. · Reg. Com. {{ section.settings.company_reg | default: '[J../…/…… — à compléter]' }} · CUI {{ section.settings.company_cui | default: '[à compléter]' }} · Str. Pavel Roșcă nr. 4, ap. 28 · 400118 Cluj-Napoca · România
+    </p>
   </div>
 </footer>
 
@@ -325,6 +331,18 @@
     text-align: right;
   }
 
+  /* Mention légale — discrète, centrée, sous la barre du bas */
+  .mb-footer__legal {
+    margin: 20px 0 0;
+    text-align: center;
+    font-family: var(--font-sans);
+    font-size: 10.5px;
+    font-weight: 300;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    color: rgba(250, 246, 236, 0.4);
+  }
+
   /* Mobile — plus compact : marque + abonnement pleine largeur, puis les deux
      groupes de liens côte à côte (au lieu d'une longue pile verticale). */
   @media (max-width: 767px) {
@@ -384,6 +402,12 @@
     { "type": "url", "id": "cgv_url",      "label": "CGV" },
     { "type": "url", "id": "privacy_url",  "label": "Confidentialité" },
     { "type": "url", "id": "magazine_url", "label": "Magazine" },
+    {
+      "type": "header",
+      "content": "Mentions légales société"
+    },
+    { "type": "text", "id": "company_reg", "label": "N° Registre du Commerce", "info": "Format : JXX/XXXX/AAAA. Laisser vide affiche un placeholder « à compléter »." },
+    { "type": "text", "id": "company_cui", "label": "CUI (Code Unique d’Enregistrement)", "info": "Laisser vide affiche un placeholder « à compléter »." },
     {
       "type": "header",
       "content": "Réseaux sociaux"

@@ -41,9 +41,19 @@
   --paper-shadow:  0 24px 70px rgba(28, 43, 74, 0.12);
   --paper-shadow-soft: 0 16px 42px rgba(43, 32, 24, 0.08);
 
-  /* Typo */
-  --font-serif: 'Instrument Serif', serif;
-  --font-sans:  'Inter', sans-serif;
+  /* Typo — système de marque Maison Bonjour
+     ----------------------------------------------------------------
+     --font-display  : TAN Pearl. RÉSERVÉE — logo « Maison Bonjour »,
+                       titres de régions, titres d'articles du magazine.
+                       Ne PAS l'utiliser pour les titres courants.
+     --font-serif    : Instrument Serif. Tous les AUTRES titres, sous-titres,
+                       citations et éléments éditoriaux.
+     --font-sans     : Inter. Corps de texte, labels, navigation, UI.
+     (On limite volontairement à ces 3 familles — pas de Kalnia ni de
+      polices fantaisie : cohérence et élégance premium.) */
+  --font-display: 'TAN Pearl', 'Instrument Serif', serif;
+  --font-serif:   'Instrument Serif', serif;
+  --font-sans:    'Inter', sans-serif;
 
   /* Échelle typographique — clamp(mobile, fluide, desktop) */
   --fs-h1: clamp(3.5rem, 5.4vw + 1rem, 6rem);    /* 56 → 96 */
@@ -126,7 +136,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  /* `overflow-x: hidden` transforme le body en conteneur de défilement et casse
+     `position: sticky` (ex. empilement mobile du « Fonctionnement »). `clip`
+     découpe le débordement horizontal SANS créer de conteneur → sticky OK.
+     `hidden` reste en fallback pour les navigateurs sans support de `clip`. */
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 @media (max-width: 767px) {
@@ -546,7 +561,7 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 0; }
 .intro-seen .mb-intro { display: none !important; }
 
 .mb-intro__logo {
-  font-family: "Kalnia", "Instrument Serif", serif;
+  font-family: var(--font-display);
   font-optical-sizing: auto;
   font-style: normal;
   font-weight: 500;

@@ -1,0 +1,220 @@
+{
+  "general": {
+    "meta": {
+      "tags": "Etichetat „{{ tags }}”",
+      "page": "Pagina {{ page }}"
+    },
+    "search": {
+      "placeholder": "Caută",
+      "submit": "Caută",
+      "no_results_html": "Niciun rezultat pentru <strong>« {{ terms }} »</strong>."
+    },
+    "404": {
+      "title": "Pagină inexistentă",
+      "subtext": "Pagina pe care o cauți nu mai există sau a fost mutată.",
+      "link": "Înapoi la pagina principală"
+    },
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Următor"
+    },
+    "actions": {
+      "discover": "Descoperă",
+      "close": "Închide",
+      "back": "Înapoi",
+      "choose": "Alege",
+      "receive": "Primește",
+      "open": "Deschide",
+      "manage": "Gestionează",
+      "subscribe": "Abonează-te la cutie",
+      "write_us": "Scrie-ne"
+    }
+  },
+  "language": {
+    "label": "Limbă",
+    "fr": "FR",
+    "ro": "RO"
+  },
+  "contact": {
+    "form": {
+      "firstname": "Prénom",
+      "lastname": "Nom",
+      "email": "Email",
+      "phone": "Téléphone",
+      "subject": "Sujet",
+      "message": "Message",
+      "newsletter_optin": "Je souhaite recevoir La Lettre Maison Bonjour."
+    },
+    "details": {
+      "address": "Adresse",
+      "email": "Email",
+      "phone": "Téléphone",
+      "response": "Délai de réponse",
+      "todo": "À compléter"
+    }
+  },
+  "header": {
+    "home": "Acasă",
+    "open_menu": "Deschide meniul",
+    "close_menu": "Închide meniul",
+    "account": "Cont",
+    "cart": "Coș ({{ count }})",
+    "nav": {
+      "box": "Cutia",
+      "artisans": "Artizanii noștri",
+      "story": "Povestea noastră",
+      "magazine": "Magazin",
+      "subscribe": "Abonează-te la cutie",
+      "faq": "Întrebări frecvente",
+      "contact": "Contact"
+    }
+  },
+  "footer": {
+    "b2b_text": "Vrei să dăruiești Maison Bonjour? Sau să comanzi pentru compania ta?",
+    "tagline": "Arta de a trăi în stil francez, livrată în fiecare lună la Cluj-Napoca.",
+    "cta_label": "Încă nu te-ai hotărât?",
+    "cta_title": "Alătură-te Maison Bonjour.",
+    "help": "Ajutor",
+    "legal": "Legal",
+    "links": {
+      "faq": "Întrebări frecvente",
+      "contact": "Contact",
+      "magazine": "Magazin",
+      "cgv": "Termeni și condiții",
+      "privacy": "Confidențialitate"
+    },
+    "copy": "© {{ year }} Maison Bonjour · Made in France · Livrat în România"
+  },
+  "map": {
+    "eyebrow": "Pașaportul Maison Bonjour",
+    "title": "Escalele Maison Bonjour",
+    "subtitle": "Treci cu mouse-ul peste o regiune pentru a descoperi ce povestește. Apasă pentru a-i deschide escala.",
+    "close": "Închide harta",
+    "hint_hover": "Treci peste o regiune pentru a afla mai multe",
+    "hint_click": "Apasă pentru a descoperi escala",
+    "hint_markers": "Repere aurii: escalele călătoriei",
+    "footnote": "Experiența franceză · Maison Bonjour",
+    "region_label": "Région",
+    "soon": "À venir",
+    "rest_title": "Chaque mois commence quelque part.",
+    "rest_body": "Une région, un geste, une lumière. Maison Bonjour raconte la France par ses maisons, ses ateliers et ses saveurs.",
+    "regions": {
+      "provence":     { "name": "Provence",     "status": "Édition confirmée", "month": "Août 2026",      "phrase": "Une lumière chaude, des ateliers anciens, la lavande qui reste sur les mains.", "keywords": "Lavande · Céramique · Calissons d’Aix" },
+      "bretagne":     { "name": "Bretagne",     "status": "Planifiée",         "month": "Juillet 2026",   "phrase": "Le granit, le lin, le sel dans l’air. Une France plus minérale, plus silencieuse.", "keywords": "Sel · Lin naturel · Granit clair" },
+      "cote-d-azur":  { "name": "Côte d’Azur",  "status": "À venir", "month": "Une prochaine escale Maison Bonjour.", "phrase": "La lumière franche du sud, les agrumes, les gestes simples d’un été français.", "keywords": "Agrumes · Soleil · Rituel d’été" },
+      "bourgogne":    { "name": "Bourgogne",    "status": "Planifiée",         "month": "Septembre 2026", "phrase": "Une région profonde, gourmande, patiente. Ici, le temps travaille avec les mains.", "keywords": "Moutarde · Vigne · Tradition" },
+      "perigord":     { "name": "Périgord",     "status": "À venir", "month": "Une prochaine escale Maison Bonjour.", "phrase": "Des pierres dorées, des tables généreuses, une France de maison et de marché.", "keywords": "Noix · Truffe · Marché" },
+      "alsace":       { "name": "Alsace",       "status": "À venir", "month": "Une prochaine escale Maison Bonjour.", "phrase": "Entre deux langues, une seule identité.", "keywords": "Riesling · Colombages · Vosges" },
+      "normandie":    { "name": "Normandie",    "status": "À venir", "month": "Une prochaine escale Maison Bonjour.", "phrase": "Sous le ciel bas, la terre donne tout ce qu’elle a.", "keywords": "Pommeraies · Falaises de craie · Bocage" },
+      "pays-basque":  { "name": "Pays Basque",  "status": "À venir", "month": "Une prochaine escale Maison Bonjour.", "phrase": "Une langue avant les frontières. Une cuisine avant les écoles.", "keywords": "Piment d’Espelette · Euskara · Côte basque" },
+      "corse":        { "name": "Corse",        "status": "À venir", "month": "Une prochaine escale Maison Bonjour.", "phrase": "L’île arrive dans les narines avant d’apparaître à l’horizon.", "keywords": "Maquis · Châtaignier · Granit" },
+      "val-de-loire": { "name": "Val de Loire", "status": "À venir", "month": "Une prochaine escale Maison Bonjour.", "phrase": "Entre châteaux et vignes, la France a posé son idéal de beauté.", "keywords": "Tuffeau · Châteaux royaux · Vouvray" },
+      "auvergne":     { "name": "Auvergne",     "status": "À venir", "month": "Une prochaine escale Maison Bonjour.", "phrase": "Les volcans sont éteints. L’intensité, non.", "keywords": "Volcans · Lentilles du Puy · Fromages d’altitude" },
+      "champagne":    { "name": "Champagne",    "status": "À venir", "month": "Une prochaine escale Maison Bonjour.", "phrase": "La craie garde tout. La bulle révèle tout.", "keywords": "Craie · Vignes de Marne · Cathédrale de Reims" }
+    }
+  },
+  "journey": {
+    "regions": {
+      "bretagne":         { "name": "Bretagne",         "tagline": "Le vent polit les pierres. La mer garde les secrets.", "keywords": "Sel de Guérande · Algues · Granit", "description": "Une Bretagne d’horizon et d’embruns, où l’Atlantique n’est pas un décor — c’est le fond de l’air." },
+      "provence":         { "name": "Provence",         "tagline": "La lumière ne filtre pas. Elle tranche.", "keywords": "Lavande · Huile d’olive · Argile", "description": "Une Provence de garrigues et de mas blancs, où le soleil n’est pas une promesse touristique — c’est le bâtisseur du goût." },
+      "cote-d-azur":      { "name": "Côte d’Azur",      "tagline": "Le Sud commence là où la mer devient lumière.", "keywords": "Parfums de Grasse · Céramique · Oliviers", "description": "Une Côte d’Azur de lumière dure et de pins parasols, entre criques transparentes, villages perchés et marchés de garrigue." },
+      "perigord":         { "name": "Périgord",         "tagline": "Dans les vallées, le temps a une autre consistance.", "keywords": "Truffe noire · Noix du Périgord · Châtaigneraies", "description": "Un Périgord de sous-bois et de rivières silencieuses, où la gastronomie n’est pas une tradition — c’est une langue maternelle." },
+      "bourgogne":        { "name": "Bourgogne",        "tagline": "Le sol se lit dans le verre. Le reste est de la géographie.", "keywords": "Côte d’Or · Moutarde de Dijon · Pierre romane", "description": "Une Bourgogne taillée dans la durée, où le terroir n’est pas un argument de vente — c’est une science transmise parcelle par parcelle." },
+      "alsace":           { "name": "Alsace",           "tagline": "Entre deux langues, une seule identité.", "keywords": "Riesling · Colombages · Vosges", "description": "Une Alsace qui a traversé les frontières sans perdre son caractère — ni seulement française, ni seulement germanique, mais résolument elle-même." },
+      "normandie":        { "name": "Normandie",        "tagline": "Sous le ciel bas, la terre donne tout ce qu’elle a.", "keywords": "Pommeraies · Falaises de craie · Bocage", "description": "Une Normandie de pluie et de pommiers, où l’humidité n’est pas une contrariété — c’est ce qui fait la crème, le cidre et les herbes grasses." },
+      "pays-basque":      { "name": "Pays Basque",      "tagline": "Une langue avant les frontières. Une cuisine avant les écoles.", "keywords": "Piment d’Espelette · Euskara · Côte basque", "description": "Un Pays Basque qui résiste à toute définition — ni espagnol, ni seulement français, avec une table et une langue qui n’appartiennent qu’à lui." },
+      "corse":            { "name": "Corse",            "tagline": "L’île arrive dans les narines avant d’apparaître à l’horizon.", "keywords": "Maquis · Châtaignier · Granit", "description": "Une Corse de lumière sèche et de forêts intérieures, où le parfum du maquis n’est pas un souvenir — c’est l’adresse." },
+      "pays-de-la-loire": { "name": "Pays de la Loire", "tagline": "Là où le fleuve hésite avant de rejoindre l’océan.", "keywords": "Sel de Noirmoutier · Muscadet · Bocage", "description": "Une région de marais salants et de vignes discrètes, où l’Atlantique commence à se faire sentir avant même d’être visible." },
+      "val-de-loire":     { "name": "Val de Loire",     "tagline": "Entre châteaux et vignes, la France a posé son idéal de beauté.", "keywords": "Tuffeau · Châteaux royaux · Vouvray", "description": "Un val où la pierre blanche a servi à la fois aux rois et aux vignerons — le jardin de la France, taillé dans la douceur et dans la lumière." },
+      "auvergne":         { "name": "Auvergne",         "tagline": "Les volcans sont éteints. L’intensité, non.", "keywords": "Volcans · Lentilles du Puy · Fromages d’altitude", "description": "Une Auvergne de basalte et de hauts plateaux, où le froid et la roche ont tout fabriqué — les caractères, les fromages, les goûts." },
+      "champagne":        { "name": "Champagne",        "tagline": "La craie garde tout. La bulle révèle tout.", "keywords": "Craie · Vignes de Marne · Cathédrale de Reims", "description": "Une Champagne souterraine autant que célébrée, où les caves creusées dans la craie abritent ce que la terre a mis des siècles à produire." }
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Coșul tău",
+      "empty": "Coșul tău este gol.",
+      "continue": "Continuă cumpărăturile",
+      "subtotal": "Subtotal",
+      "checkout": "Finalizează comanda",
+      "quantity": "Cantitate",
+      "remove": "Elimină",
+      "shipping_note": "Livrarea și taxele se calculează la finalizarea comenzii.",
+      "note": "Adaugă o notă la comandă"
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Adaugă în coș",
+      "sold_out": "Stoc epuizat",
+      "unavailable": "Indisponibil",
+      "quantity": "Cantitate",
+      "description": "Descriere"
+    }
+  },
+  "customer": {
+    "login_page": {
+      "title": "Autentificare",
+      "email": "Email",
+      "password": "Parolă",
+      "forgot_password": "Ai uitat parola",
+      "sign_in": "Conectează-te",
+      "create_account": "Creează un cont",
+      "guest_title": "Continuă ca invitat",
+      "guest_continue": "Continuă"
+    },
+    "register": {
+      "title": "Creează un cont",
+      "first_name": "Prenume",
+      "last_name": "Nume",
+      "email": "Email",
+      "password": "Parolă",
+      "submit": "Creează contul",
+      "cancel": "Înapoi la autentificare"
+    },
+    "account": {
+      "title": "Contul meu",
+      "details": "Datele mele",
+      "view_addresses": "Adresele mele",
+      "logout": "Deconectează-te",
+      "order_history": "Istoricul comenzilor",
+      "no_orders": "Nicio comandă deocamdată.",
+      "order_number": "Comandă",
+      "date": "Dată",
+      "payment_status": "Plată",
+      "fulfillment_status": "Livrare",
+      "total": "Total"
+    },
+    "addresses": {
+      "title": "Adresele mele",
+      "add_new": "Adaugă o adresă nouă",
+      "edit": "Modifică",
+      "delete": "Șterge",
+      "default": "Implicit",
+      "back": "Înapoi la cont"
+    },
+    "order": {
+      "title": "Comanda {{ name }}",
+      "date": "Plasată pe {{ date }}",
+      "billing_address": "Adresă de facturare",
+      "shipping_address": "Adresă de livrare",
+      "subtotal": "Subtotal",
+      "total": "Total",
+      "back": "Înapoi la cont"
+    },
+    "reset_password": {
+      "title": "Resetează parola",
+      "subtext": "Introdu adresa de email pentru a primi un link de resetare.",
+      "submit": "Trimite",
+      "back": "Înapoi la autentificare"
+    },
+    "activate_account": {
+      "title": "Activează contul",
+      "subtext": "Creează o parolă pentru a-ți activa contul.",
+      "password": "Parolă",
+      "password_confirm": "Confirmă parola",
+      "submit": "Activează",
+      "decline": "Refuză invitația"
+    }
+  }
+}

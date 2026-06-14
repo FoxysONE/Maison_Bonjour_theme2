@@ -77,6 +77,34 @@
     .mb-magazine-field { background: var(--cream-warm); }
   </style>
 
+{%- elsif page.handle == 'la-box' or page.template_suffix == 'la-box' -%}
+
+  {%- comment -%} Page « La Box ». Routée par handle (comme Magazine) pour
+      s'afficher même si le modèle page.la-box n'est pas assigné/publié. {%- endcomment -%}
+  <div class="page-la-box">
+    {% section 'la-box-page' %}
+    {% render 'section-divider', top: '#FEF9F3', bottom: '#FEF9F3', soft: true %}
+    {% section 'passport' %}
+    {% render 'section-divider', top: '#FEF9F3', bottom: '#FEF9F3', soft: true %}
+    {% section 'final-subscription-pricing' %}
+  </div>
+
+{%- elsif page.handle == 'nos-artisans' or page.template_suffix == 'nos-artisans' -%}
+
+  {%- comment -%} Page « Nos artisans ». Routée par handle pour le même motif. {%- endcomment -%}
+  <div class="page-nos-artisans">
+    {% section 'nos-artisans' %}
+  </div>
+
+{%- elsif page.handle == 'la-france' or page.template_suffix == 'la-france' -%}
+
+  {%- comment -%} Page « La France » : la carte interactive éditoriale des escales.
+      Routée par handle (comme Magazine / La Box) pour s'afficher même si le modèle
+      page.la-france n'est pas assigné/publié. {%- endcomment -%}
+  <div class="page-la-france">
+    {% section 'france-carte' %}
+  </div>
+
 {%- else -%}
 
   <article class="legal">

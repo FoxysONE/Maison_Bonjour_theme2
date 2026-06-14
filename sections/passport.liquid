@@ -30,7 +30,7 @@
   assign s_label   = section.settings.section_label | default: 'LE PASSEPORT MAISON BONJOUR'
   assign s_title   = section.settings.title         | default: 'Chaque région laisse une trace.'
   assign s_body    = section.settings.body
-  assign s_body2   = section.settings.body_secondary | default: 'Ce Passeport numérique accompagne les premières éditions avant de devenir, plus tard, un objet à conserver.'
+  assign s_body2   = section.settings.body_secondary | default: 'Ce Passeport est aujourd’hui numérique. Il a vocation à devenir, au fil du temps, un objet que l’on conserve — la trace tangible d’un voyage à travers la France artisanale.'
   assign edition   = section.settings.edition_label | default: 'Première escale'
   assign region    = section.settings.region        | default: 'Bretagne'
   assign month     = section.settings.month          | default: 'Juillet 2026'
@@ -64,7 +64,8 @@
         {%- if s_body != blank -%}
           {{ s_body }}
         {%- else -%}
-          <p>Chaque box ajoute une escale à ton Passeport Maison Bonjour. Pour cette première édition, une seule trace apparaît&nbsp;: {{ region }}, {{ month | downcase }}. Les prochaines régions se révéleront au fil du voyage, au rythme des sélections Maison Bonjour.</p>
+          <p>Avec chaque box, une nouvelle escale s’inscrit dans votre Passeport Maison Bonjour — une région, une date, un voyage accompli.</p>
+          <p>Pour cette première édition, une seule destination apparaît&nbsp;: Bretagne, juillet 2026. Les suivantes se révéleront au fil des mois, au rythme de nos éditions.</p>
         {%- endif -%}
       </div>
 
@@ -75,6 +76,7 @@
 
     {%- comment -%} Colonne visuelle {%- endcomment -%}
     <figure class="passport__visual reveal reveal--delay-2">
+     <div class="passport__media">
       {%- if img != blank -%}
         {%- comment -%} Option A — visuel premium fourni dans le customizer. {%- endcomment -%}
         <div class="passport__frame">
@@ -121,6 +123,17 @@
         </div>
       {%- endif -%}
 
+      {%- comment -%} Déclencheur carte : couvre le visuel du Passeport. Au clic,
+          léger zoom du Passeport puis ouverture de la carte des escales. {%- endcomment -%}
+      <button class="passport__open" type="button" data-map-open
+              aria-haspopup="dialog" aria-label="Ouvrir la carte des escales Maison Bonjour">
+        <span class="passport__open-hint">
+          <span class="passport__open-text">Ouvrir la carte des escales</span>
+          <span class="passport__open-arrow" aria-hidden="true">→</span>
+        </span>
+      </button>
+     </div>
+
       {%- if show_cap -%}
         <figcaption class="passport__caption">
           <span class="passport__caption-edition">{{ edition }}</span>
@@ -131,6 +144,9 @@
     </figure>
 
   </div>
+
+  {%- comment -%} Carte interactive des escales — ouverte au clic sur le Passeport. {%- endcomment -%}
+  {% render 'france-map' %}
 </section>
 
 {% stylesheet %}
@@ -145,6 +161,60 @@
     scroll-margin-top: clamp(72px, 9vw, 120px);
     position: relative;
   }
+  /* ---- Déclencheur carte des escales (clic sur le Passeport) ---- */
+  .passport__visual { position: relative; }
+  /* Le bouton overlay ne couvre que le visuel (image/carte), pas la légende
+     placée en dessous — sinon la pastille « Ouvrir la carte » se superpose au
+     cartel « Région · Mois » (visible sur mobile). */
+  .passport__media { position: relative; }
+  .passport__open {
+    position: absolute; inset: 0; z-index: 2;
+    width: 100%; height: 100%; padding: 0 0 clamp(14px, 2vw, 22px);
+    display: flex; align-items: flex-end; justify-content: center;
+    background: transparent; border: 0; cursor: pointer;
+    -webkit-appearance: none; appearance: none;
+  }
+  .passport__open:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+  .passport__open-hint {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 9px 18px;
+    font-family: var(--font-sans); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--cream);
+    background: rgba(15, 26, 46, 0.82);
+    border: 1px solid rgba(184, 150, 90, 0.6); border-radius: 999px;
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    /* Toujours visible : c'est un appel à l'action clair (« Ouvrir la carte »),
+       pas un indice caché révélé au survol. Le survol ne fait que le renforcer. */
+    opacity: 1; transform: none;
+    box-shadow: 0 8px 24px rgba(15, 26, 46, 0.22);
+    transition: background 0.35s var(--ease-out), transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
+  }
+  .passport__open-arrow { color: var(--gold-soft); transition: transform 0.3s ease; }
+  .passport__open:hover .passport__open-hint,
+  .passport__open:focus-visible .passport__open-hint { background: rgba(15, 26, 46, 0.92); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(15, 26, 46, 0.3); }
+  .passport__open:hover .passport__open-arrow { transform: translateX(3px); }
+
+  /* Zoom doux du Passeport : survol (léger) puis clic (plus marqué, via .is-zooming). */
+  .passport__visual .passport__frame,
+  .passport__visual .passport__card {
+    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.6s ease;
+    transform-origin: center;
+  }
+  .passport__visual:has(.passport__open:hover) .passport__frame,
+  .passport__visual:has(.passport__open:hover) .passport__card { transform: scale(1.015); }
+  .passport__visual:has(.passport__open.is-zooming) .passport__frame,
+  .passport__visual:has(.passport__open.is-zooming) .passport__card { transform: scale(1.06); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .passport__open-hint { transition: none; }
+    .passport__visual .passport__frame,
+    .passport__visual .passport__card { transition: none; }
+    .passport__visual:has(.passport__open:hover) .passport__frame,
+    .passport__visual:has(.passport__open:hover) .passport__card,
+    .passport__visual:has(.passport__open.is-zooming) .passport__frame,
+    .passport__visual:has(.passport__open.is-zooming) .passport__card { transform: none; }
+  }
+
   /* Texture papier optionnelle, très discrète. */
   .passport::before {
     content: "";
@@ -171,7 +241,7 @@
 
   .passport__title {
     margin: 0;
-    font-family: "Kalnia", "Instrument Serif", serif;
+    font-family: var(--font-serif);
     font-optical-sizing: auto;
     font-style: normal;
     font-weight: 400;
@@ -299,7 +369,7 @@
   }
   .passport__card-brand {
     margin: 4px 0 0;
-    font-family: "Kalnia", "Instrument Serif", serif;
+    font-family: var(--font-display);
     font-weight: 400;
     font-size: clamp(1.3rem, 2vw + 0.6rem, 1.7rem);
     line-height: 1.1;

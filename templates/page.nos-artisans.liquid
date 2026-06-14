@@ -1,0 +1,13 @@
+{% comment %}
+  Page dédiée « Nos artisans ».
+  S'active en assignant ce template à une page de handle « nos-artisans »
+  (Admin Shopify → Pages → Nos artisans → Modèle de thème : page.nos-artisans).
+
+  Le contenu vit dans la section « Nos artisans » (sections/nos-artisans.liquid),
+  avec des blocs « Artisan » répétables : on ajoute un nouvel artisan depuis le
+  customizer, sans toucher au code. On démarre avec Louis Sicard.
+{% endcomment %}
+
+<div class="page-nos-artisans">
+  {% section 'nos-artisans' %}
+</div>

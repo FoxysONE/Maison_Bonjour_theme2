@@ -1,0 +1,17 @@
+{% comment %}
+  Page « Contact ».
+  S'active en assignant ce template à une page de handle « contact »
+  (Admin Shopify → Pages → Contact → Modèle de thème : page.contact).
+
+  Structure :
+    1. contact-newsletter → formulaire de contact (Prénom, Nom, Email, Téléphone,
+                            Sujet, Message) + newsletter. Ancre #contact-form.
+    2. contact-details    → coordonnées société (adresse, email, téléphone, délai).
+
+  Réutilise les sections existantes via {% section %} : aucune duplication de code.
+{% endcomment %}
+
+<div class="page-contact">
+  {% section 'contact-newsletter' %}
+  {% section 'contact-details' %}
+</div>

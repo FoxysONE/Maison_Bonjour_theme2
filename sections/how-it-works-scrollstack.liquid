@@ -1,23 +1,23 @@
 {%- liquid
   assign title        = section.settings.title        | default: 'Comment se passe le'
   assign title_accent = section.settings.title_accent  | default: 'voyage'
-  assign subtitle     = section.settings.subtitle      | default: 'Une région par mois, une sélection gardée en partie secrète, un abonnement que tu peux choisir, recevoir et gérer simplement.'
+  assign subtitle     = section.settings.subtitle      | default: 'Chaque mois, une région française. Une part de l’édition reste secrète jusqu’à l’ouverture — c’est voulu.'
 
   assign c1_title = section.settings.card_1_title | default: 'Choisir'
-  assign c1_text  = section.settings.card_1_text  | default: 'Sélectionne ton rythme : une première édition, trois mois ou une année de voyage français.'
+  assign c1_text  = section.settings.card_1_text  | default: 'Choisissez votre engagement : une première édition pour découvrir, trois mois pour explorer, ou une année entière de voyage français.'
   assign c1_label = section.settings.card_1_label | default: 'LE RYTHME'
 
   assign c2_title = section.settings.card_2_title | default: 'Recevoir'
-  assign c2_text  = section.settings.card_2_text  | default: 'Chaque mois, Maison Bonjour prépare une édition autour d’une région française, avec des maisons, des gestes et des détails choisis.'
+  assign c2_text  = section.settings.card_2_text  | default: 'Chaque mois, Maison Bonjour consacre une édition à une région française : ses artisans, ses matières, les gestes qui font qu’un produit ne ressemble à aucun autre.'
   assign c2_label = section.settings.card_2_label | default: 'L’ÉDITION'
 
   assign c3_title = section.settings.card_3_title | default: 'Ouvrir'
-  assign c3_text  = section.settings.card_3_text  | default: 'Tout n’est pas dévoilé avant l’envoi. La surprise fait partie de l’expérience, mais rien n’est laissé au hasard.'
+  assign c3_text  = section.settings.card_3_text  | default: 'Une partie du contenu reste secrète jusqu’à l’ouverture. La surprise fait partie de l’expérience — rien n’est laissé au hasard.'
   assign c3_label = section.settings.card_3_label | default: 'LA SURPRISE'
 
   assign c4_title = section.settings.card_4_title | default: 'Gérer'
-  assign c4_text  = section.settings.card_4_text  | default: 'Depuis ton espace abonnée, tu peux suivre ton abonnement, modifier tes informations, mettre en pause ou arrêter selon les conditions prévues.'
-  assign c4_label = section.settings.card_4_label | default: 'L’ESPACE ABONNÉE'
+  assign c4_text  = section.settings.card_4_text  | default: 'Votre abonnement vous appartient. Depuis votre espace, vous le suivez, l’ajustez ou le mettez en pause — selon les conditions de votre formule.'
+  assign c4_label = section.settings.card_4_label | default: 'L’ESPACE ABONNÉ'
 
   assign enable_stack    = section.settings.enable_scroll_stack
   assign reduced_motion  = section.settings.reduced_motion_fallback
@@ -31,7 +31,7 @@
   data-reduced-fallback="{% if reduced_motion %}true{% else %}false{% endif %}"
   data-base-scale="{{ section.settings.base_scale | default: 90 | times: 0.01 }}"
   data-item-scale="{{ section.settings.item_scale | default: 2 | times: 0.01 }}"
-  data-stack-offset="{{ section.settings.stack_offset | default: 18 }}"
+  data-stack-offset="{{ section.settings.stack_offset | default: 96 }}"
   data-item-distance="{{ section.settings.item_distance | default: 110 }}"
   data-blur-amount="{{ section.settings.blur_amount | default: 0 }}"
   style="--mb-howstack-bg: {{ section.settings.background_color | default: '#F1E8D6' }};"
@@ -108,7 +108,11 @@
   .mb-howstack {
     background: var(--mb-howstack-bg, #F1E8D6);
     padding-block: var(--section-py-immersive-mobile, 80px);
+    /* `clip` au lieu de `hidden` : découpe le débordement sans créer de conteneur
+       de défilement, sinon l'empilement sticky mobile des cartes ne s'accroche
+       plus au viewport. `hidden` en fallback pour les très vieux navigateurs. */
     overflow: hidden;
+    overflow: clip;
   }
 
   .mb-howstack__container {
@@ -268,10 +272,16 @@
     }
   }
 
-  /* Spacer that lets the last card's pin release cleanly (port of .scroll-stack-end). */
+  /* Spacer qui laisse la pile se relâcher proprement avant la section suivante.
+     Une hauteur réelle (et pas 1px) garantit que la DERNIÈRE carte reste
+     entièrement visible / centrée et n'est jamais coupée par la section d'après :
+     le pin tient pendant ce spacer, puis se libère avec de la marge. */
   .mb-howstack__end {
     width: 100%;
     height: 1px;
+  }
+  .mb-howstack.is-stacking .mb-howstack__end {
+    height: clamp(180px, 32vh, 380px);
   }
 
   /* ---- Stacking mode (desktop, JS-enabled, motion allowed) ----
@@ -291,6 +301,62 @@
        make it lag, so disable it while stacking. */
     transition: none;
     opacity: 1;
+  }
+
+  /* Pendant l'empilement : on remonte le contenu en haut de la carte et on
+     resserre la bande titre pour qu'elle tienne dans la hauteur de
+     « dépassement » (data-stack-offset ≈ 96px). Ainsi, quand une carte vient se
+     poser, le numéro + le nom de la carte précédente restent visibles au-dessus. */
+  .mb-howstack.is-stacking .mb-howstack__card-inner {
+    align-items: flex-start;
+    padding-top: 26px;
+    padding-bottom: 32px;
+  }
+  .mb-howstack.is-stacking .mb-howstack__card-label { margin-bottom: 8px; }
+  .mb-howstack.is-stacking .mb-howstack__card-title { margin-bottom: 10px; }
+
+  /* ---- Empilement MOBILE en CSS sticky (≤768px) ----
+     Pas de JS : chaque carte se « colle » sous la navbar à un offset décalé, et
+     la carte suivante glisse par-dessus. Tout tourne sur le compositeur → scroll
+     parfaitement fluide, aucune saccade ni « badaboum » contre le header.
+     Offsets : base ≈ hauteur navbar (~84px) + décalage par carte pour laisser
+     dépasser le numéro + le nom de la carte précédente. */
+  @media (max-width: 768px) and (prefers-reduced-motion: no-preference) {
+    .mb-howstack__cards {
+      display: block;
+    }
+    /* Neutralise le reveal-au-scroll global (IntersectionObserver) sur les
+       cartes : il applique opacity:0 + translate3d(0,48px,0) scale(0.97) avec
+       des délais décalés, ce qui se superpose au sticky et casse l'empilement.
+       En mobile, seul le sticky doit animer les cartes → on les rend visibles
+       d'emblée, sans transform ni transition résiduels. (Même approche que les
+       autres éléments scroll-driven du thème, cf. base.css §35.) */
+    .mb-howstack__card.reveal,
+    .mb-howstack__card.reveal.is-visible {
+      opacity: 1;
+      transform: none;
+      transition: none;
+      will-change: auto;
+    }
+    .mb-howstack__card {
+      position: -webkit-sticky;
+      position: sticky;
+      margin-bottom: 28px;
+      box-shadow: 0 14px 40px -26px rgba(28, 43, 74, 0.35);
+    }
+    /* Contenu remonté en haut + bande titre resserrée : la partie qui dépasse
+       (≈ le décalage) montre le numéro et le nom de la carte précédente. */
+    .mb-howstack__card-inner {
+      align-items: flex-start;
+      padding: 22px 24px 28px;
+    }
+    .mb-howstack__card-label { margin-bottom: 8px; }
+    .mb-howstack__card-title { margin-bottom: 10px; }
+
+    .mb-howstack__card:nth-child(1) { top: 88px; }
+    .mb-howstack__card:nth-child(2) { top: 146px; }
+    .mb-howstack__card:nth-child(3) { top: 204px; }
+    .mb-howstack__card:nth-child(4) { top: 262px; }
   }
 
   /* ---- Reduced motion: never animate, always visible, simple stack ---- */
@@ -342,7 +408,7 @@
       // Tunables (ScrollStack props), with premium-calm defaults.
       var itemDistance      = num(root.dataset.itemDistance, 110);   // scroll gap between cards
       var itemScale         = num(root.dataset.itemScale, 0.02);     // per-card scale increment
-      var itemStackDistance = num(root.dataset.stackOffset, 18);     // px each card sits lower
+      var itemStackDistance = num(root.dataset.stackOffset, 96);     // px each card sits lower (= hauteur du « dépassement » qui laisse voir le titre de la carte précédente)
       var baseScale         = num(root.dataset.baseScale, 0.90);     // smallest (back) card scale
       var blurAmount        = num(root.dataset.blurAmount, 0);       // blur per depth level
       var stackPositionPct  = 0.22;  // pin point: 22% from viewport top
@@ -367,17 +433,31 @@
       function applyParams() {
         var mobile = !mqDesktop.matches;
         eDist   = mobile ? Math.min(itemDistance, 72) : itemDistance;
-        eOffset = mobile ? Math.min(itemStackDistance, 12) : itemStackDistance;
+        // Décalage = hauteur du « dépassement » : on garde une valeur suffisante
+        // (≥ la bande titre) pour voir dépasser le nom de la carte précédente,
+        // même sur mobile (où les titres sont un peu plus petits).
+        eOffset = mobile ? Math.min(itemStackDistance, 80) : itemStackDistance;
         eBase   = mobile ? Math.max(baseScale, 0.95) : baseScale;
         eScale  = mobile ? Math.min(itemScale, 0.015) : itemScale;
         ePinPct = mobile ? 0.14 : stackPositionPct;
       }
 
-      // Empilement actif sur mobile ET desktop (le mobile rappelle le desktop,
-      // pensé pour écran étroit). Seul reduced-motion / la désactivation le coupe.
+      // Empilement piloté en JS réservé au DESKTOP. Sur mobile, ce pilotage au
+      // scroll (thread principal) lag derrière le scroll compositeur puis se
+      // rattrape d'un coup → effet « badaboum » contre la navbar. Sur mobile on
+      // confie donc l'empilement à un sticky CSS (compositeur = parfaitement
+      // fluide), géré entièrement dans le bloc de styles ci-dessus.
       function canStack() {
-        return enable && !forceFallback && !mqMotion.matches;
+        return enable && !forceFallback && !mqMotion.matches && mqDesktop.matches;
       }
+
+      // Hauteur de viewport STABLE. Sur mobile, lire window.innerHeight à chaque
+      // frame rend l'empilement saccadé : la barre d'adresse qui se masque/réaffiche
+      // fait varier cette valeur en continu, ce qui décale les points d'épinglage.
+      // On la fige donc et on ne la rafraîchit que sur un vrai changement (rotation
+      // ou variation de hauteur importante), pas sur les micro-resize de la barre.
+      var stableVh = window.innerHeight;
+      function refreshVh() { stableVh = window.innerHeight; }
 
       function clamp(v, a, b) { return v < a ? a : (v > b ? b : v); }
 
@@ -401,7 +481,7 @@
         if (!canStack() || !inView) return;
 
         var scrollTop = window.pageYOffset;
-        var vh = window.innerHeight;
+        var vh = stableVh;
         var stackPx    = ePinPct * vh;
         var scaleEndPx = scaleEndPct * vh;
         var pinEnd = endTop - vh / 2;
@@ -463,8 +543,18 @@
         }
       }
 
+      var lastVw = window.innerWidth;
       function onResize() {
         if (!canStack()) return;
+        var vw = window.innerWidth;
+        var heightDelta = Math.abs(window.innerHeight - stableVh);
+        // Sur mobile, on ignore les resize qui ne changent QUE la hauteur d'un
+        // petit montant (barre d'adresse) : sinon chaque masquage de barre
+        // re-mesure et fait sauter la pile. On ne réagit qu'à un changement de
+        // largeur ou à une grosse variation de hauteur (rotation, vrai resize).
+        if (vw === lastVw && heightDelta < 120) return;
+        lastVw = vw;
+        refreshVh();
         measure();
         onScroll();
       }
@@ -518,7 +608,7 @@
         inView = true;
       }
 
-      function onMqChange() { evaluate(); }
+      function onMqChange() { refreshVh(); lastVw = window.innerWidth; evaluate(); }
       if (mqDesktop.addEventListener) {
         mqDesktop.addEventListener('change', onMqChange);
         mqMotion.addEventListener('change', onMqChange);
@@ -543,27 +633,27 @@
     { "type": "header", "content": "En-tête" },
     { "type": "text",     "id": "title",        "label": "Titre",                    "default": "Comment se passe le" },
     { "type": "text",     "id": "title_accent", "label": "Mot en italique (accent)", "default": "voyage" },
-    { "type": "textarea", "id": "subtitle",     "label": "Sous-texte",               "default": "Une région par mois, une sélection gardée en partie secrète, un abonnement que tu peux choisir, recevoir et gérer simplement." },
+    { "type": "textarea", "id": "subtitle",     "label": "Sous-texte",               "default": "Chaque mois, une région française. Une part de l’édition reste secrète jusqu’à l’ouverture — c’est voulu." },
 
     { "type": "header", "content": "Carte 01 — Choisir" },
     { "type": "text",     "id": "card_1_label", "label": "Label",       "default": "LE RYTHME" },
     { "type": "text",     "id": "card_1_title", "label": "Titre",       "default": "Choisir" },
-    { "type": "textarea", "id": "card_1_text",  "label": "Texte",       "default": "Sélectionne ton rythme : une première édition, trois mois ou une année de voyage français." },
+    { "type": "textarea", "id": "card_1_text",  "label": "Texte",       "default": "Choisissez votre engagement : une première édition pour découvrir, trois mois pour explorer, ou une année entière de voyage français." },
 
     { "type": "header", "content": "Carte 02 — Recevoir" },
     { "type": "text",     "id": "card_2_label", "label": "Label",       "default": "L’ÉDITION" },
     { "type": "text",     "id": "card_2_title", "label": "Titre",       "default": "Recevoir" },
-    { "type": "textarea", "id": "card_2_text",  "label": "Texte",       "default": "Chaque mois, Maison Bonjour prépare une édition autour d’une région française, avec des maisons, des gestes et des détails choisis." },
+    { "type": "textarea", "id": "card_2_text",  "label": "Texte",       "default": "Chaque mois, Maison Bonjour consacre une édition à une région française : ses artisans, ses matières, les gestes qui font qu’un produit ne ressemble à aucun autre." },
 
     { "type": "header", "content": "Carte 03 — Ouvrir" },
     { "type": "text",     "id": "card_3_label", "label": "Label",       "default": "LA SURPRISE" },
     { "type": "text",     "id": "card_3_title", "label": "Titre",       "default": "Ouvrir" },
-    { "type": "textarea", "id": "card_3_text",  "label": "Texte",       "default": "Tout n’est pas dévoilé avant l’envoi. La surprise fait partie de l’expérience, mais rien n’est laissé au hasard." },
+    { "type": "textarea", "id": "card_3_text",  "label": "Texte",       "default": "Une partie du contenu reste secrète jusqu’à l’ouverture. La surprise fait partie de l’expérience — rien n’est laissé au hasard." },
 
     { "type": "header", "content": "Carte 04 — Gérer" },
-    { "type": "text",     "id": "card_4_label", "label": "Label",       "default": "L’ESPACE ABONNÉE" },
+    { "type": "text",     "id": "card_4_label", "label": "Label",       "default": "L’ESPACE ABONNÉ" },
     { "type": "text",     "id": "card_4_title", "label": "Titre",       "default": "Gérer" },
-    { "type": "textarea", "id": "card_4_text",  "label": "Texte",       "default": "Depuis ton espace abonnée, tu peux suivre ton abonnement, modifier tes informations, mettre en pause ou arrêter selon les conditions prévues." },
+    { "type": "textarea", "id": "card_4_text",  "label": "Texte",       "default": "Votre abonnement vous appartient. Depuis votre espace, vous le suivez, l’ajustez ou le mettez en pause — selon les conditions de votre formule." },
 
     { "type": "header", "content": "Apparence & animation" },
     { "type": "color",    "id": "background_color",        "label": "Couleur de fond de section", "default": "#F1E8D6" },
@@ -573,7 +663,7 @@
     { "type": "header", "content": "Réglages avancés de l’empilement" },
     { "type": "range", "id": "base_scale",    "label": "Échelle de la carte du fond (%)", "min": 80, "max": 98, "step": 1, "unit": "%", "default": 90, "info": "Plus bas = cartes du fond plus petites." },
     { "type": "range", "id": "item_scale",    "label": "Différence d’échelle par carte (%)", "min": 0, "max": 6, "step": 1, "unit": "%", "default": 2 },
-    { "type": "range", "id": "stack_offset",  "label": "Décalage vertical du stack (px)", "min": 8, "max": 40, "step": 2, "unit": "px", "default": 18 },
+    { "type": "range", "id": "stack_offset",  "label": "Dépassement entre cartes empilées (px)", "min": 40, "max": 140, "step": 4, "unit": "px", "default": 96, "info": "Hauteur visible de la carte précédente quand une nouvelle se pose (laisse dépasser son numéro + son nom)." },
     { "type": "range", "id": "item_distance", "label": "Distance de scroll entre cartes (px)", "min": 60, "max": 200, "step": 10, "unit": "px", "default": 110 },
     { "type": "range", "id": "blur_amount",   "label": "Flou de profondeur", "min": 0, "max": 3, "step": 0.5, "default": 0, "info": "0 = aucun flou (recommandé, plus premium)." }
   ],

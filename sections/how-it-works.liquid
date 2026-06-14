@@ -1,6 +1,6 @@
 {%- liquid
-  assign title = section.settings.title | default: 'Trois engagements. Une seule promesse : le 15 du mois.'
-  assign lead  = section.settings.lead  | default: 'Vous choisissez la durée. Nous nous occupons du reste — un objet, un carnet, un tampon, douze mois durant.'
+  assign title = section.settings.title | default: 'Trois engagements. Une seule promesse : aux alentours du 15.'
+  assign lead  = section.settings.lead  | default: 'Vous choisissez la durée. Nous nous occupons du reste — une région, un artisan, un tampon dans votre Passeport, chaque mois.'
 
   assign use_defaults = false
   if section.blocks.size == 0
@@ -23,17 +23,17 @@
         <li class="engage__item reveal reveal--delay-0">
           <span class="engage__num" aria-hidden="true">I</span>
           <h3 class="engage__name">La ponctualité</h3>
-          <p class="engage__text">Le 15 de chaque mois, sans exception. Livrée chez vous à Cluj-Napoca, frais de livraison inclus.</p>
+          <p class="engage__text">Expédiée le 15 de chaque mois, livrée dans les jours qui suivent à Cluj-Napoca — frais de livraison inclus.</p>
         </li>
         <li class="engage__item reveal reveal--delay-1">
           <span class="engage__num" aria-hidden="true">II</span>
           <h3 class="engage__name">La liberté</h3>
-          <p class="engage__text">Vous gardez la main sur votre abonnement et le gérez depuis votre espace abonné, selon la formule choisie et nos conditions.</p>
+          <p class="engage__text">Votre abonnement vous appartient. Vous pouvez le modifier, le mettre en pause ou y mettre fin depuis votre espace, selon les conditions de votre formule.</p>
         </li>
         <li class="engage__item reveal reveal--delay-2">
           <span class="engage__num" aria-hidden="true">III</span>
           <h3 class="engage__name">La transparence</h3>
-          <p class="engage__text">Le prix annoncé est le prix payé. Pas de frais cachés, jamais — c’est notre seule règle.</p>
+          <p class="engage__text">Le prix annoncé est le prix payé. Pas de frais cachés, pas d’exception — jamais.</p>
         </li>
       {%- else -%}
         {%- for block in section.blocks -%}
@@ -166,8 +166,8 @@
 {
   "name": "08 — Nos engagements",
   "settings": [
-    { "type": "text", "id": "title", "label": "Titre", "default": "Trois engagements. Une seule promesse : le 15 du mois." },
-    { "type": "textarea", "id": "lead", "label": "Phrase d’introduction", "default": "Vous choisissez la durée. Nous nous occupons du reste — un objet, un carnet, un tampon, douze mois durant." }
+    { "type": "text", "id": "title", "label": "Titre", "default": "Trois engagements. Une seule promesse : aux alentours du 15." },
+    { "type": "textarea", "id": "lead", "label": "Phrase d’introduction", "default": "Vous choisissez la durée. Nous nous occupons du reste — une région, un artisan, un tampon dans votre Passeport, chaque mois." }
   ],
   "blocks": [
     {
@@ -185,9 +185,9 @@
     {
       "name": "08 — Nos engagements",
       "blocks": [
-        { "type": "engagement", "settings": { "roman": "I",   "name": "La ponctualité", "text": "Le 15 de chaque mois, sans exception. Livrée chez vous à Cluj-Napoca, frais de livraison inclus." } },
-        { "type": "engagement", "settings": { "roman": "II",  "name": "La liberté", "text": "Vous gardez la main sur votre abonnement et le gérez depuis votre espace abonné, selon la formule choisie et nos conditions." } },
-        { "type": "engagement", "settings": { "roman": "III", "name": "La transparence", "text": "Le prix annoncé est le prix payé. Pas de frais cachés, jamais — c’est notre seule règle." } }
+        { "type": "engagement", "settings": { "roman": "I",   "name": "La ponctualité", "text": "Expédiée le 15 de chaque mois, livrée dans les jours qui suivent à Cluj-Napoca — frais de livraison inclus." } },
+        { "type": "engagement", "settings": { "roman": "II",  "name": "La liberté", "text": "Votre abonnement vous appartient. Vous pouvez le modifier, le mettre en pause ou y mettre fin depuis votre espace, selon les conditions de votre formule." } },
+        { "type": "engagement", "settings": { "roman": "III", "name": "La transparence", "text": "Le prix annoncé est le prix payé. Pas de frais cachés, pas d’exception — jamais." } }
       ]
     }
   ]

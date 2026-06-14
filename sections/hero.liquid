@@ -6,6 +6,9 @@
   assign subtext         = section.settings.subtext         | default: 'Maison Bonjour la livre chaque mois à Cluj-Napoca.'
   assign cta_label       = section.settings.cta_label       | default: 'S’abonner à la box'
   assign wordmark        = section.settings.wordmark        | default: 'MAISON BONJOUR'
+  # Indice sobre que Maison Bonjour est une box (compréhension immédiate au 1er écran,
+  # sans rendre le hero commercial). Laisser vide pour masquer.
+  assign eyebrow         = section.settings.eyebrow
 -%}
 
 <section class="hero{% if hero_image == blank %} hero--no-image{% endif %}" aria-label="Le Départ" role="region" data-motion-hero>
@@ -39,6 +42,11 @@
   <div class="hero__frame">
 
     <div class="hero__caption" data-motion-layer data-motion-depth="10">
+      {%- if eyebrow != blank -%}
+        <p class="hero__eyebrow">
+          <span class="hero__eyebrow-rule" aria-hidden="true"></span>{{ eyebrow }}
+        </p>
+      {%- endif -%}
       <p class="hero__citation">
         <em>{{ citation_line_1 }}<br>{{ citation_line_2 }}</em>
       </p>
@@ -241,16 +249,20 @@
        Cartedevizitare.svg/.png) — c'est ELLE qui doit porter le grand lettrage du hero,
        PAS Kalnia. Kalnia reste pour les titres éditoriaux courants ; TAN Pearl est
        réservée au wordmark Maison Bonjour. */
-    font-family: "TAN Pearl", "Kalnia", "Instrument Serif", serif;
+    font-family: "TAN Pearl", "Instrument Serif", serif;
     font-optical-sizing: auto;
     font-style: normal;
     font-weight: 700;
     font-variation-settings: "wdth" 100;
-    font-size: clamp(2.4rem, 9.5vw, 9rem);
+    /* Taille bornée pour que « MAISON BONJOUR » (TAN Pearl, police large) tienne
+       TOUJOURS sur une ligne sans déborder — sinon body{overflow-x:hidden} coupait
+       le « R » et décalait le mot (bug Edge/desktop). 8.4vw plafonné à 7rem laisse
+       une marge confortable de 1440 jusqu'à 1024. */
+    font-size: clamp(2.2rem, 8.4vw, 7rem);
     line-height: 0.82;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
     color: var(--cream);
-    -webkit-text-stroke: 0.02em var(--cream);
+    -webkit-text-stroke: 0.012em var(--cream);
     paint-order: stroke fill;
     text-shadow: 0 10px 70px rgba(15, 26, 46, 0.4);
     pointer-events: none;
@@ -312,9 +324,9 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* Tablette */
+  /* Tablette — borne basse pour rester sur une ligne sans débordement. */
   @media (max-width: 1023px) {
-    .hero__wordmark { font-size: clamp(2.9rem, 11vw, 10rem); }
+    .hero__wordmark { font-size: clamp(2.6rem, 9.5vw, 6rem); }
     .hero__caption { max-width: 480px; }
   }
 
@@ -427,6 +439,12 @@
       "type": "url",
       "id": "subscribe_url",
       "label": "Lien — S'abonner"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Indice « box » (au-dessus de la citation)",
+      "info": "Indice sobre pour comprendre tout de suite que c'est une box. Vide = masqué."
     },
     {
       "type": "text",

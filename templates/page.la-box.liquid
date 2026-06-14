@@ -1,0 +1,22 @@
+{% comment %}
+  Page dédiée « La Box » — édition Bretagne.
+  S'active en assignant ce template à une page de handle « la-box »
+  (Admin Shopify → Pages → La Box → Modèle de thème : page.la-box).
+
+  Structure :
+    1. la-box-page              → hero clair + corps éditorial + contexte + tags
+    2. passport                 → section Passeport (réutilisée telle quelle)
+    3. final-subscription-pricing → bloc « S'abonner à la box » (réutilisé,
+                                    même contenu que la home — settings partagés)
+
+  Réutiliser les sections existantes via {% section %} évite toute duplication
+  de code : modifier le Passeport ou l'abonnement se fait à un seul endroit.
+{% endcomment %}
+
+<div class="page-la-box">
+  {% section 'la-box-page' %}
+  {% render 'section-divider', top: '#FEF9F3', bottom: '#FEF9F3', soft: true %}
+  {% section 'passport' %}
+  {% render 'section-divider', top: '#FEF9F3', bottom: '#FEF9F3', soft: true %}
+  {% section 'final-subscription-pricing' %}
+</div>

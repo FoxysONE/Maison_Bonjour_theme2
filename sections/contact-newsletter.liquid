@@ -26,7 +26,7 @@
   endif
 -%}
 
-<section class="contact-nl section--warm" aria-labelledby="contact-nl-title-{{ section.id }}">
+<section id="contact-form" class="contact-nl section--warm" aria-labelledby="contact-nl-title-{{ section.id }}">
   <div class="container">
 
     <header class="contact-nl__intro reveal">
@@ -99,24 +99,41 @@
 
               <div class="contact-nl__row contact-nl__row--split">
                 <p class="contact-nl__field">
-                  <label class="contact-nl__label" for="contact-nl-name">Prénom</label>
+                  <label class="contact-nl__label" for="contact-nl-firstname">{{ 'contact.form.firstname' | t }}</label>
                   <input class="contact-nl__input" type="text"
-                         id="contact-nl-name" name="contact[name]"
-                         value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.first_name }}{% endif %}"
+                         id="contact-nl-firstname" name="contact[Prénom]"
+                         value="{% if customer %}{{ customer.first_name }}{% endif %}"
                          autocomplete="given-name">
                 </p>
                 <p class="contact-nl__field">
-                  <label class="contact-nl__label" for="contact-nl-email">Email <span aria-hidden="true">*</span></label>
+                  <label class="contact-nl__label" for="contact-nl-lastname">{{ 'contact.form.lastname' | t }}</label>
+                  <input class="contact-nl__input" type="text"
+                         id="contact-nl-lastname" name="contact[Nom]"
+                         value="{% if customer %}{{ customer.last_name }}{% endif %}"
+                         autocomplete="family-name">
+                </p>
+              </div>
+
+              <div class="contact-nl__row contact-nl__row--split">
+                <p class="contact-nl__field">
+                  <label class="contact-nl__label" for="contact-nl-email">{{ 'contact.form.email' | t }} <span aria-hidden="true">*</span></label>
                   <input class="contact-nl__input" type="email"
                          id="contact-nl-email" name="contact[email]"
                          value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
                          autocomplete="email" required aria-required="true"
                          spellcheck="false" autocapitalize="off">
                 </p>
+                <p class="contact-nl__field">
+                  <label class="contact-nl__label" for="contact-nl-phone">{{ 'contact.form.phone' | t }}</label>
+                  <input class="contact-nl__input" type="tel"
+                         id="contact-nl-phone" name="contact[phone]"
+                         value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+                         autocomplete="tel">
+                </p>
               </div>
 
               <p class="contact-nl__field">
-                <label class="contact-nl__label" for="contact-nl-subject">Sujet</label>
+                <label class="contact-nl__label" for="contact-nl-subject">{{ 'contact.form.subject' | t }}</label>
                 <span class="contact-nl__select-wrap">
                   <select class="contact-nl__select" id="contact-nl-subject" name="contact[Sujet]">
                     <option value="Question sur l’abonnement">Question sur l’abonnement</option>
@@ -130,7 +147,7 @@
               </p>
 
               <p class="contact-nl__field">
-                <label class="contact-nl__label" for="contact-nl-body">Message</label>
+                <label class="contact-nl__label" for="contact-nl-body">{{ 'contact.form.message' | t }}</label>
                 <textarea class="contact-nl__input contact-nl__textarea"
                           id="contact-nl-body" name="contact[body]" rows="4">{% if form.body %}{{ form.body }}{% endif %}</textarea>
               </p>
@@ -138,7 +155,7 @@
               <p class="contact-nl__check">
                 <input class="contact-nl__check-input" type="checkbox"
                        id="contact-nl-news" name="contact[Souhaite la Lettre]" value="Oui">
-                <label class="contact-nl__check-label" for="contact-nl-news">Je souhaite recevoir La Lettre Maison Bonjour.</label>
+                <label class="contact-nl__check-label" for="contact-nl-news">{{ 'contact.form.newsletter_optin' | t }}</label>
               </p>
 
               <button class="contact-nl__submit" type="submit">{{ button_label }}</button>

@@ -1,0 +1,370 @@
+{%- liquid
+  # =====================================================================
+  # PAGE « LA BOX » — composition éditoriale (esprit magazine français)
+  # ---------------------------------------------------------------------
+  # Hero couverture → Le concept (rail + grande déclaration) → Ce que contient
+  # (panneau crème teinté) → Bretagne (bandeau paysage + récit). Passeport +
+  # Abonnement rendus après (templates/page.la-box.liquid).
+  # Principes : respiration, hiérarchie forte, asymétrie, peu de filets bruts,
+  # un fond teinté pour rythmer, vrais visuels. Mystère préservé (catégories).
+  # =====================================================================
+
+  # --- Hero ---
+  assign hero_eyebrow = section.settings.hero_eyebrow | default: 'La box mensuelle française'
+  assign hero_title   = section.settings.hero_title    | default: 'La Box Maison Bonjour'
+  assign hero_sub     = section.settings.hero_subtitle | default: 'Une région française, chaque mois, racontée par ses artisans.'
+  assign img          = section.settings.image
+  assign img_alt      = section.settings.image_alt     | default: 'La box Maison Bonjour — édition Bretagne, sur un fond breton clair.'
+  assign img_caption  = section.settings.image_caption  | default: 'Édition Bretagne · Juillet 2026'
+
+  # --- Le concept ---
+  assign concept_eyebrow = section.settings.concept_eyebrow | default: 'Le concept'
+  assign concept         = section.settings.concept
+
+  # --- Ce que contient une édition ---
+  assign contains_title = section.settings.contains_title | default: 'Ce que contient une édition'
+  assign contains_intro = section.settings.contains_intro | default: 'Dans chaque box, vous retrouvez une composition pensée autour d’une région française :'
+
+  # --- Édition Bretagne ---
+  assign edition_label  = section.settings.edition_label | default: 'Première édition · Juillet 2026'
+  assign region         = section.settings.region        | default: 'Bretagne'
+  assign accroche       = section.settings.accroche       | default: 'Entre l’Atlantique et les mains qui façonnent.'
+  assign region_image   = section.settings.region_image
+  assign edition_body   = section.settings.edition_body
+  assign context        = section.settings.context        | default: 'Cette première édition est lancée dans le cadre de la Semaine de la France à Cluj-Napoca, co-organisée par l’Institut Français et le CFAC · 13–16 juillet 2026.'
+  assign tags_raw       = section.settings.tags           | default: 'Pièce à conserver · Saveur atlantique · Soin naturel breton · Savoir-faire transmis · Contenu secret à l’ouverture'
+  assign tags           = tags_raw | split: ' · '
+-%}
+
+<section class="labox section--cream" aria-label="La Box Maison Bonjour">
+
+  {%- comment -%} ---- 1. HERO « couverture » ---- {%- endcomment -%}
+  <div class="container labox__hero">
+    <div class="labox__hero-text reveal">
+      {%- if hero_eyebrow != blank -%}
+        <p class="label labox__eyebrow"><span class="labox__eyebrow-rule" aria-hidden="true"></span>{{ hero_eyebrow }}</p>
+      {%- endif -%}
+      <h1 class="labox__title">{{ hero_title }}</h1>
+      <p class="labox__accroche">{{ hero_sub }}</p>
+    </div>
+
+    <figure class="labox__hero-media reveal reveal--delay-1">
+      <div class="labox__frame">
+        {%- if img != blank -%}
+          {{ img | image_url: width: 1600 | image_tag:
+              loading: 'eager', fetchpriority: 'high',
+              sizes: '(min-width: 1024px) 54vw, 92vw',
+              widths: '600, 900, 1200, 1600', class: 'labox__img', alt: img_alt }}
+        {%- else -%}
+          {%- comment -%} IMAGE À REMPLACER : photo pro de la box Bretagne sur fond clair.
+              Placeholder = current-box.jpg, remplaçable au customizer. {%- endcomment -%}
+          <img class="labox__img"
+               src="{{ 'current-box.jpg' | asset_url }}"
+               alt="{{ img_alt | escape }}"
+               width="1200" height="900" loading="eager" fetchpriority="high" decoding="async">
+        {%- endif -%}
+      </div>
+      {%- if img_caption != blank -%}
+        <figcaption class="labox__caption"><span class="labox__caption-rule" aria-hidden="true"></span>{{ img_caption }}</figcaption>
+      {%- endif -%}
+    </figure>
+  </div>
+
+  {%- comment -%} ---- 2. LE CONCEPT — rail + grande déclaration ---- {%- endcomment -%}
+  <div class="container labox__concept reveal">
+    <aside class="labox__rail">
+      <span class="labox__rail-num">01</span>
+      <span class="labox__rail-label">{{ concept_eyebrow }}</span>
+    </aside>
+    <div class="labox__concept-prose editorial">
+      {%- if concept != blank -%}
+        {{ concept }}
+      {%- else -%}
+        <p>Chaque mois, Maison Bonjour consacre une édition à une région française.</p>
+        <p>La box n’est pas pensée comme une simple sélection de produits, mais comme une escale : des matières, des gestes, des saveurs et des objets choisis pour raconter un territoire.</p>
+        <p>Une partie du contenu reste secrète jusqu’à l’ouverture. C’est volontaire. La surprise fait partie du voyage — mais rien n’est laissé au hasard.</p>
+        <p>Chaque édition réunit des produits artisanaux français, un livret éditorial, une signature sensible et une trace dans le Passeport Maison Bonjour.</p>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%} ---- 3. CE QUE CONTIENT — panneau teinté (rythme magazine) ---- {%- endcomment -%}
+  <div class="labox__panel-wrap reveal">
+    <div class="container labox__panel">
+      <header class="labox__panel-head">
+        <span class="labox__rail-num labox__rail-num--inline">02</span>
+        <div>
+          <h2 class="labox__contains-title">{{ contains_title }}</h2>
+          {%- if contains_intro != blank -%}<p class="labox__contains-intro">{{ contains_intro }}</p>{%- endif -%}
+        </div>
+      </header>
+
+      <ul class="labox__items" role="list">
+        <li class="labox__item"><span class="labox__item-num" aria-hidden="true">01</span><h3 class="labox__item-title">La pièce</h3><p class="labox__item-text">Une pièce à conserver.</p></li>
+        <li class="labox__item"><span class="labox__item-num" aria-hidden="true">02</span><h3 class="labox__item-title">Les saveurs</h3><p class="labox__item-text">Une ou plusieurs saveurs choisies auprès d’artisans français.</p></li>
+        <li class="labox__item"><span class="labox__item-num" aria-hidden="true">03</span><h3 class="labox__item-title">Le geste</h3><p class="labox__item-text">Un geste de soin, de maison ou d’art de vivre.</p></li>
+        <li class="labox__item"><span class="labox__item-num" aria-hidden="true">04</span><h3 class="labox__item-title">Le livret</h3><p class="labox__item-text">Un livret éditorial pour comprendre la région, les maisons et les savoir-faire.</p></li>
+        <li class="labox__item"><span class="labox__item-num" aria-hidden="true">05</span><h3 class="labox__item-title">Le Passeport</h3><p class="labox__item-text">Une trace dans votre Passeport Maison Bonjour.</p></li>
+      </ul>
+    </div>
+  </div>
+
+  {%- comment -%} ---- 4. ÉDITION BRETAGNE — bandeau paysage + récit ---- {%- endcomment -%}
+  <div class="container labox__edition reveal">
+    <figure class="labox__edition-media">
+      {%- if region_image != blank -%}
+        {{ region_image | image_url: width: 2000 | image_tag:
+            loading: 'lazy', sizes: '92vw', widths: '800, 1200, 1600, 2000',
+            class: 'labox__edition-img', alt: 'Paysage de Bretagne — Maison Bonjour' }}
+      {%- else -%}
+        <img class="labox__edition-img"
+             src="{{ 'paysage-region-bretagne-01.jpeg' | asset_url }}"
+             alt="Paysage de Bretagne — côte, granit et embruns"
+             width="2000" height="1200" loading="lazy" decoding="async">
+      {%- endif -%}
+      <span class="labox__edition-overlay" aria-hidden="true"></span>
+      <figcaption class="labox__edition-figcap">
+        <span class="labox__edition-label">{{ edition_label }}</span>
+        <span class="labox__edition-name">{{ region }}</span>
+      </figcaption>
+    </figure>
+
+    <div class="labox__edition-grid">
+      <p class="labox__edition-accroche">{{ accroche }}</p>
+      <div class="labox__edition-body editorial">
+        {%- if edition_body != blank -%}
+          {{ edition_body }}
+        {%- else -%}
+          <p>Pour sa première édition, Maison Bonjour prend la direction de la Bretagne — une région qui forge ses caractères dans le sel, le granit et la mer depuis des siècles.</p>
+          <p>Ce qui vous attend dans cette box ne s’annonce pas par une liste. Certaines pièces se gardent. D’autres se goûtent lentement, d’autres encore se posent sur une table ou sur une peau. Chaque objet, chaque saveur a été choisi après avoir rencontré l’artisan, compris sa méthode et vérifié ce qu’il refusait de faire autant que ce qu’il faisait.</p>
+          <p>Rien dans cette box ne se trouve en grande surface. Tout arrive avec son histoire, glissée dans le livret.</p>
+        {%- endif -%}
+
+        {%- if context != blank -%}<p class="labox__context">{{ context }}</p>{%- endif -%}
+
+        {%- if tags.size > 0 -%}
+          <ul class="labox__tags" role="list" aria-label="Ce que contient la box">
+            {%- for tag in tags -%}<li class="labox__tag">{{ tag | strip }}</li>{%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+</section>
+
+{% stylesheet %}
+  .labox { padding-block: clamp(96px, 11vw, 160px) clamp(56px, 7vw, 96px); }
+
+  /* Surtitre hero */
+  .labox__eyebrow { display: inline-flex; align-items: center; gap: 12px; color: var(--gold); margin: 0 0 22px; }
+  .labox__eyebrow-rule { display: inline-block; width: 28px; height: 1px; background: var(--gold); opacity: 0.75; }
+
+  /* ---- 1. Hero couverture ---- */
+  .labox__hero {
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(36px, 5vw, 64px); align-items: center;
+  }
+  .labox__title {
+    margin: 0; font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    font-size: clamp(3rem, 5.5vw + 1rem, 6rem); line-height: 0.98;
+    letter-spacing: -0.02em; color: var(--marine); text-wrap: balance;
+  }
+  .labox__accroche {
+    margin: clamp(20px, 2.4vw, 30px) 0 0; font-family: var(--font-sans); font-weight: 300;
+    font-size: clamp(1.05rem, 0.5vw + 0.95rem, 1.3rem); line-height: 1.6;
+    color: var(--text-muted); max-width: 30ch;
+  }
+  .labox__hero-media { margin: 0; }
+  .labox__frame { position: relative; }
+  .labox__frame::before {
+    content: ""; position: absolute; inset: 16px -16px -16px 16px;
+    border: 1px solid var(--gold); border-radius: 10px; opacity: 0.5; pointer-events: none;
+  }
+  .labox__img {
+    position: relative; display: block; width: 100%; height: auto;
+    aspect-ratio: 4 / 3; object-fit: cover; border-radius: 10px;
+    border: 1px solid var(--border); box-shadow: 0 14px 34px rgba(43, 32, 24, 0.10);
+  }
+  .labox__caption {
+    display: flex; align-items: center; gap: 12px; margin-top: 22px;
+    font-family: var(--font-sans); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.28em; text-transform: uppercase; color: var(--text-muted);
+  }
+  .labox__caption-rule { display: inline-block; width: 28px; height: 1px; background: var(--gold); opacity: 0.8; }
+
+  /* ---- Rail éditorial (numéro + label) ---- */
+  .labox__rail-num {
+    font-family: var(--font-serif); font-style: italic; color: var(--gold);
+    font-size: clamp(2rem, 3vw, 3rem); line-height: 1; font-variant-numeric: tabular-nums;
+  }
+  .labox__rail-label {
+    display: block; margin-top: 12px; font-family: var(--font-sans);
+    font-size: 11px; font-weight: 600; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--marine);
+  }
+
+  /* ---- 2. Le concept ---- */
+  .labox__concept {
+    margin-top: clamp(80px, 10vw, 150px);
+    display: grid; grid-template-columns: 1fr; gap: clamp(24px, 4vw, 40px);
+  }
+  .labox__concept-prose { max-width: 60ch; }
+  .labox__concept-prose p {
+    margin: 0 0 1em; font-family: var(--font-sans); font-weight: 300;
+    font-size: clamp(1.05rem, 0.4vw + 0.95rem, 1.2rem); line-height: 1.75; color: var(--text);
+  }
+  .labox__concept-prose p:last-child { margin-bottom: 0; }
+  /* Grande déclaration d'ouverture */
+  .labox__concept-prose p:first-child {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    font-size: clamp(1.7rem, 1.8vw + 1rem, 2.6rem); line-height: 1.22; color: var(--marine);
+    margin-bottom: clamp(22px, 2.5vw, 34px); max-width: 20ch;
+  }
+
+  /* ---- 3. Panneau teinté « ce que contient » ---- */
+  .labox__panel-wrap { margin-top: clamp(80px, 10vw, 150px); }
+  .labox__panel {
+    background: var(--cream-warm);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: clamp(40px, 5vw, 72px) clamp(28px, 4vw, 64px);
+  }
+  .labox__panel-head { margin-bottom: clamp(32px, 4vw, 52px); }
+  .labox__rail-num--inline { display: block; margin-bottom: 14px; }
+  .labox__contains-title {
+    margin: 0; font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    font-size: clamp(2rem, 3vw + 1rem, 3.2rem); line-height: 1.06; letter-spacing: -0.01em; color: var(--marine);
+  }
+  .labox__contains-intro {
+    margin: clamp(14px, 1.8vw, 20px) 0 0; font-family: var(--font-sans); font-weight: 300;
+    font-size: clamp(1rem, 0.4vw + 0.9rem, 1.1rem); line-height: 1.7; color: var(--text); max-width: 56ch;
+  }
+  .labox__items {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: 1fr;
+  }
+  .labox__item { padding: clamp(22px, 2.4vw, 30px) 0; border-bottom: 1px solid var(--border); }
+  .labox__item:last-child { border-bottom: 0; }
+  .labox__item-num {
+    display: block; font-family: var(--font-serif); font-style: italic;
+    font-size: clamp(1.5rem, 2vw, 2rem); line-height: 1; color: var(--gold);
+    margin-bottom: 12px; font-variant-numeric: tabular-nums;
+  }
+  .labox__item-title {
+    margin: 0 0 8px; font-family: var(--font-sans); font-weight: 600; font-size: 11px;
+    letter-spacing: 0.24em; text-transform: uppercase; color: var(--marine);
+  }
+  .labox__item-text {
+    margin: 0; font-family: var(--font-serif); font-style: italic;
+    font-size: clamp(1.05rem, 0.5vw + 0.9rem, 1.2rem); line-height: 1.4; color: var(--text-muted);
+  }
+
+  /* ---- 4. Bretagne — bandeau paysage ---- */
+  .labox__edition { margin-top: clamp(80px, 10vw, 150px); }
+  .labox__edition-media {
+    position: relative; margin: 0; overflow: hidden; border-radius: 14px;
+    border: 1px solid var(--border);
+  }
+  .labox__edition-img {
+    display: block; width: 100%; height: auto;
+    aspect-ratio: 21 / 9; object-fit: cover;
+  }
+  .labox__edition-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(15,26,46,0.15) 0%, rgba(15,26,46,0.1) 40%, rgba(15,26,46,0.62) 100%);
+  }
+  .labox__edition-figcap {
+    position: absolute; left: clamp(20px, 3vw, 44px); bottom: clamp(20px, 3vw, 40px);
+    right: clamp(20px, 3vw, 44px); color: var(--cream);
+  }
+  .labox__edition-label {
+    display: block; font-family: var(--font-sans); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-soft); margin-bottom: 8px;
+  }
+  .labox__edition-name {
+    display: block; font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(3rem, 9vw, 7rem); line-height: 0.9; letter-spacing: -0.005em;
+    color: var(--cream); text-shadow: 0 2px 24px rgba(15,26,46,0.5);
+  }
+  .labox__edition-grid {
+    margin-top: clamp(36px, 5vw, 64px);
+    display: grid; grid-template-columns: 1fr; gap: clamp(20px, 3vw, 40px);
+  }
+  .labox__edition-accroche {
+    margin: 0; font-family: var(--font-serif); font-style: italic;
+    font-size: clamp(1.5rem, 1.4vw + 1rem, 2.4rem); line-height: 1.3; color: var(--marine); max-width: 18ch;
+  }
+  .labox__edition-body p {
+    margin: 0 0 1.1em; font-family: var(--font-sans); font-weight: 300;
+    font-size: clamp(1.05rem, 0.4vw + 0.95rem, 1.18rem); line-height: 1.78; color: var(--text); max-width: 62ch;
+  }
+  .labox__edition-body p:last-child { margin-bottom: 0; }
+  .labox__context {
+    margin-top: clamp(24px, 3vw, 36px) !important; padding-left: 16px;
+    border-left: 1px solid rgba(184, 150, 90, 0.5);
+    font-family: var(--font-serif) !important; font-style: italic;
+    font-size: 14px !important; line-height: 1.55 !important; color: var(--text-muted) !important;
+  }
+  .labox__tags { display: flex; flex-wrap: wrap; gap: 10px 12px; margin: clamp(28px, 3.5vw, 40px) 0 0; padding: 0; list-style: none; }
+  .labox__tag {
+    padding: 8px 16px; font-family: var(--font-sans); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--marine);
+    background: var(--cream); border: 1px solid var(--border); border-radius: 999px;
+  }
+
+  /* ---- Tablette / desktop ---- */
+  @media (min-width: 768px) {
+    .labox__items { grid-template-columns: repeat(5, 1fr); }
+    .labox__item { padding: 0 clamp(18px, 1.8vw, 26px); border-bottom: 0; border-left: 1px solid var(--border); }
+    .labox__item:first-child { border-left: 0; padding-left: 0; }
+    .labox__item:last-child { padding-right: 0; }
+    .labox__panel-head { display: grid; grid-template-columns: auto 1fr; gap: clamp(24px, 3vw, 44px); align-items: start; }
+    .labox__rail-num--inline { margin-bottom: 0; }
+  }
+  @media (min-width: 1024px) {
+    .labox__hero { grid-template-columns: 42fr 58fr; column-gap: clamp(48px, 5vw, 96px); }
+    .labox__concept { grid-template-columns: minmax(120px, 1fr) 3fr; column-gap: clamp(40px, 5vw, 96px); }
+    .labox__edition-grid { grid-template-columns: 4fr 8fr; column-gap: clamp(48px, 5vw, 96px); align-items: start; }
+  }
+
+  @media (max-width: 767px) {
+    .labox { padding-block: 88px 48px; }
+    .labox__title { font-size: clamp(2.8rem, 13vw, 4rem); }
+    .labox__accroche, .labox__edition-accroche { max-width: 100%; }
+    .labox__edition-img { aspect-ratio: 4 / 3; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "La Box — Page",
+  "settings": [
+    { "type": "header", "content": "Hero de page" },
+    { "type": "text",     "id": "hero_eyebrow",  "label": "Surtitre", "default": "La box mensuelle française" },
+    { "type": "text",     "id": "hero_title",    "label": "Titre", "default": "La Box Maison Bonjour" },
+    { "type": "textarea", "id": "hero_subtitle", "label": "Sous-titre", "default": "Une région française, chaque mois, racontée par ses artisans." },
+    { "type": "image_picker", "id": "image", "label": "Image de la box (fond breton clair)", "info": "Laisser vide = placeholder current-box.jpg en attendant la photo pro." },
+    { "type": "text",     "id": "image_alt", "label": "Texte alternatif de l’image" },
+    { "type": "text",     "id": "image_caption", "label": "Légende sous l’image", "default": "Édition Bretagne · Juillet 2026" },
+
+    { "type": "header", "content": "Le concept" },
+    { "type": "text",     "id": "concept_eyebrow", "label": "Label (rail)", "default": "Le concept" },
+    { "type": "richtext", "id": "concept", "label": "Texte du concept", "info": "Laisser vide pour le texte par défaut (4 paragraphes)." },
+
+    { "type": "header", "content": "Ce que contient une édition" },
+    { "type": "text",     "id": "contains_title", "label": "Titre", "default": "Ce que contient une édition" },
+    { "type": "textarea", "id": "contains_intro", "label": "Phrase d’introduction", "default": "Dans chaque box, vous retrouvez une composition pensée autour d’une région française :" },
+
+    { "type": "header", "content": "Édition Bretagne" },
+    { "type": "text",     "id": "edition_label", "label": "Label", "default": "Première édition · Juillet 2026" },
+    { "type": "text",     "id": "region",        "label": "Titre (région, en TAN Pearl)", "default": "Bretagne" },
+    { "type": "textarea", "id": "accroche",      "label": "Accroche", "default": "Entre l’Atlantique et les mains qui façonnent." },
+    { "type": "image_picker", "id": "region_image", "label": "Image paysage (bandeau Bretagne)", "info": "Si vide : paysage-region-bretagne-01.jpeg." },
+    { "type": "richtext", "id": "edition_body",  "label": "Corps éditorial", "info": "Laisser vide pour le texte Bretagne par défaut (3 paragraphes)." },
+    { "type": "textarea", "id": "context",       "label": "Ligne contexte", "default": "Cette première édition est lancée dans le cadre de la Semaine de la France à Cluj-Napoca, co-organisée par l’Institut Français et le CFAC · 13–16 juillet 2026." },
+    { "type": "textarea", "id": "tags",          "label": "Tags (séparés par « · »)", "default": "Pièce à conserver · Saveur atlantique · Soin naturel breton · Savoir-faire transmis · Contenu secret à l’ouverture" }
+  ],
+  "presets": [{ "name": "La Box — Page" }]
+}
+{% endschema %}

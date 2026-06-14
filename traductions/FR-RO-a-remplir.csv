@@ -1,0 +1,90 @@
+Section;Fichier;Emplacement (cle / setting);Texte FR;Texte RO (a remplir);Methode d'integration;Categorie;Note
+HERO;sections/hero.liquid;setting citation_line_1;"Il y a une certaine France";;Translate & Adapt (Contenu du theme);court;
+HERO;sections/hero.liquid;setting citation_line_2;"qui ne s'exporte jamais.";;Translate & Adapt (Contenu du theme);court;
+HERO;sections/hero.liquid;setting subtext;"Maison Bonjour la livre chaque mois a Cluj-Napoca.";;Translate & Adapt (Contenu du theme);long;
+HERO;sections/hero.liquid;setting cta_label;"S'abonner a la box";;Translate & Adapt (Contenu du theme);court;
+HERO;sections/hero.liquid;markup aria/alt;"Le Depart";;Laisser FR ou code;court;identite editoriale
+NOTRE HISTOIRE;sections/story.liquid;setting title;"Nous avons quitte Paris pour Cluj.";;Translate & Adapt (Contenu du theme);court;
+NOTRE HISTOIRE;sections/story.liquid;setting year;"2025";;Laisser tel quel;court;
+NOTRE HISTOIRE;sections/story.liquid;setting signature;"Tiffany & Pierre";;Laisser FR;court;noms
+NOTRE HISTOIRE;sections/story.liquid;markup figcaption;"Pierre & Tiffany - Cluj-Napoca";;Laisser FR;court;noms
+NOTRE HISTOIRE;sections/story.liquid;FALLBACK Liquid (settings.body vide);"Pierre est ne a Senlis. Tiffany en Provence... (texte long)";;A SAISIR dans le customizer puis Translate & Adapt;long;ATTENTION fallback code non traduisible tant que le champ est vide
+LA BOX (home);sections/current-box.liquid;setting label;"Premiere edition - Juillet 2026";;Translate & Adapt (Contenu du theme);court;
+LA BOX (home);sections/current-box.liquid;setting region;"Bretagne";;Laisser FR;court;nom region
+LA BOX (home);sections/current-box.liquid;setting subtitle;"Entre l'Atlantique et les mains qui faconnent.";;Translate & Adapt (Contenu du theme);court;
+LA BOX (home);sections/current-box.liquid;setting context;"Cette premiere edition est lancee dans le cadre de la Semaine de la France a Cluj-Napoca... (long)";;Translate & Adapt (Contenu du theme);long;
+LA BOX (home);sections/current-box.liquid;setting passport_link_label;"Decouvrir le Passeport";;Translate & Adapt (Contenu du theme);court;
+LA BOX (home);sections/current-box.liquid;setting seal;"Chaque boite est preparee avec soin, puis scellee a la main par un sceau Maison Bonjour.";;Translate & Adapt (Contenu du theme);long;
+LA BOX (home);sections/current-box.liquid;FALLBACK Liquid intro;"Pour sa premiere edition, Maison Bonjour prend la direction de la Bretagne... (long)";;A SAISIR dans le customizer puis Translate & Adapt;long;ATTENTION fallback code
+LA BOX (home);sections/current-box.liquid;FALLBACK Liquid hints;"Piece a conserver - Saveur atlantique - Soin naturel breton - Savoir-faire transmis - Contenu secret a l'ouverture";;A SAISIR (blocs/metafields) puis Translate & Adapt;court;ATTENTION fallback code
+ARTISAN (home);sections/artisan.liquid;setting kicker;"Le savoir-faire";;Translate & Adapt (Contenu du theme);court;
+ARTISAN (home);sections/artisan.liquid;setting title;"Ce que veut dire (artisan) chez Maison Bonjour.";;Translate & Adapt (Contenu du theme);court;
+ARTISAN (home);sections/artisan.liquid;setting label;"Aubagne - Provence";;Laisser FR;court;lieu
+ARTISAN (home);sections/artisan.liquid;setting artisan;"Les Faiences de Louis Sicard";;Laisser FR;court;nom artisan
+ARTISAN (home);sections/artisan.liquid;setting since;"1895";;Laisser tel quel;court;
+ARTISAN (home);sections/artisan.liquid;setting link1_label;"Visite de l'atelier en video";;Translate & Adapt (Contenu du theme);court;
+ARTISAN (home);sections/artisan.liquid;setting link2_label;"Decouvrez tous nos artisans";;Translate & Adapt (Contenu du theme);court;
+ARTISAN (home);sections/artisan.liquid;setting object_label;"L'objet - Cigale en ceramique - modele 1895";;Translate & Adapt (Contenu du theme);court;
+ARTISAN (home);sections/artisan.liquid;FALLBACK Liquid body;"Aubagne, c'est d'abord une argile... (long)";;A SAISIR dans le customizer puis Translate & Adapt;long;ATTENTION fallback code
+VOYAGE / REGIONS;sections/journey.liquid;setting order_caption;"Quelques unes de nos escales francaises";;Translate & Adapt (Contenu du theme);court;reste un setting customizer (deja traduisible)
+VOYAGE / REGIONS;locales/ro.json;journey.regions.<slug>.name;"nom de region (13 : bretagne, provence, cote-d-azur, perigord, bourgogne, alsace, normandie, pays-basque, corse, pays-de-la-loire, val-de-loire, auvergne, champagne)";;ro.json (CLE PRETE - fallback FR) ou Translate & Adapt > Contenu du theme;court;MIGRE - laisser FR (noms de regions)
+VOYAGE / REGIONS;locales/ro.json;journey.regions.<slug>.tagline;"1 accroche par region (13)";;ro.json (CLE PRETE - fallback FR) ou Translate & Adapt;long;MIGRE - a traduire
+VOYAGE / REGIONS;locales/ro.json;journey.regions.<slug>.keywords;"3 mots-cles joints par ' · ' par region (13)";;ro.json (CLE PRETE - fallback FR) ou Translate & Adapt;court;MIGRE - garder le separateur ' · '
+VOYAGE / REGIONS;locales/ro.json;journey.regions.<slug>.description;"1 description par region (13)";;ro.json (CLE PRETE - fallback FR) ou Translate & Adapt;long;MIGRE - a traduire
+PASSEPORT;sections/passport.liquid;setting section_label;"LE PASSEPORT MAISON BONJOUR";;Translate & Adapt (Contenu du theme);court;
+PASSEPORT;sections/passport.liquid;setting title;"Chaque region laisse une trace.";;Translate & Adapt (Contenu du theme);court;
+PASSEPORT;sections/passport.liquid;setting body_secondary;"Ce Passeport est aujourd'hui numerique. Il a vocation a devenir... (long)";;Translate & Adapt (Contenu du theme);long;
+PASSEPORT;sections/passport.liquid;setting edition_label;"Premiere escale";;Translate & Adapt (Contenu du theme);court;
+PASSEPORT;sections/passport.liquid;setting region;"Bretagne";;Laisser FR;court;
+PASSEPORT;sections/passport.liquid;setting month;"Juillet 2026";;Translate & Adapt (Contenu du theme);court;
+PASSEPORT;sections/passport.liquid;setting stamp_text;"Bretagne - Juillet 2026";;Translate & Adapt (Contenu du theme);court;
+PASSEPORT;sections/passport.liquid;FALLBACK Liquid body;"Avec chaque box, une nouvelle escale s'inscrit dans votre Passeport... (long)";;A SAISIR dans le customizer puis Translate & Adapt;long;ATTENTION fallback code
+PASSEPORT;sections/passport.liquid;HARDCODE bouton/aria;"Ouvrir la carte des escales";;CODE (cle locale map.open) puis traduire;court;
+ENGAGEMENTS;sections/how-it-works.liquid;setting title;"Trois engagements. Une seule promesse : aux alentours du 15.";;Translate & Adapt (Contenu du theme);court;
+ENGAGEMENTS;sections/how-it-works.liquid;setting lead;"Vous choisissez la duree. Nous nous occupons du reste... (long)";;Translate & Adapt (Contenu du theme);long;
+ENGAGEMENTS;sections/how-it-works.liquid;bloc preset (ponctualite/liberte/transparence);"La ponctualite / La liberte / La transparence + 3 paragraphes";;Translate & Adapt (Contenu du theme) - ajouter les blocs;long;defaults de blocs preset
+ABONNEMENT / VOYAGE;sections/how-it-works-scrollstack.liquid;setting title + title_accent;"Comment se passe le voyage";;Translate & Adapt (Contenu du theme);court;
+ABONNEMENT / VOYAGE;sections/how-it-works-scrollstack.liquid;setting subtitle;"Chaque mois, une region francaise. Une part de l'edition reste secrete... (long)";;Translate & Adapt (Contenu du theme);long;
+ABONNEMENT / VOYAGE;sections/how-it-works-scrollstack.liquid;cartes 1-4 (label/titre/texte);"Choisir / Recevoir / Ouvrir / Gerer + labels + 4 paragraphes";;Translate & Adapt (Contenu du theme);long;defaults de settings
+TEMOIGNAGES;sections/testimonials-editorial.liquid;setting eyebrow;"Les Voix";;Translate & Adapt (Contenu du theme);court;
+TEMOIGNAGES;sections/testimonials-editorial.liquid;setting title_before/emphasis/after;"Ce qu'elles en disent deja.";;Translate & Adapt (Contenu du theme);court;
+TEMOIGNAGES;sections/testimonials-editorial.liquid;setting subtitle;"Premieres impressions, mots partages... (long)";;Translate & Adapt (Contenu du theme);long;
+TEMOIGNAGES;sections/testimonials-editorial.liquid;blocs preset Voix 01-05 (citation + label);"5 citations + Premiere impression / Pre-lancement / Concept teste / Intention cadeau / Avant-premiere Bretagne";;Translate & Adapt (Contenu du theme) - ajouter les blocs;long;
+TEMOIGNAGES;sections/testimonials-editorial.liquid;blocs auteurs/villes;"Ana M. / Ioana P. / Elena C. / Andreea L. / Cristina B. - Cluj-Napoca / Bucarest";;Laisser FR (sauf villes si souhaite);court;noms propres
+TEMOIGNAGES;sections/testimonials-editorial.liquid;aria boutons;"Temoignage precedent / suivant";;CODE (cles locales) optionnel;court;a11y
+CARTE DE FRANCE;sections/france-carte.liquid;setting eyebrow;"Les escales";;Translate & Adapt (Contenu du theme);court;
+CARTE DE FRANCE;sections/france-carte.liquid;setting title;"La France, par fragments.";;Translate & Adapt (Contenu du theme);court;
+CARTE DE FRANCE;sections/france-carte.liquid;setting lede;"Chaque region raconte une maniere de vivre... (long)";;Translate & Adapt (Contenu du theme);long;
+CARTE DE FRANCE;sections/france-carte.liquid;setting rest_title;"Chaque mois commence quelque part.";;Translate & Adapt (Contenu du theme);court;
+CARTE DE FRANCE;sections/france-carte.liquid;setting rest_body;"Une region, un geste, une lumiere... (long)";;Translate & Adapt (Contenu du theme);long;
+CARTE DE FRANCE (zones);locales/ro.json;map.regions.<slug>.name;"nom de region (12 : provence, bretagne, cote-d-azur, bourgogne, perigord, alsace, normandie, pays-basque, corse, val-de-loire, auvergne, champagne)";;ro.json (CLE PRETE - fallback FR) ou Translate & Adapt > Contenu du theme;court;MIGRE - laisser FR (noms)
+CARTE DE FRANCE (zones);locales/ro.json;map.regions.<slug>.status;"statut (Edition confirmee / Planifiee / A venir)";;ro.json (CLE PRETE - fallback FR) ou Translate & Adapt;court;MIGRE
+CARTE DE FRANCE (zones);locales/ro.json;map.regions.<slug>.month;"mois (Juin 2026 ... ou 'Une prochaine escale Maison Bonjour.')";;ro.json (CLE PRETE - fallback FR) ou Translate & Adapt;court;MIGRE
+CARTE DE FRANCE (zones);locales/ro.json;map.regions.<slug>.phrase;"1 phrase editoriale par region (12)";;ro.json (CLE PRETE - fallback FR) ou Translate & Adapt;long;MIGRE
+CARTE DE FRANCE (zones);locales/ro.json;map.regions.<slug>.keywords;"3 descripteurs joints par ' · ' (12)";;ro.json (CLE PRETE - fallback FR) ou Translate & Adapt;court;MIGRE - garder ' · '
+CARTE DE FRANCE (panneau);locales/ro.json;map.region_label / map.soon / map.rest_title / map.rest_body;"Region / A venir / Chaque mois commence quelque part. / Une region, un geste...";;ro.json (CLE PRETE - fallback FR) ou Translate & Adapt;court/long;MIGRE
+CARTE MODALE;locales/ro.json;map.eyebrow / map.title / map.subtitle / map.close / map.footnote;"Le Passeport... / Les escales... / Survolez une region... / Fermer la carte / L'experience francaise...";;ro.json (CLE PRETE - deja existant) ou Translate & Adapt;long;MIGRE - meme source que la carte
+PAGE LA BOX;sections/la-box-page.liquid;setting hero_eyebrow;"La box mensuelle francaise";;Translate & Adapt (Contenu du theme);court;
+PAGE LA BOX;sections/la-box-page.liquid;setting hero_title;"La Box Maison Bonjour";;Laisser FR (marque) ou traduire;court;
+PAGE LA BOX;sections/la-box-page.liquid;setting hero_subtitle;"Une region francaise, chaque mois, racontee par ses artisans.";;Translate & Adapt (Contenu du theme);court;
+PAGE LA BOX;sections/la-box-page.liquid;setting image_caption;"Edition Bretagne - Juillet 2026";;Translate & Adapt (Contenu du theme);court;
+PAGE LA BOX;sections/la-box-page.liquid;setting concept_eyebrow;"Le concept";;Translate & Adapt (Contenu du theme);court;
+PAGE LA BOX;sections/la-box-page.liquid;setting concept_title;"Ce que contient une edition";;Translate & Adapt (Contenu du theme);court;
+PAGE LA BOX;sections/la-box-page.liquid;setting contains_intro;"Dans chaque box, vous retrouvez une composition pensee autour d'une region francaise :";;Translate & Adapt (Contenu du theme);long;
+PAGE LA BOX;sections/la-box-page.liquid;setting edition_label;"Premiere edition - Juillet 2026";;Translate & Adapt (Contenu du theme);court;
+PAGE LA BOX;sections/la-box-page.liquid;setting accroche;"Entre l'Atlantique et les mains qui faconnent.";;Translate & Adapt (Contenu du theme);court;
+PAGE LA BOX;sections/la-box-page.liquid;setting context;"Cette premiere edition est lancee dans le cadre de la Semaine de la France... (long)";;Translate & Adapt (Contenu du theme);long;
+PAGE LA BOX;sections/la-box-page.liquid;setting tags;"Piece a conserver - Saveur atlantique - Soin naturel breton - Savoir-faire transmis - Contenu secret a l'ouverture";;Translate & Adapt (Contenu du theme);court;
+PAGE LA BOX;sections/la-box-page.liquid;HARDCODE liste (La piece/Les saveurs/Le geste/Le livret/Le Passeport + descriptions);"5 titres + 5 descriptions";;CODE (migrer en settings/blocs) puis traduire;long;liste codee en dur
+PAGE LA BOX;sections/la-box-page.liquid;FALLBACK Liquid concept/edition body;"Chaque mois, Maison Bonjour consacre... / Pour sa premiere edition... (longs)";;A SAISIR dans le customizer puis Translate & Adapt;long;ATTENTION fallback code
+PAGE NOS ARTISANS;sections/nos-artisans.liquid;setting hero_eyebrow;"Maison Bonjour - Les maisons";;Translate & Adapt (Contenu du theme);court;
+PAGE NOS ARTISANS;sections/nos-artisans.liquid;setting hero_title;"Nos artisans";;Translate & Adapt (Contenu du theme);court;
+PAGE NOS ARTISANS;sections/nos-artisans.liquid;setting hero_subtitle;"Derriere chaque objet, une maison. Derriere chaque maison, des gestes que le temps n'a pas effaces.";;Translate & Adapt (Contenu du theme);long;
+PAGE NOS ARTISANS;sections/nos-artisans.liquid;setting intro;"Maison Bonjour ne selectionne pas seulement des produits... (long)";;Translate & Adapt (Contenu du theme);long;
+PAGE NOS ARTISANS;sections/nos-artisans.liquid;setting closing_note;"D'autres maisons rejoindront bientot cette page, au fil des prochaines editions.";;Translate & Adapt (Contenu du theme);court;
+PAGE NOS ARTISANS;sections/nos-artisans.liquid;HARDCODE rail label;"L'esprit";;CODE (setting/cle) puis traduire;court;
+PAGE NOS ARTISANS;sections/nos-artisans.liquid;HARDCODE teaser;"Premiere edition - Juillet 2026 / Les maisons que nous avons choisies... (long)";;A SAISIR / CODE puis Translate & Adapt;long;
+PAGE NOS ARTISANS;sections/nos-artisans.liquid;blocs artisan (label/name/body);"Aubagne - Provence... / Les Faiences de Louis Sicard / corps rich text";;Translate & Adapt (Contenu du theme) - par bloc;long;name = laisser FR
+SEO / META;templates/page.liquid;JSON-LD description Magazine;"Le journal editorial de Maison Bonjour... (long)";;CODE (cle locale) ou laisser FR;long;SEO non visible
+PAGES SHOPIFY;Admin Shopify (pas dans le theme);page Magazine, FAQ, Contact, CGV, Confidentialite;"contenu saisi dans l'editeur de page Shopify";;Translate & Adapt (Pages);long;cree cote Admin, pas dans le code
+PRODUITS;Admin Shopify;titres/descriptions produits, options;"contenu produit";;Translate & Adapt (Produits) + metafields;long;

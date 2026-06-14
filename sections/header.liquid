@@ -8,7 +8,11 @@
   endif
   assign box_url          = section.settings.box_url
   if box_url == blank
-    assign box_url = '/#la-box'
+    assign box_url = '/pages/la-box'
+  endif
+  assign artisans_url     = section.settings.artisans_url
+  if artisans_url == blank
+    assign artisans_url = '/pages/nos-artisans'
   endif
   assign magazine_url     = section.settings.magazine_url
   if magazine_url == blank
@@ -22,7 +26,7 @@
   if faq_url == blank
     assign faq_url = '/pages/faq'
   endif
-  assign contact_url      = section.settings.contact_url
+  assign contact_url      = section.settings.contact_url | default: '/pages/contact'
   assign logo_text        = section.settings.logo_text     | default: 'Maison Bonjour'
   assign edition_label    = section.settings.edition_label | default: 'Édition 01 · Bretagne'
   assign delivery_label   = section.settings.delivery_label| default: 'Livraison le 15 du mois'
@@ -34,7 +38,7 @@
     <div class="mb-header__inner">
 
       <nav class="mb-header__nav mb-header__nav--left" aria-label="Navigation principale">
-        <a class="mb-header__mark" href="{{ routes.root_url }}" aria-label="{{ logo_text }} — Accueil">
+        <a class="mb-header__mark" href="{{ routes.root_url }}" aria-label="{{ logo_text }} — {{ 'header.home' | t }}">
           <img class="mb-header__mark-img mb-header__mark-img--marine"
                src="{{ 'Cartedevizitare-removebg-preview.png' | asset_url }}"
                alt="" width="98" height="56" loading="eager" decoding="async">
@@ -42,29 +46,47 @@
                src="{{ 'maison_bonjour_dark_v2-removebg-preview.png' | asset_url }}"
                alt="" width="98" height="56" loading="eager" decoding="async">
         </a>
-        <a class="mb-header__link" href="{{ box_url }}">La Box</a>
-        <a class="mb-header__link" href="{{ story_url }}">Notre histoire</a>
-        <a class="mb-header__link" href="{{ magazine_url }}">Magazine</a>
+        <a class="mb-header__link" href="{{ box_url }}">{{ 'header.nav.box' | t }}</a>
+        <a class="mb-header__link" href="{{ artisans_url }}">{{ 'header.nav.artisans' | t }}</a>
+        <a class="mb-header__link" href="{{ story_url }}">{{ 'header.nav.story' | t }}</a>
+        <a class="mb-header__link" href="{{ magazine_url }}">{{ 'header.nav.magazine' | t }}</a>
       </nav>
 
-      <a class="mb-header__logo" href="{{ routes.root_url }}" aria-label="{{ logo_text }} — Accueil">
+      <a class="mb-header__logo" href="{{ routes.root_url }}" aria-label="{{ logo_text }} — {{ 'header.home' | t }}">
         <span class="mb-header__logo-text">{{ logo_text }}</span>
       </a>
 
       <nav class="mb-header__nav mb-header__nav--right" aria-label="Navigation secondaire">
-        <a class="mb-header__link" href="{{ subscribe_url }}">S&rsquo;abonner &agrave; la box</a>
+        <a class="mb-header__link" href="{{ subscribe_url }}">{{ 'header.nav.subscribe' | t }}</a>
+
+        {%- if localization.available_languages.size > 1 -%}
+          {%- form 'localization', class: 'mb-lang', id: 'MbLangDesktop' -%}
+            <span class="mb-lang__sr">{{ 'language.label' | t }}</span>
+            {%- for language in localization.available_languages -%}
+              <button
+                type="submit"
+                name="locale_code"
+                value="{{ language.iso_code }}"
+                class="mb-lang__opt{% if language.iso_code == localization.language.iso_code %} is-active{% endif %}"
+                lang="{{ language.iso_code }}"
+                {% if language.iso_code == localization.language.iso_code %}aria-current="true"{% endif %}>
+                {{ language.iso_code | slice: 0, 2 | upcase }}
+              </button>
+            {%- endfor -%}
+          {%- endform -%}
+        {%- endif -%}
 
         {%- if shop.customer_accounts_enabled -%}
-          <a class="mb-header__icon" href="{{ routes.account_url }}" aria-label="Compte">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <a class="mb-header__icon" href="{{ routes.account_url }}" aria-label="{{ 'header.account' | t }}">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="8" r="3.6"/>
               <path d="M4.5 20c0-4 3.4-7.2 7.5-7.2s7.5 3.2 7.5 7.2"/>
             </svg>
           </a>
         {%- endif -%}
 
-        <a class="mb-header__icon mb-header__cart" href="{{ routes.cart_url }}" aria-label="Panier ({{ cart.item_count }})">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <a class="mb-header__icon mb-header__cart" href="{{ routes.cart_url }}" aria-label="{{ 'header.cart' | t: count: cart.item_count }}">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M4 6h16l-1.5 12.5a2 2 0 0 1-2 1.75H7.5a2 2 0 0 1-2-1.75L4 6z"/>
             <path d="M9 6V4a3 3 0 0 1 6 0v2"/>
           </svg>
@@ -74,7 +96,7 @@
         <button
           class="mb-header__burger"
           type="button"
-          aria-label="Ouvrir le menu"
+          aria-label="{{ 'header.open_menu' | t }}"
           aria-expanded="false"
           aria-controls="MbMobileNav"
           data-mb-menu-toggle>
@@ -90,7 +112,7 @@
   <button
     class="mb-mobile-nav__close"
     type="button"
-    aria-label="Fermer le menu"
+    aria-label="{{ 'header.close_menu' | t }}"
     data-mb-menu-close>
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" aria-hidden="true">
       <path d="M5 5l14 14M19 5L5 19"/>
@@ -98,7 +120,7 @@
   </button>
 
   <div class="mb-mobile-nav__inner">
-    <a class="mb-mobile-nav__brand" href="{{ routes.root_url }}" aria-label="{{ logo_text }} — Accueil">
+    <a class="mb-mobile-nav__brand" href="{{ routes.root_url }}" aria-label="{{ logo_text }} — {{ 'header.home' | t }}">
       <img class="mb-mobile-nav__brand-img"
            src="{{ 'maison_bonjour_dark_v2-removebg-preview.png' | asset_url }}"
            alt="Maison Bonjour"
@@ -108,16 +130,34 @@
            decoding="async">
     </a>
     <nav class="mb-mobile-nav__nav" aria-label="Navigation mobile">
-      <a class="mb-mobile-nav__link" href="{{ box_url }}">La Box</a>
-      <a class="mb-mobile-nav__link" href="{{ story_url }}">Notre histoire</a>
-      <a class="mb-mobile-nav__link" href="{{ magazine_url }}">Magazine</a>
-      <a class="mb-mobile-nav__link" href="{{ subscribe_url }}">S&rsquo;abonner &agrave; la box</a>
+      <a class="mb-mobile-nav__link" href="{{ box_url }}">{{ 'header.nav.box' | t }}</a>
+      <a class="mb-mobile-nav__link" href="{{ artisans_url }}">{{ 'header.nav.artisans' | t }}</a>
+      <a class="mb-mobile-nav__link" href="{{ story_url }}">{{ 'header.nav.story' | t }}</a>
+      <a class="mb-mobile-nav__link" href="{{ magazine_url }}">{{ 'header.nav.magazine' | t }}</a>
+      <a class="mb-mobile-nav__link" href="{{ subscribe_url }}">{{ 'header.nav.subscribe' | t }}</a>
     </nav>
     <div class="mb-mobile-nav__sub">
-      <a href="{{ faq_url }}">FAQ</a>
-      <a href="{{ contact_url }}">Contact</a>
-      <a href="{{ routes.account_url }}">Compte</a>
+      <a href="{{ faq_url }}">{{ 'header.nav.faq' | t }}</a>
+      <a href="{{ contact_url }}">{{ 'header.nav.contact' | t }}</a>
+      <a href="{{ routes.account_url }}">{{ 'header.account' | t }}</a>
     </div>
+
+    {%- if localization.available_languages.size > 1 -%}
+      {%- form 'localization', class: 'mb-lang mb-lang--mobile', id: 'MbLangMobile' -%}
+        <span class="mb-lang__sr">{{ 'language.label' | t }}</span>
+        {%- for language in localization.available_languages -%}
+          <button
+            type="submit"
+            name="locale_code"
+            value="{{ language.iso_code }}"
+            class="mb-lang__opt{% if language.iso_code == localization.language.iso_code %} is-active{% endif %}"
+            lang="{{ language.iso_code }}"
+            {% if language.iso_code == localization.language.iso_code %}aria-current="true"{% endif %}>
+            {{ language.iso_code | slice: 0, 2 | upcase }}
+          </button>
+        {%- endfor -%}
+      {%- endform -%}
+    {%- endif -%}
   </div>
 </div>
 
@@ -157,9 +197,13 @@
     margin-inline: auto;
     padding: 18px clamp(20px, 4vw, 56px);
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    /* minmax(0, 1fr) force les deux colonnes latérales à être STRICTEMENT égales
+       (chacune la moitié de l'espace restant) : sans le min:0, un côté plus large
+       (4 liens à gauche vs 1 à droite) ferait grossir sa piste et décentrerait le
+       wordmark. Ici la colonne auto centrale reste géométriquement centrée. */
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     align-items: center;
-    gap: 24px;
+    gap: clamp(32px, 5vw, 72px);
     min-height: 64px;
   }
 
@@ -168,10 +212,18 @@
   .mb-header__nav {
     display: flex;
     align-items: center;
-    gap: clamp(22px, 3vw, 40px);
+    /* Gap volontairement resserré : le contenu est plafonné à --container (1240px)
+       donc même sur grand écran l'espace utile est limité. Avec 4 liens à gauche,
+       un gap large ferait toucher « Magazine » au wordmark central. */
+    gap: clamp(16px, 1.8vw, 24px);
   }
-  .mb-header__nav--left  { justify-self: start; }
-  .mb-header__nav--right { justify-self: end; }
+  /* On groupe les clusters autour du wordmark central plutôt que de les coller
+     aux bords : le cluster gauche s'aligne vers la droite de sa colonne (donc
+     près du titre), le droit vers la gauche de la sienne. Résultat : espacement
+     régulier autour de « MAISON BONJOUR », plus de grand vide déséquilibré.
+     Le gap de la grille gère la distance au wordmark. */
+  .mb-header__nav--left  { justify-self: end; }
+  .mb-header__nav--right { justify-self: start; }
 
   .mb-header__link {
     position: relative;
@@ -179,7 +231,7 @@
     font-family: var(--font-sans);
     font-size: 11px;
     font-weight: 400;
-    letter-spacing: 0.24em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: currentColor;
     text-decoration: none;
@@ -202,18 +254,19 @@
   .mb-header__link:hover { opacity: 1; color: var(--gold); }
   .mb-header__link:hover::after { transform: scaleX(1); }
 
-  /* Logo PNG transparent — position absolute par rapport au .mb-header (fixed) donc
-     ancré au bord gauche du viewport. Ne décale aucun élément du flux normal de la navbar.
-     Deux variantes (marine / cream) superposées, swap par CSS selon le contexte
-     header (sur hero sombre, scrolled cream, drawer ouvert). */
+  /* Logo PNG transparent — DANS LE FLUX du cluster nav gauche (premier enfant flex).
+     Auparavant en position:absolute ancré au viewport, ce qui faisait démarrer les
+     liens « La Box / Notre histoire / Magazine » SOUS le logo → chevauchement.
+     En flux, le `gap` du cluster réserve naturellement l'espace : plus aucun
+     recouvrement, à toutes les largeurs (1440 → 1024). Le logo reste contenu
+     dans la colonne gauche de la grille, donc le wordmark central reste centré.
+     Deux variantes (marine / cream) superposées, swap par CSS selon le contexte. */
   .mb-header__mark {
-    position: absolute;
-    top: 50%;
-    left: clamp(12px, 1.6vw, 24px);
-    transform: translateY(-50%);
+    position: relative;
     z-index: 3;
     display: inline-flex;
     align-items: center;
+    flex: 0 0 auto;
     line-height: 0;
     text-decoration: none;
     transition: opacity 0.3s ease;
@@ -221,11 +274,12 @@
   .mb-header__mark:hover { opacity: 0.75; }
   /* Les deux versions sont superposées : marine en relative (définit la taille
      du conteneur), cream en absolute par-dessus. On crossfade via opacity pour
-     un swap doux comme les textes qui changent de couleur au scroll. */
+     un swap doux comme les textes qui changent de couleur au scroll.
+     Hauteur réduite et fluide → logo jamais trop large sur desktop. */
   .mb-header__mark-img {
     display: block;
     width: auto;
-    height: 64px;
+    height: clamp(44px, 4vw, 54px);
     transition: opacity 0.3s ease;
   }
   .mb-header__mark-img--marine { position: relative; opacity: 1; }
@@ -262,12 +316,12 @@
   .mb-header__logo:hover { opacity: 0.75; }
 
   .mb-header__logo-text {
-    font-family: "TAN Pearl", "Kalnia", "Instrument Serif", serif;
+    font-family: var(--font-display);
     font-optical-sizing: auto;
     font-style: normal;
     font-weight: 400;
     font-variation-settings: "wdth" 100;
-    font-size: clamp(20px, 2.2vw, 27px);
+    font-size: clamp(19px, 2vw, 24px);
     letter-spacing: 0.025em;
     line-height: 1;
     text-transform: uppercase;
@@ -303,6 +357,75 @@
     border-radius: 999px;
   }
   .mb-header__cart-count.is-empty { display: none; }
+
+  /* --- Sélecteur de langue FR / RO --- */
+  /* Discret, aligné sur la typo nav (Inter, uppercase, tracking large).
+     Rendu via {% form 'localization' %} : n'apparaît que si ≥ 2 langues
+     publiées dans Shopify Admin → Marchés/Langues. */
+  .mb-lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    margin: 0;
+  }
+  .mb-lang__sr {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0);
+    white-space: nowrap; border: 0;
+  }
+  .mb-lang__opt {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    padding: 4px 5px;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 10.5px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: currentColor;
+    opacity: 0.55;
+    line-height: 1;
+    transition: color 0.3s ease, opacity 0.3s ease;
+  }
+  .mb-lang__opt:hover { opacity: 1; color: var(--gold); }
+  .mb-lang__opt.is-active { opacity: 1; }
+  .mb-lang__opt.is-active:hover { color: currentColor; cursor: default; }
+  /* Séparateur fin entre les options (FR · RO) */
+  .mb-lang__opt + .mb-lang__opt {
+    border-left: 1px solid currentColor;
+    border-left-color: color-mix(in srgb, currentColor 30%, transparent);
+  }
+  .mb-lang__opt:focus-visible {
+    outline: 1px solid var(--gold);
+    outline-offset: 2px;
+    opacity: 1;
+  }
+
+  /* Variante drawer mobile : centrée, plus aérée, sur fond marine-deep */
+  .mb-lang--mobile {
+    margin-top: 4px;
+    justify-content: center;
+    gap: 4px;
+  }
+  .mb-lang--mobile .mb-lang__opt {
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    padding: 6px 10px;
+    color: var(--cream);
+    opacity: 0.6;
+  }
+  .mb-lang--mobile .mb-lang__opt.is-active { opacity: 1; }
+  .mb-lang--mobile .mb-lang__opt:hover { color: var(--gold); }
+
+  /* Sur mobile, le sélecteur desktop (dans la nav droite) est masqué :
+     il vit dans le drawer. */
+  @media (max-width: 767px) {
+    .mb-header__nav--right .mb-lang { display: none; }
+  }
 
   /* --- Burger (mobile) --- */
 
@@ -378,13 +501,28 @@
      Responsive
      =========================================================== */
 
+  /* 4 liens à gauche (La Box · Nos artisans · Notre histoire · Magazine) : le
+     cluster est large et viendrait chevaucher le wordmark central « MAISON
+     BONJOUR ». Sur tout le desktop/tablette on masque le logo image redondant
+     de gauche (le wordmark central porte déjà la marque) pour rendre de la place
+     aux liens. Le logo image reste visible uniquement en mobile (top-left). */
+  @media (min-width: 768px) {
+    .mb-header__mark { display: none; }
+  }
+
+  /* On resserre gap + tracking dès 1280px pour que les 4 liens gauche +
+     « S'abonner à la box » à droite tiennent sans toucher le wordmark central,
+     jusqu'au breakpoint mobile (≤767px) où les liens passent au drawer. */
+  @media (max-width: 1280px) {
+    .mb-header__inner { gap: 16px; }
+    .mb-header__nav { gap: clamp(16px, 2vw, 26px); }
+    .mb-header__link { font-size: 10px; letter-spacing: 0.16em; }
+  }
+
   @media (max-width: 1024px) {
     .mb-header__inner { gap: 14px; min-height: 60px; padding: 16px clamp(18px, 4vw, 40px); }
-    /* 3 liens à gauche (La Box · Notre histoire · Magazine) + "S'abonner à la box"
-       à droite : on resserre le gap et la tracking pour tout faire tenir sur une
-       seule ligne jusqu'au breakpoint mobile (≤767px) où les liens passent au drawer. */
-    .mb-header__nav { gap: clamp(14px, 2vw, 22px); }
-    .mb-header__link { font-size: 10px; letter-spacing: 0.18em; }
+    .mb-header__nav { gap: clamp(12px, 1.6vw, 18px); }
+    .mb-header__link { font-size: 9.5px; letter-spacing: 0.12em; }
   }
 
   @media (max-width: 767px) {
@@ -432,10 +570,8 @@
 
     .mb-header__logo-text { font-size: 20px; }
 
-    /* Mobile : logo image tout à gauche (collé au bord viewport), wordmark texte centré reste.
-       Le mark garde le même position:absolute que desktop ; sur mobile l'inner a
-       position:relative + spanne le viewport → l'ancrage donne bien gauche viewport. */
-    .mb-header__mark { left: 10px; }
+    /* Mobile : le mark (en flux dans nav--left, qui a margin-right:auto) reste
+       collé à gauche ; le wordmark texte est centré géométriquement par-dessus. */
     .mb-header__mark-img { height: 40px; }
   }
 
@@ -516,7 +652,7 @@
   }
 
   .mb-mobile-nav__link {
-    font-family: "Kalnia", "Instrument Serif", serif;
+    font-family: var(--font-serif);
     font-weight: 500;
     font-style: normal;
     font-size: clamp(1.9rem, 7.5vw, 2.8rem);
@@ -573,9 +709,10 @@
   .mb-mobile-nav.is-open .mb-mobile-nav__link:nth-child(2) { transition-delay: 0.23s; }
   .mb-mobile-nav.is-open .mb-mobile-nav__link:nth-child(3) { transition-delay: 0.30s; }
   .mb-mobile-nav.is-open .mb-mobile-nav__link:nth-child(4) { transition-delay: 0.37s; }
-  .mb-mobile-nav.is-open .mb-mobile-nav__sub a:nth-child(1) { transition-delay: 0.45s; }
-  .mb-mobile-nav.is-open .mb-mobile-nav__sub a:nth-child(2) { transition-delay: 0.50s; }
-  .mb-mobile-nav.is-open .mb-mobile-nav__sub a:nth-child(3) { transition-delay: 0.55s; }
+  .mb-mobile-nav.is-open .mb-mobile-nav__link:nth-child(5) { transition-delay: 0.44s; }
+  .mb-mobile-nav.is-open .mb-mobile-nav__sub a:nth-child(1) { transition-delay: 0.50s; }
+  .mb-mobile-nav.is-open .mb-mobile-nav__sub a:nth-child(2) { transition-delay: 0.55s; }
+  .mb-mobile-nav.is-open .mb-mobile-nav__sub a:nth-child(3) { transition-delay: 0.60s; }
 
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
@@ -603,6 +740,7 @@
     { "type": "text", "id": "edition_label",   "label": "Ticker — édition (legacy)",          "default": "Édition 01 · Bretagne" },
     { "type": "text", "id": "delivery_label",  "label": "Ticker — livraison (legacy)",        "default": "Livraison le 15 du mois" },
     { "type": "url",  "id": "box_url",         "label": "Lien — La Box" },
+    { "type": "url",  "id": "artisans_url",    "label": "Lien — Nos artisans", "info": "Par défaut : /pages/nos-artisans." },
     { "type": "url",  "id": "story_url",       "label": "Lien — Notre histoire", "info": "Par défaut : ancre /#notre-histoire (section fondateurs)." },
     { "type": "url",  "id": "magazine_url",    "label": "Lien — Magazine" },
     { "type": "url",  "id": "subscribe_url",   "label": "Lien — S'abonner à la box" },

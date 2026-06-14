@@ -3,7 +3,8 @@
 
   assign label    = section.settings.label    | default: 'Première édition · Juillet 2026'
   assign region   = section.settings.region   | default: 'Bretagne'
-  assign subtitle = section.settings.subtitle | default: 'Une première escale entre mer, granit et gestes de table.'
+  assign subtitle = section.settings.subtitle | default: 'Entre l’Atlantique et les mains qui façonnent.'
+  assign context  = section.settings.context  | default: 'Cette première édition est lancée dans le cadre de la Semaine de la France à Cluj-Napoca, co-organisée par l’Institut Français et le CFAC · 13–16 juillet 2026.'
   assign passport_label = section.settings.passport_link_label | default: 'Découvrir le Passeport'
   assign passport_url   = section.settings.passport_link_url
   if passport_url == blank
@@ -66,10 +67,15 @@
         {%- if intro != blank -%}
           {{ intro }}
         {%- else -%}
-          <p>Maison Bonjour prend la direction de la Bretagne pour sa première édition, dans le cadre de la Semaine de la France à Cluj-Napoca, avec l’Institut français et le CFAC.</p>
-          <p>Le contenu reste secret jusqu’à l’ouverture. On ne dévoile pas une liste&nbsp;: on prépare une rencontre avec une région.</p>
+          <p>Pour sa première édition, Maison Bonjour prend la direction de la Bretagne — une région qui forge ses caractères dans le sel, le granit et la mer depuis des siècles.</p>
+          <p>Ce qui vous attend dans cette box ne s’annonce pas par une liste. Certaines pièces se gardent. D’autres se goûtent lentement, d’autres encore se posent sur une table ou sur une peau. Chaque objet, chaque saveur a été choisi après avoir rencontré l’artisan, compris sa méthode et vérifié ce qu’il refusait de faire autant que ce qu’il faisait.</p>
+          <p>Rien dans cette box ne se trouve en grande surface. Tout arrive avec son histoire, glissée dans le livret.</p>
         {%- endif -%}
       </div>
+
+      {%- if context != blank -%}
+        <p class="box__context">{{ context }}</p>
+      {%- endif -%}
 
       {%- comment -%} Indices = mini-ligne éditoriale discrète, pas une liste. {%- endcomment -%}
       <p class="box__hints">
@@ -86,7 +92,7 @@
             {%- endif -%}
           {%- endfor -%}
         {%- else -%}
-          Création à conserver<span class="box__hints-sep" aria-hidden="true"> · </span>Saveur de région<span class="box__hints-sep" aria-hidden="true"> · </span>Geste de table<span class="box__hints-sep" aria-hidden="true"> · </span>Matière à toucher<span class="box__hints-sep" aria-hidden="true"> · </span>Surprise à l’ouverture
+          Pièce à conserver<span class="box__hints-sep" aria-hidden="true"> · </span>Saveur atlantique<span class="box__hints-sep" aria-hidden="true"> · </span>Soin naturel breton<span class="box__hints-sep" aria-hidden="true"> · </span>Savoir-faire transmis<span class="box__hints-sep" aria-hidden="true"> · </span>Contenu secret à l’ouverture
         {%- endif -%}
       </p>
 
@@ -131,14 +137,17 @@
 
   /* --- Colonne texte : haut --- */
   .box__eyebrow { margin-bottom: 16px; color: var(--gold); }
+  /* Titre de région → TAN Pearl (police signature, réservée logo + régions +
+     titres magazine). On retire l'italique : TAN Pearl n'a pas d'italique et
+     porte le nom de région comme un lettrage de marque. */
   .box__title {
     margin: 0;
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 400;
-    font-size: clamp(3.6rem, 6.5vw + 1rem, 7rem);
-    line-height: 0.9;
-    letter-spacing: -0.01em;
+    font-family: var(--font-display);
+    font-style: normal;
+    font-weight: 700;
+    font-size: clamp(3.4rem, 6vw + 1rem, 6.4rem);
+    line-height: 0.92;
+    letter-spacing: -0.005em;
     color: var(--marine);
   }
   .box__subtitle {
@@ -185,6 +194,19 @@
     max-width: 46ch;
   }
   .box__text p:last-child { margin-bottom: 0; }
+
+  /* Ligne contexte — mention institutionnelle discrète (Semaine de la France). */
+  .box__context {
+    margin: clamp(18px, 2vw, 24px) 0 0;
+    padding-left: 14px;
+    max-width: 52ch;
+    border-left: 1px solid rgba(184, 150, 90, 0.45);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
 
   /* Indices — une ligne discrète, points dorés, jamais une liste. */
   .box__hints {
@@ -290,8 +312,9 @@
     },
     { "type": "text",     "id": "label",    "label": "Label", "default": "Première édition · Juillet 2026" },
     { "type": "text",     "id": "region",   "label": "Titre (région)", "default": "Bretagne" },
-    { "type": "textarea", "id": "subtitle", "label": "Phrase forte (sous le titre)", "default": "Une première escale entre mer, granit et gestes de table." },
-    { "type": "richtext", "id": "intro",    "label": "Paragraphe", "info": "Court. Laisser vide pour le texte Bretagne par défaut." },
+    { "type": "textarea", "id": "subtitle", "label": "Phrase forte (sous le titre)", "default": "Entre l’Atlantique et les mains qui façonnent." },
+    { "type": "richtext", "id": "intro",    "label": "Paragraphe", "info": "Laisser vide pour le texte Bretagne par défaut (3 paragraphes)." },
+    { "type": "textarea", "id": "context",  "label": "Ligne contexte (mention institutionnelle)", "default": "Cette première édition est lancée dans le cadre de la Semaine de la France à Cluj-Napoca, co-organisée par l’Institut Français et le CFAC · 13–16 juillet 2026." },
     { "type": "image_picker", "id": "image", "label": "Image de la box", "info": "Box fermée / nouée d’un ruban — ne pas révéler le contenu." },
     { "type": "text",     "id": "image_alt", "label": "Texte alternatif de l’image" },
     { "type": "textarea", "id": "seal",     "label": "Note du sceau", "default": "Chaque boîte est préparée avec soin, puis scellée à la main par un sceau Maison Bonjour." },

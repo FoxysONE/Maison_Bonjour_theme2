@@ -4,30 +4,50 @@
   assign object_label = section.settings.object_label | default: 'L’objet · Cigale en céramique — modèle 1895'
   assign title       = section.settings.title       | default: 'Ce que veut dire « artisan » chez Maison Bonjour.'
   assign label       = section.settings.label       | default: 'Aubagne — Provence'
-  assign artisan     = section.settings.artisan     | default: 'Faïences Louis Sicard'
+  assign artisan     = section.settings.artisan     | default: 'Les Faïences de Louis Sicard'
   assign since       = section.settings.since       | default: '1895'
   assign link1_url   = section.settings.link1_url
   assign link1_label = section.settings.link1_label | default: 'Visite de l’atelier en vidéo'
   assign link2_url   = section.settings.link2_url
-  assign link2_label = section.settings.link2_label | default: 'Découvrir d’autres artisans'
+  if link2_url == blank
+    assign link2_url = '/pages/nos-artisans'
+  endif
+  assign link2_label = section.settings.link2_label | default: 'Découvrez tous nos artisans'
+  assign kicker      = section.settings.kicker      | default: 'Le savoir-faire'
 -%}
 
 <section class="artisan section--cream" aria-label="L'Artisan">
   <div class="container">
 
     <header class="artisan__intro">
+      {%- if kicker != blank -%}
+        <p class="artisan__kicker">
+          <span class="artisan__kicker-rule" aria-hidden="true"></span>{{ kicker }}
+        </p>
+      {%- endif -%}
       <h2 class="artisan__intro-title" data-split-words>{{ title }}</h2>
     </header>
 
     <div class="artisan__grid">
 
       <figure class="artisan__media reveal">
-        <img class="artisan__img img-reveal"
-             src="{{ 'cigale.png' | asset_url }}"
-             alt="Cigale en céramique — Faïences Louis Sicard, Aubagne"
-             width="1400"
-             height="1400"
-             loading="lazy">
+        {%- if img != blank -%}
+          {{ img | image_url: width: 1400 | image_tag:
+              loading: 'lazy',
+              sizes: '(min-width: 1024px) 48vw, 92vw',
+              widths: '600, 900, 1200, 1400',
+              class: 'artisan__img img-reveal',
+              alt: 'Les artisans Maison Bonjour — atelier des Faïences Louis Sicard, Aubagne' }}
+        {%- else -%}
+          {%- comment -%} Atelier / cigales des Faïences Louis Sicard. {%- endcomment -%}
+          <img class="artisan__img img-reveal"
+               src="{{ 'sicarillos.jpg' | asset_url }}"
+               alt="Cigales en céramique peintes à la main — Faïences Louis Sicard, Aubagne"
+               width="945"
+               height="652"
+               loading="lazy"
+               decoding="async">
+        {%- endif -%}
       </figure>
 
       <div class="artisan__text reveal reveal--delay-1">
@@ -46,8 +66,9 @@
           {%- if section.settings.body != blank -%}
             {{ section.settings.body }}
           {%- else -%}
-            <p>Quatre générations qu’on sculpte la même cigale, dans le même atelier d’Aubagne. Le moule a passé de main en main, du fondateur à ses arrière-petits-enfants. Aujourd’hui, c’est encore une famille qui modèle chaque pièce, à la main, au même rythme.</p>
-            <p>Voilà ce que nous appelons un artisan. Pas une marque qui pose une étiquette « fait main ». Une maison où le geste s’est transmis comme un secret de famille.</p>
+            <p>Aubagne, c’est d’abord une argile. Une terre rouge et fine que les potiers travaillent depuis l’Antiquité, dans cette ville provençale où Marcel Pagnol a grandi, et où la cigale est devenue, au fil des siècles, bien plus qu’un insecte.</p>
+            <p>Depuis 1895, la famille Sicard façonne la même pièce dans le même atelier. Le moule original existe encore. Les gestes aussi. Chaque cigale est pressée, démoulée, ébarbée à la main — les antennes ajustées une par une, les couleurs posées selon une tradition que quatre générations ont refusé de simplifier.</p>
+            <p>La cigale n’est pas un souvenir de boutique. En Provence, on l’offre pour porter bonheur, on l’accroche au-dessus d’une porte, on la pose sur une table comme on rappelle à ses invités où ils sont. Chez Sicard, elle n’a pas changé parce qu’il n’y avait aucune raison qu’elle change.</p>
           {%- endif -%}
         </div>
 
@@ -76,7 +97,7 @@
   .artisan.section--cream { background: #FFFFFF; }
 
   .artisan__intro {
-    max-width: 720px;
+    max-width: 860px;
     margin: 0 0 clamp(56px, 6vw, 96px);
   }
 
@@ -106,11 +127,14 @@
     font-family: var(--font-serif);
     font-style: italic;
     font-weight: 400;
-    font-size: clamp(2rem, 3.5vw + 1rem, 4rem);
-    line-height: 1.05;
+    font-size: clamp(2.2rem, 4vw + 1rem, 4.4rem);
+    line-height: 1.08;
     letter-spacing: -0.015em;
     color: var(--marine);
+    text-wrap: balance;
   }
+  /* « artisan » mis en valeur si présent entre guillemets — la nuance porte le sens. */
+  .artisan__intro-title em { font-style: normal; color: var(--gold); }
 
   .artisan__grid {
     display: grid;
@@ -299,17 +323,6 @@
 
   .artisan__body p + p { margin-top: 1.3em; }
 
-  .artisan__body p:nth-child(2) {
-    margin-top: 1.5em;
-    padding-left: 20px;
-    border-left: 1px solid var(--gold);
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: 1.25rem;
-    line-height: 1.4;
-    color: var(--marine);
-  }
-
   .artisan__links {
     margin-top: 40px;
     display: flex;
@@ -364,7 +377,6 @@
   @media (max-width: 767px) {
     .artisan { padding-block: 72px; }
     .artisan__body p { font-size: 16px; }
-    .artisan__body p:nth-child(2) { font-size: 1.1rem; }
     .artisan__rule { margin: 24px 0; }
   }
 {% endstylesheet %}
@@ -373,10 +385,11 @@
 {
   "name": "05 — L'Artisan",
   "settings": [
+    { "type": "text", "id": "kicker", "label": "Surtitre", "default": "Le savoir-faire" },
     { "type": "text", "id": "title", "label": "Titre", "default": "Ce que veut dire « artisan » chez Maison Bonjour." },
-    { "type": "image_picker", "id": "image", "label": "Image atelier / portrait" },
+    { "type": "image_picker", "id": "image", "label": "Image atelier / portrait", "info": "Si vide : atelier Louis Sicard (sicarillos.jpg)." },
     { "type": "text", "id": "label",   "label": "Localisation", "default": "Aubagne — Provence" },
-    { "type": "text", "id": "artisan", "label": "Nom de l'artisan", "default": "Faïences Louis Sicard" },
+    { "type": "text", "id": "artisan", "label": "Nom de l'artisan", "default": "Les Faïences de Louis Sicard" },
     { "type": "text", "id": "since",   "label": "Année de fondation", "default": "1895" },
     { "type": "richtext", "id": "body", "label": "Récit" },
     { "type": "header", "content": "Médaillon objet (polaroid)" },
@@ -385,8 +398,8 @@
     { "type": "header", "content": "Liens" },
     { "type": "url",  "id": "link1_url",   "label": "Lien 1 — URL" },
     { "type": "text", "id": "link1_label", "label": "Lien 1 — Texte", "default": "Visite de l’atelier en vidéo" },
-    { "type": "url",  "id": "link2_url",   "label": "Lien 2 — URL" },
-    { "type": "text", "id": "link2_label", "label": "Lien 2 — Texte", "default": "Découvrir d’autres artisans" }
+    { "type": "url",  "id": "link2_url",   "label": "Lien 2 — URL", "info": "Par défaut : /pages/nos-artisans." },
+    { "type": "text", "id": "link2_label", "label": "Lien 2 — Texte", "default": "Découvrez tous nos artisans" }
   ],
   "presets": [{ "name": "05 — L'Artisan" }]
 }

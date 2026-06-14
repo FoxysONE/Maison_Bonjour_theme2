@@ -7,14 +7,14 @@
   # Ce n'est PAS l'ordre des prochaines box (pas de roadmap, pas de calendrier,
   # pas de dates). Modifiable sans risque via le réglage « Ordre des régions »
   # du customizer (slugs séparés par des virgules) — réordonner ne casse rien.
-  assign order_default = 'perigord,bretagne,cote-d-azur,bourgogne,provence,alsace,normandie,pays-basque,corse,val-de-loire,auvergne,champagne'
+  assign order_default = 'bretagne,provence,cote-d-azur,perigord,bourgogne,alsace,normandie,pays-basque,corse,val-de-loire,auvergne,champagne'
   assign region_order  = section.settings.region_order | default: order_default
   assign region_slugs  = region_order | split: ','
-  assign order_caption = section.settings.order_caption | default: 'Quelques escales françaises — un voyage sans ordre imposé.'
+  assign order_caption = section.settings.order_caption | default: 'Quelques unes de nos escales françaises'
 -%}
 
 <section class="journey-h section--dark" data-journey-h data-fm-skip
-         aria-label="Le Voyage — quelques escales françaises à explorer librement, sans ordre imposé"
+         aria-label="Quelques unes de nos escales françaises"
          style="--journey-count: {{ region_slugs.size }};">
   <div class="journey-h__sticky">
 
@@ -27,79 +27,32 @@
         {%- assign slug = slug | strip -%}
         {%- assign num_padded = forloop.index | prepend: '0' | slice: -2, 2 -%}
 
+        {%- comment -%} Textes via clés locales (FR + RO) — voir locales/*.json
+            sous journey.regions.<slug>.* . Seules les IMAGES restent codées
+            ici (non traduisibles). {%- endcomment -%}
+        {%- assign k = 'journey.regions.' | append: slug -%}
+        {%- assign region_name = k | append: '.name'        | t -%}
+        {%- assign tagline     = k | append: '.tagline'     | t -%}
+        {%- assign detail      = k | append: '.description' | t -%}
+        {%- assign keywords    = k | append: '.keywords'    | t | split: ' · ' -%}
+
         {%- case slug -%}
-          {%- when 'provence' -%}
-            {%- assign region_name = 'Provence' -%}
-            {%- assign word_a = 'Cigales' -%}{%- assign word_b = 'Lavande' -%}{%- assign word_c = 'Oliviers' -%}
-            {%- assign tagline = 'Il y a une lumière qui ne quitte jamais les pierres.' -%}
-            {%- assign detail  = 'Une Provence lente, chaude et minérale, entre villages perchés, collines dorées et parfum d’herbes sèches.' -%}
-            {%- assign image_main = 'paysage-region-provence-01.jpeg' -%}
-          {%- when 'bretagne' -%}
-            {%- assign region_name = 'Bretagne' -%}
-            {%- assign word_a = 'Caramels salés' -%}{%- assign word_b = 'Sel marin' -%}{%- assign word_c = 'Granit' -%}
-            {%- assign tagline = 'Ici, le vent polit les pierres et la mer garde les secrets.' -%}
-            {%- assign detail  = 'Une Bretagne sauvage et silencieuse, entre falaises, granit, embruns et lumière changeante.' -%}
-            {%- assign image_main = 'paysage-region-bretagne-01.jpeg' -%}
-          {%- when 'alsace' -%}
-            {%- assign region_name = 'Alsace' -%}
-            {%- assign word_a = 'Vins blancs' -%}{%- assign word_b = 'Pain d’épices' -%}{%- assign word_c = 'Faïence' -%}
-            {%- assign tagline = 'Des villages lumineux où l’hiver semble avoir une âme.' -%}
-            {%- assign detail  = 'Une Alsace chaleureuse et artisanale, entre vignes, maisons anciennes, faïence et douceur épicée.' -%}
-            {%- assign image_main = 'paysage-region-alsace-02.jpeg' -%}
-          {%- when 'bourgogne' -%}
-            {%- assign region_name = 'Bourgogne' -%}
-            {%- assign word_a = 'Moutarde' -%}{%- assign word_b = 'Pierre dorée' -%}{%- assign word_c = 'Escargots' -%}
-            {%- assign tagline = 'La France y prend le temps de vieillir avec élégance.' -%}
-            {%- assign detail  = 'Une Bourgogne noble et terrienne, entre vignes profondes, villages de pierre dorée et traditions lentes.' -%}
-            {%- assign image_main = 'paysage-region-bourgogne-01.jpeg' -%}
-          {%- when 'pays-basque' -%}
-            {%- assign region_name = 'Pays Basque' -%}
-            {%- assign word_a = 'Piments' -%}{%- assign word_b = 'Lin' -%}{%- assign word_c = 'Espadrilles' -%}
-            {%- assign tagline = 'Entre l’Atlantique et les collines, tout semble plus vivant.' -%}
-            {%- assign detail  = 'Un Pays Basque graphique et intense, entre vagues, maisons blanches, verts profonds et savoir-faire textile.' -%}
-            {%- assign image_main = 'paysage-region-pays-basque-01.jpeg' -%}
-          {%- when 'normandie' -%}
-            {%- assign region_name = 'Normandie' -%}
-            {%- assign word_a = 'Beurre' -%}{%- assign word_b = 'Pommiers' -%}{%- assign word_c = 'Falaises' -%}
-            {%- assign tagline = 'Une lumière douce descend sur les pommiers et les falaises.' -%}
-            {%- assign detail  = 'Une Normandie calme et généreuse, entre herbe humide, falaises claires, vergers et brume légère.' -%}
-            {%- assign image_main = 'paysage-region-normandie-01.jpeg' -%}
-          {%- when 'perigord' -%}
-            {%- assign region_name = 'Périgord' -%}
-            {%- assign word_a = 'Truffes' -%}{%- assign word_b = 'Noix' -%}{%- assign word_c = 'Châtaigneraies' -%}
-            {%- assign tagline = 'Les vallées gardent le goût ancien des maisons de pierre.' -%}
-            {%- assign detail  = 'Un Périgord profond et doré, entre forêts, rivières, châteaux, noix et gastronomie de mémoire.' -%}
-            {%- assign image_main = 'paysage-region-perigord-02.jpeg' -%}
-          {%- when 'auvergne' -%}
-            {%- assign region_name = 'Auvergne' -%}
-            {%- assign word_a = 'Fromages' -%}{%- assign word_b = 'Volcans' -%}{%- assign word_c = 'Coutellerie' -%}
-            {%- assign tagline = 'Sous les volcans endormis, la terre respire encore.' -%}
-            {%- assign detail  = 'Une Auvergne brute et majestueuse, entre pâturages, reliefs volcaniques, fromages et artisanat robuste.' -%}
-            {%- assign image_main = 'paysage-region-auvergne-01.jpeg' -%}
-          {%- when 'champagne' -%}
-            {%- assign region_name = 'Champagne' -%}
-            {%- assign word_a = 'Bulles' -%}{%- assign word_b = 'Craie' -%}{%- assign word_c = 'Royauté' -%}
-            {%- assign tagline = 'Une fête silencieuse dort sous les collines de craie.' -%}
-            {%- assign detail  = 'Une Champagne élégante et précise, entre vignes ordonnées, sols crayeux, caves et héritage royal.' -%}
-            {%- assign image_main = 'paysage-region-champagne-01.jpeg' -%}
-          {%- when 'cote-d-azur' -%}
-            {%- assign region_name = 'Côte d’Azur' -%}
-            {%- assign word_a = 'Parfums' -%}{%- assign word_b = 'Savons' -%}{%- assign word_c = 'Méditerranée' -%}
-            {%- assign tagline = 'Le Sud commence là où la mer devient lumière.' -%}
-            {%- assign detail  = 'Une Côte d’Azur solaire et magnifiée, entre criques transparentes, villages perchés, pins et reliefs méditerranéens.' -%}
-            {%- assign image_main = 'paysage-region-cote-d-azur-01.jpeg' -%}
-          {%- when 'val-de-loire' -%}
-            {%- assign region_name = 'Val de Loire' -%}
-            {%- assign word_a = 'Vouvray' -%}{%- assign word_b = 'Tuffeau' -%}{%- assign word_c = 'Jardins' -%}
-            {%- assign tagline = 'La douceur française avance au rythme lent du fleuve.' -%}
-            {%- assign detail  = 'Un Val de Loire élégant et classique, entre châteaux, jardins, tuffeau clair, vignes et rivières.' -%}
+          {%- when 'bretagne' -%}{%- assign image_main = 'paysage-region-bretagne-01.jpeg' -%}
+          {%- when 'provence' -%}{%- assign image_main = 'paysage-region-provence-01.jpeg' -%}
+          {%- when 'cote-d-azur' -%}{%- assign image_main = 'paysage-region-cote-d-azur-01.jpeg' -%}
+          {%- when 'perigord' -%}{%- assign image_main = 'paysage-region-perigord-02.jpeg' -%}
+          {%- when 'bourgogne' -%}{%- assign image_main = 'paysage-region-bourgogne-01.jpeg' -%}
+          {%- when 'alsace' -%}{%- assign image_main = 'paysage-region-alsace-02.jpeg' -%}
+          {%- when 'normandie' -%}{%- assign image_main = 'paysage-region-normandie-01.jpeg' -%}
+          {%- when 'pays-basque' -%}{%- assign image_main = 'paysage-region-pays-basque-01.jpeg' -%}
+          {%- when 'corse' -%}{%- assign image_main = 'paysage-region-corse-01.jpeg' -%}
+          {%- when 'pays-de-la-loire' -%}
+            {%- comment -%} IMAGE À REMPLACER : pas d'asset Pays de la Loire dispo.
+                Placeholder temporaire = paysage Val de Loire (ambiance fleuve). {%- endcomment -%}
             {%- assign image_main = 'paysage-region-val-de-loire-01.jpeg' -%}
-          {%- when 'corse' -%}
-            {%- assign region_name = 'Corse' -%}
-            {%- assign word_a = 'Charcuteries' -%}{%- assign word_b = 'Immortelle' -%}{%- assign word_c = 'Maquis' -%}
-            {%- assign tagline = 'Une île où la montagne tombe dans la mer.' -%}
-            {%- assign detail  = 'Une Corse sauvage et raffinée, entre maquis, criques transparentes, villages perchés et lumière minérale.' -%}
-            {%- assign image_main = 'paysage-region-corse-01.jpeg' -%}
+          {%- when 'val-de-loire' -%}{%- assign image_main = 'paysage-region-val-de-loire-01.jpeg' -%}
+          {%- when 'auvergne' -%}{%- assign image_main = 'paysage-region-auvergne-01.jpeg' -%}
+          {%- when 'champagne' -%}{%- assign image_main = 'paysage-region-champagne-01.jpeg' -%}
         {%- endcase -%}
 
         <li class="journey-slide" data-journey-slide aria-label="{{ region_name }}">
@@ -129,11 +82,10 @@
                 </h3>
                 <aside class="region-edition__aside">
                   <ul class="region-edition__keywords" role="list" aria-label="Trois mots-clés">
-                    <li>{{ word_a }}</li>
-                    <li aria-hidden="true" class="region-edition__sep">·</li>
-                    <li>{{ word_b }}</li>
-                    <li aria-hidden="true" class="region-edition__sep">·</li>
-                    <li>{{ word_c }}</li>
+                    {%- for kw in keywords -%}
+                      {%- unless forloop.first -%}<li aria-hidden="true" class="region-edition__sep">·</li>{%- endunless -%}
+                      <li>{{ kw }}</li>
+                    {%- endfor -%}
                   </ul>
                   <p class="region-edition__desc">{{ detail }}</p>
                 </aside>
@@ -144,6 +96,21 @@
         </li>
       {%- endfor -%}
     </ol>
+
+    {%- comment -%} Flèches de navigation — discrètes, accessibles au clavier
+        (vrais <button>), aria-label explicites. Font avancer/reculer d'une région. {%- endcomment -%}
+    <div class="journey-h__arrows">
+      <button type="button" class="journey-h__arrow journey-h__arrow--prev" data-journey-prev aria-label="Région précédente">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 5l-7 7 7 7"/>
+        </svg>
+      </button>
+      <button type="button" class="journey-h__arrow journey-h__arrow--next" data-journey-next aria-label="Région suivante">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 5l7 7-7 7"/>
+        </svg>
+      </button>
+    </div>
 
     <div class="journey-h__progress" aria-hidden="true">
       <span class="journey-h__index" data-journey-index>01</span>
@@ -395,6 +362,51 @@
     pointer-events: none;
   }
 
+  /* ---- Flèches de navigation ---- */
+  .journey-h__arrows {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none; /* seuls les boutons captent les clics */
+  }
+  .journey-h__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(44px, 4vw, 56px);
+    height: clamp(44px, 4vw, 56px);
+    padding: 0;
+    color: var(--cream);
+    background: rgba(15, 26, 46, 0.32);
+    border: 1px solid rgba(250, 246, 236, 0.35);
+    border-radius: 999px;
+    cursor: pointer;
+    -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+  }
+  .journey-h__arrow--prev { left: clamp(14px, 2.5vw, 40px); }
+  .journey-h__arrow--next { right: clamp(14px, 2.5vw, 40px); }
+  .journey-h__arrow:hover {
+    background: rgba(15, 26, 46, 0.55);
+    border-color: var(--gold);
+    color: var(--gold-soft);
+  }
+  .journey-h__arrow:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
+  /* Désactivée en bout de course (posé par le JS) */
+  .journey-h__arrow[disabled] {
+    opacity: 0.32;
+    cursor: default;
+    pointer-events: none;
+  }
+
   /* Indice de glissement — masqué sur desktop (le scroll suffit), affiché mobile. */
   .journey-h__hint { display: none; }
 
@@ -433,6 +445,24 @@
       justify-content: center;
       padding: 18px 0 4px;
     }
+    /* Mobile : flèches sorties du plein-écran absolu → rangée centrée sous le carousel,
+       faciles à atteindre au pouce. */
+    .journey-h__arrows {
+      position: static;
+      inset: auto;
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      padding: 16px 0 0;
+    }
+    .journey-h__arrow {
+      position: static;
+      transform: none;
+      width: 48px;
+      height: 48px;
+    }
+    .journey-h__arrow--prev,
+    .journey-h__arrow--next { left: auto; right: auto; }
     .journey-h__hint {
       display: inline-flex;
       align-items: center;
@@ -472,6 +502,18 @@
     .journey-slide { width: 100%; height: 84vh; }
     .region-edition__img { transform: scale(1); transition: none; }
     .journey-h__progress { display: none; }
+    /* Empilement vertical : flèches en rangée centrée, pas en plein écran absolu. */
+    .journey-h__arrows {
+      position: static;
+      inset: auto;
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      padding: 24px 0;
+    }
+    .journey-h__arrow { position: static; transform: none; }
+    .journey-h__arrow--prev,
+    .journey-h__arrow--next { left: auto; right: auto; }
   }
 {% endstylesheet %}
 
@@ -484,6 +526,8 @@
     var indexEl = section.querySelector('[data-journey-index]');
     var fillEl  = section.querySelector('[data-journey-fill]');
     var hintEl  = section.querySelector('[data-journey-hint]');
+    var prevBtn = section.querySelector('[data-journey-prev]');
+    var nextBtn = section.querySelector('[data-journey-next]');
     if (!track || !slides.length) return;
 
     var count = slides.length;
@@ -507,6 +551,50 @@
       }
     }
 
+    // Active/désactive les flèches en bout de course (accessibilité + clarté).
+    function updateArrows(idx) {
+      if (prevBtn) prevBtn.disabled = idx <= 0;
+      if (nextBtn) nextBtn.disabled = idx >= count - 1;
+    }
+
+    // Index de la région actuellement à l'écran (selon le mode).
+    function currentIndex() {
+      if (pinned()) {
+        var rect = section.getBoundingClientRect();
+        var scrollable = section.offsetHeight - window.innerHeight;
+        var p = scrollable > 0 ? clamp(-rect.top / scrollable, 0, 1) : 0;
+        return Math.round(p * (count - 1));
+      }
+      var sw = slides[0].getBoundingClientRect().width || 1;
+      return clamp(Math.round(track.scrollLeft / sw), 0, count - 1);
+    }
+
+    // Navigation par flèche : avance/recule d'une région.
+    function navigate(dir) {
+      var idx = clamp(currentIndex() + dir, 0, count - 1);
+      if (pinned()) {
+        var rect = section.getBoundingClientRect();
+        var scrollable = section.offsetHeight - window.innerHeight;
+        if (scrollable <= 0) return;
+        restIdx = idx;
+        var target = (rect.top + window.pageYOffset) + (idx / (count - 1)) * scrollable;
+        var lenis = window.__mbLenis;
+        if (lenis && typeof lenis.scrollTo === 'function') {
+          lenis.scrollTo(target, { duration: 0.7 });
+        } else {
+          window.scrollTo({ top: target, behavior: 'smooth' });
+        }
+      } else {
+        var sw = slides[0].getBoundingClientRect().width || 1;
+        track.scrollTo({ left: idx * sw, behavior: 'smooth' });
+        if (hintEl) hintEl.classList.add('is-hidden');
+      }
+      updateArrows(idx);
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', function () { navigate(-1); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { navigate(1); });
+
     function render() {
       if (!pinned()) return;
       var rect = section.getBoundingClientRect();
@@ -519,6 +607,7 @@
         lastIdx = idx;
         if (indexEl) indexEl.textContent = pad(idx + 1);
         setActive(idx);
+        updateArrows(idx);
       }
     }
 
@@ -664,11 +753,12 @@
         if (indexEl) indexEl.textContent = pad(idx + 1);
         if (fillEl) fillEl.style.width = (p * 100) + '%';
         if (hintEl && track.scrollLeft > 8) hintEl.classList.add('is-hidden');
+        updateArrows(idx);
       });
     }, { passive: true });
 
     // État initial + recalage après chargement complet (hauteurs définitives).
-    if (pinned()) { syncRest(); render(); } else { setActive(0); }
+    if (pinned()) { syncRest(); render(); } else { setActive(0); updateArrows(0); }
     window.addEventListener('load', function () { lastIdx = -1; syncRest(); render(); });
   })();
 {% endjavascript %}
@@ -678,8 +768,8 @@
   "name": "04 — Le Voyage",
   "settings": [
     { "type": "paragraph", "content": "Galerie des escales régionales. L'ordre est ÉDITORIAL / LIBRE — ce n'est pas l'ordre des prochaines box (pas de roadmap ni de dates). Réordonner ici ne casse pas le carousel." },
-    { "type": "textarea", "id": "region_order", "label": "Ordre des régions (slugs séparés par des virgules)", "default": "perigord,bretagne,cote-d-azur,bourgogne,provence,alsace,normandie,pays-basque,corse,val-de-loire,auvergne,champagne", "info": "Ordre éditorial / libre, pas une chronologie. Slugs disponibles : provence, bretagne, alsace, bourgogne, pays-basque, normandie, perigord, auvergne, champagne, cote-d-azur, val-de-loire, corse." },
-    { "type": "text", "id": "order_caption", "label": "Mention au-dessus du carousel", "default": "Quelques escales françaises — un voyage sans ordre imposé.", "info": "Cadre la galerie comme un voyage libre. Laisser vide pour masquer." }
+    { "type": "textarea", "id": "region_order", "label": "Ordre des régions (slugs séparés par des virgules)", "default": "bretagne,provence,cote-d-azur,perigord,bourgogne,alsace,normandie,pays-basque,corse,val-de-loire,auvergne,champagne", "info": "Slugs disponibles : bretagne, provence, cote-d-azur, perigord, bourgogne, alsace, normandie, pays-basque, corse, val-de-loire, auvergne, champagne." },
+    { "type": "text", "id": "order_caption", "label": "Titre au-dessus du carousel", "default": "Quelques unes de nos escales françaises", "info": "Laisser vide pour masquer." }
   ],
   "presets": [{ "name": "04 — Le Voyage" }]
 }
